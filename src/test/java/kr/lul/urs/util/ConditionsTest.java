@@ -153,47 +153,47 @@ public class ConditionsTest {
 
   @Test
   public void testInWithIlleagalRange() throws Exception {
-    exceptException(() -> in((byte) -1, (byte) 0, (byte) 0), IllegalArgumentException.class);
-    exceptException(() -> in((short) -1, (short) 0, (short) 0), IllegalArgumentException.class);
-    exceptException(() -> in(-1, 0, 0), IllegalArgumentException.class);
-    exceptException(() -> in(-1L, 0L, 0L), IllegalArgumentException.class);
-    exceptException(() -> in(-0.1F, 0.0F, 0.0F), IllegalArgumentException.class);
-    exceptException(() -> in(-0.1, 0.0, 0.0), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> in((byte) -1, (byte) 0, (byte) 0));
+    exceptException(IllegalArgumentException.class, () -> in((short) -1, (short) 0, (short) 0));
+    exceptException(IllegalArgumentException.class, () -> in(-1, 0, 0));
+    exceptException(IllegalArgumentException.class, () -> in(-1L, 0L, 0L));
+    exceptException(IllegalArgumentException.class, () -> in(-0.1F, 0.0F, 0.0F));
+    exceptException(IllegalArgumentException.class, () -> in(-0.1, 0.0, 0.0));
 
-    exceptException(() -> in((byte) -1, (byte) 0, (byte) -1), IllegalArgumentException.class);
-    exceptException(() -> in((short) -1, (short) 0, (short) -1), IllegalArgumentException.class);
-    exceptException(() -> in(-1, 0, -1), IllegalArgumentException.class);
-    exceptException(() -> in(-1L, 0L, -1L), IllegalArgumentException.class);
-    exceptException(() -> in(-0.1F, 0.0F, -0.1F), IllegalArgumentException.class);
-    exceptException(() -> in(-0.1, 0.0, -0.1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> in((byte) -1, (byte) 0, (byte) -1));
+    exceptException(IllegalArgumentException.class, () -> in((short) -1, (short) 0, (short) -1));
+    exceptException(IllegalArgumentException.class, () -> in(-1, 0, -1));
+    exceptException(IllegalArgumentException.class, () -> in(-1L, 0L, -1L));
+    exceptException(IllegalArgumentException.class, () -> in(-0.1F, 0.0F, -0.1F));
+    exceptException(IllegalArgumentException.class, () -> in(-0.1, 0.0, -0.1));
 
-    exceptException(() -> in((byte) 0, (byte) 0, (byte) 0), IllegalArgumentException.class);
-    exceptException(() -> in((short) 0, (short) 0, (short) 0), IllegalArgumentException.class);
-    exceptException(() -> in(0, 0, 0), IllegalArgumentException.class);
-    exceptException(() -> in(0L, 0L, 0L), IllegalArgumentException.class);
-    exceptException(() -> in(0.0F, 0.0F, 0.0F), IllegalArgumentException.class);
-    exceptException(() -> in(0.0, 0.0, 0.0), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> in((byte) 0, (byte) 0, (byte) 0));
+    exceptException(IllegalArgumentException.class, () -> in((short) 0, (short) 0, (short) 0));
+    exceptException(IllegalArgumentException.class, () -> in(0, 0, 0));
+    exceptException(IllegalArgumentException.class, () -> in(0L, 0L, 0L));
+    exceptException(IllegalArgumentException.class, () -> in(0.0F, 0.0F, 0.0F));
+    exceptException(IllegalArgumentException.class, () -> in(0.0, 0.0, 0.0));
 
-    exceptException(() -> in((byte) 0, (byte) 0, (byte) -1), IllegalArgumentException.class);
-    exceptException(() -> in((short) 0, (short) 0, (short) -1), IllegalArgumentException.class);
-    exceptException(() -> in(0, 0, -1), IllegalArgumentException.class);
-    exceptException(() -> in(0L, 0L, -1L), IllegalArgumentException.class);
-    exceptException(() -> in(0.0F, 0.0F, -0.1F), IllegalArgumentException.class);
-    exceptException(() -> in(0.0, 0.0, -0.1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> in((byte) 0, (byte) 0, (byte) -1));
+    exceptException(IllegalArgumentException.class, () -> in((short) 0, (short) 0, (short) -1));
+    exceptException(IllegalArgumentException.class, () -> in(0, 0, -1));
+    exceptException(IllegalArgumentException.class, () -> in(0L, 0L, -1L));
+    exceptException(IllegalArgumentException.class, () -> in(0.0F, 0.0F, -0.1F));
+    exceptException(IllegalArgumentException.class, () -> in(0.0, 0.0, -0.1));
 
-    exceptException(() -> in((byte) 1, (byte) 0, (byte) 0), IllegalArgumentException.class);
-    exceptException(() -> in((short) 1, (short) 0, (short) 0), IllegalArgumentException.class);
-    exceptException(() -> in(1, 0, 0), IllegalArgumentException.class);
-    exceptException(() -> in(1L, 0L, 0L), IllegalArgumentException.class);
-    exceptException(() -> in(0.1F, 0.0F, 0.0F), IllegalArgumentException.class);
-    exceptException(() -> in(0.1, 0.0, 0.0), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> in((byte) 1, (byte) 0, (byte) 0));
+    exceptException(IllegalArgumentException.class, () -> in((short) 1, (short) 0, (short) 0));
+    exceptException(IllegalArgumentException.class, () -> in(1, 0, 0));
+    exceptException(IllegalArgumentException.class, () -> in(1L, 0L, 0L));
+    exceptException(IllegalArgumentException.class, () -> in(0.1F, 0.0F, 0.0F));
+    exceptException(IllegalArgumentException.class, () -> in(0.1, 0.0, 0.0));
 
-    exceptException(() -> in((byte) 1, (byte) 0, (byte) -1), IllegalArgumentException.class);
-    exceptException(() -> in((short) 1, (short) 0, (short) -1), IllegalArgumentException.class);
-    exceptException(() -> in(1, 0, -1), IllegalArgumentException.class);
-    exceptException(() -> in(1L, 0L, -1L), IllegalArgumentException.class);
-    exceptException(() -> in(0.1F, 0.0F, -0.1F), IllegalArgumentException.class);
-    exceptException(() -> in(0.1, 0.0, -0.1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> in((byte) 1, (byte) 0, (byte) -1));
+    exceptException(IllegalArgumentException.class, () -> in((short) 1, (short) 0, (short) -1));
+    exceptException(IllegalArgumentException.class, () -> in(1, 0, -1));
+    exceptException(IllegalArgumentException.class, () -> in(1L, 0L, -1L));
+    exceptException(IllegalArgumentException.class, () -> in(0.1F, 0.0F, -0.1F));
+    exceptException(IllegalArgumentException.class, () -> in(0.1, 0.0, -0.1));
   }
 
   @Test
@@ -353,8 +353,8 @@ public class ConditionsTest {
 
   @Test
   public void testLengthForException() throws Exception {
-    exceptException(() -> length(null, 0), IllegalArgumentException.class);
-    exceptException(() -> length("", -1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> length(null, 0));
+    exceptException(IllegalArgumentException.class, () -> length("", -1));
   }
 
   @Test
@@ -367,8 +367,8 @@ public class ConditionsTest {
 
   @Test
   public void testShorterForException() throws Exception {
-    exceptException(() -> shorter(null, -1), IllegalArgumentException.class);
-    exceptException(() -> shorter(null, 0), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> shorter(null, -1));
+    exceptException(IllegalArgumentException.class, () -> shorter(null, 0));
   }
 
   @Test
@@ -382,8 +382,8 @@ public class ConditionsTest {
 
   @Test
   public void testLongerForException() throws Exception {
-    exceptException(() -> longer(null, -1), IllegalArgumentException.class);
-    exceptException(() -> longer(null, 0), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> longer(null, -1));
+    exceptException(IllegalArgumentException.class, () -> longer(null, 0));
   }
 
   @Test
@@ -397,21 +397,21 @@ public class ConditionsTest {
 
   @Test
   public void testLengthWithRangeForException() throws Exception {
-    exceptException(() -> length(null, 0, 0), IllegalArgumentException.class);
-    exceptException(() -> length(null, 0, -1), IllegalArgumentException.class);
-    exceptException(() -> length(null, -1, -1), IllegalArgumentException.class);
-    exceptException(() -> length(null, 0, 1), IllegalArgumentException.class);
-    exceptException(() -> length(null, 1, 1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> length(null, 0, 0));
+    exceptException(IllegalArgumentException.class, () -> length(null, 0, -1));
+    exceptException(IllegalArgumentException.class, () -> length(null, -1, -1));
+    exceptException(IllegalArgumentException.class, () -> length(null, 0, 1));
+    exceptException(IllegalArgumentException.class, () -> length(null, 1, 1));
 
-    exceptException(() -> length("", 0, 0), IllegalArgumentException.class);
-    exceptException(() -> length("", 0, -1), IllegalArgumentException.class);
-    exceptException(() -> length("", -1, -1), IllegalArgumentException.class);
-    exceptException(() -> length("", 1, 1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> length("", 0, 0));
+    exceptException(IllegalArgumentException.class, () -> length("", 0, -1));
+    exceptException(IllegalArgumentException.class, () -> length("", -1, -1));
+    exceptException(IllegalArgumentException.class, () -> length("", 1, 1));
 
-    exceptException(() -> length("1", 0, 0), IllegalArgumentException.class);
-    exceptException(() -> length("1", 0, -1), IllegalArgumentException.class);
-    exceptException(() -> length("1", -1, -1), IllegalArgumentException.class);
-    exceptException(() -> length("1", 1, 1), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> length("1", 0, 0));
+    exceptException(IllegalArgumentException.class, () -> length("1", 0, -1));
+    exceptException(IllegalArgumentException.class, () -> length("1", -1, -1));
+    exceptException(IllegalArgumentException.class, () -> length("1", 1, 1));
   }
 
   @Test
@@ -425,15 +425,15 @@ public class ConditionsTest {
 
   @Test
   public void testMatchesWithIllegals() throws Exception {
-    exceptException(() -> matches(null, null), IllegalArgumentException.class);
-    exceptException(() -> matches(null, ".*"), IllegalArgumentException.class);
-    exceptException(() -> matches("", "{"), IllegalArgumentException.class);
+    exceptException(IllegalArgumentException.class, () -> matches(null, null));
+    exceptException(IllegalArgumentException.class, () -> matches(null, ".*"));
+    exceptException(IllegalArgumentException.class, () -> matches("", "{"));
   }
 
   @Test
   public void testMatches() throws Exception {
     assertTrue(matches("", ".*"));
     assertTrue(matches("a", ".*"));
-    assertFalse(matches("a", "\\d*"));
+    assertFalse(matches("a", "\\d+"));
   }
 }

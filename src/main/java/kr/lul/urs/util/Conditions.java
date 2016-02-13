@@ -2,6 +2,7 @@ package kr.lul.urs.util;
 
 import static java.lang.String.format;
 
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -925,7 +926,7 @@ public abstract class Conditions {
       throw new IllegalArgumentException("regex is null.");
     }
     try {
-      return regex.matches(regex);
+      return Pattern.compile(regex).matcher(string).matches();
     } catch (PatternSyntaxException e) {
       throw new IllegalArgumentException(e);
     }

@@ -39,7 +39,7 @@ public abstract class Tests {
 
   /**
    * 코드를 실행한 결과 예외가 발생하지 않으면 에러를 발생한다.
-   * 
+   *
    * @param exception
    * @param test
    *          테스트 코드.
@@ -107,6 +107,7 @@ public abstract class Tests {
       if (null != detailMessage) {
         throw new AssertionError(detailMessage, e);
       }
+      return;
     }
     throw new AssertionError(String.format("expected exception [%s] does not occured.", exception.getName()));
   }
