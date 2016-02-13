@@ -13,36 +13,77 @@ public class TestsTest {
     };
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testExpectExceptionWithNullAndNull() throws Exception {
+    exceptException(null, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExpectExceptionWithTestAndNull() throws Exception {
+    exceptException(null, () -> {
+    });
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExpectExceptionWithNUllAndException() throws Exception {
+    exceptException(Exception.class, null);
+  }
+
   @Test
-  public void testExceptionWithExactclass() throws Exception {
-    exceptException(() -> {
+  public void testExpectExceptionWithExactclass() throws Exception {
+    exceptException(Exception.class, () -> {
       throw new Exception();
-    } , Exception.class);
+    });
   }
 
   @Test(expected = AssertionError.class)
-  public void testExceptionWithAnother() throws Exception {
+  public void testExpectExceptionWithAnother() throws Exception {
     class E extends Exception {
       private static final long serialVersionUID = 5405630845382475296L;
     }
-    exceptException(() -> {
+    exceptException(IllegalStateException.class, () -> {
       throw new E();
-    } , IllegalStateException.class);
+    });
   }
 
   @Test(expected = AssertionError.class)
-  public void testExceptionWithSubclass() throws Exception {
-    exceptException(() -> {
+  public void testExpectExceptionWithSubclass() throws Exception {
+    exceptException(Exception.class, () -> {
       throw new IllegalArgumentException();
-    } , Exception.class);
+    });
     fail();
   }
 
   @Test(expected = AssertionError.class)
-  public void testExceptionWithSuperclass() throws Exception {
-    exceptException(() -> {
+  public void testExceptExceptionWithSuperclass() throws Exception {
+    exceptException(RuntimeException.class, () -> {
       throw new IllegalArgumentException();
-    } , RuntimeException.class);
+    });
     fail();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExceptExceptionForCheckerWithNullAndNullAndNull() throws Exception {
+    exceptException(null, null, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExpectExceptionWithExceptionAndNullAndNull() throws Exception {
+    exceptException(Exception.class, null, null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testExpectExceptionWithExceptionAndTestAndNull() throws Exception {
+    exceptException(Exception.class, () -> {
+      throw new Exception();
+    } , null);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testExpectException() throws Exception {
+    final String message = new Object().toString();
+    exceptException(UnsupportedOperationException.class, () -> {
+      throw new UnsupportedOperationException(message);
+    } , e -> new Object().toString());
   }
 }
