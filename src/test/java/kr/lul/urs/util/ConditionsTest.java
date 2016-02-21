@@ -5,6 +5,7 @@ import static kr.lul.urs.util.Conditions.ge;
 import static kr.lul.urs.util.Conditions.gt;
 import static kr.lul.urs.util.Conditions.hasLength;
 import static kr.lul.urs.util.Conditions.in;
+import static kr.lul.urs.util.Conditions.instance;
 import static kr.lul.urs.util.Conditions.isNull;
 import static kr.lul.urs.util.Conditions.le;
 import static kr.lul.urs.util.Conditions.length;
@@ -342,6 +343,16 @@ public class ConditionsTest {
     assertTrue(assignable(new Object(), Object.class));
     assertTrue(assignable(new A(), Object.class));
     assertFalse(assignable(new Object(), A.class));
+  }
+
+  @Test
+  public void testInstance() throws Exception {
+    class A {
+    }
+    assertTrue(instance(new Object(), Object.class));
+    assertTrue(instance(new A(), A.class));
+    assertFalse(instance(new A(), Object.class));
+    assertFalse(instance(new Object(), A.class));
   }
 
   @Test

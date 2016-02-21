@@ -796,6 +796,29 @@ public abstract class Conditions {
   }
 
   /**
+   * 인스턴스가 정확히 지정한 클래스의 인스턴스인지 확인한다.
+   *
+   * @param instance
+   *          확인할 인스턴스.
+   * @param clz
+   *          기준 클래스.
+   * @return 인스턴스의 타입이 기준 클래스와 일치하면 <code>true</code>.
+   * @throws IllegalArgumentException
+   *           <ul>
+   *           <li>인스턴스가 <code>null</code>일 때.</li>
+   *           <li>기준 클래스가 <code>null</code>일 때.</li>
+   *           </ul>
+   */
+  public static boolean instance(Object instance, Class<?> clz) throws IllegalArgumentException {
+    if (null == instance) {
+      throw new IllegalArgumentException("instance is null.");
+    } else if (null == clz) {
+      throw new IllegalArgumentException("class is null.");
+    }
+    return clz.equals(instance.getClass());
+  }
+
+  /**
    * 인스턴스가 지정한 클래스로 캐스팅할 수 있는지 확인한다.
    *
    * @param object
