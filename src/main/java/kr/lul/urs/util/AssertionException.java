@@ -1,5 +1,7 @@
 package kr.lul.urs.util;
 
+import kr.lul.urs.util.config.UtilConstants;
+
 /**
  * 단정 실패를 처리하기 위한 예외.
  *

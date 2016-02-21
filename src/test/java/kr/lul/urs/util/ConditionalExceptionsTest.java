@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import kr.lul.urs.util.ConditionalExceptions.Pitcher;
+import kr.lul.urs.util.config.UtilConstants;
 
 public class ConditionalExceptionsTest {
   public static class TestException extends Exception {
