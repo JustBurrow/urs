@@ -1,8 +1,11 @@
 package kr.lul.urs.util;
 
 import static kr.lul.urs.util.Tests.exceptException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
 public class TestsTest {
@@ -63,11 +66,6 @@ public class TestsTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testExceptExceptionForCheckerWithNullAndNullAndNull() throws Exception {
-    exceptException(null, null, null);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
   public void testExpectExceptionWithExceptionAndNullAndNull() throws Exception {
     exceptException(Exception.class, null, null);
   }
@@ -85,5 +83,32 @@ public class TestsTest {
     exceptException(UnsupportedOperationException.class, () -> {
       throw new UnsupportedOperationException(message);
     } , e -> new Object().toString());
+  }
+
+  @Test
+  public void testExcepectExceptionWithMessage() throws Exception {
+    class A extends Exception {
+      private static final long serialVersionUID = -8802613277395273268L;
+    }
+    class B extends Exception {
+      private static final long serialVersionUID = -8562381616964890213L;
+    }
+
+    try {
+      exceptException(null, A.class, () -> {
+        throw new B();
+      });
+    } catch (AssertionError e) {
+      assertNotNull(e.getMessage());
+    }
+
+    final String msg = RandomStringUtils.randomAlphanumeric(10);
+    try {
+      exceptException(msg, A.class, () -> {
+        throw new B();
+      });
+    } catch (AssertionError e) {
+      assertEquals(msg, e.getMessage());
+    }
   }
 }

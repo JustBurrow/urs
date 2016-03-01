@@ -48,6 +48,23 @@ public abstract class Tests {
    */
   public static <E1 extends Throwable, E2 extends Throwable> void exceptException(Class<E1> exception, Test<E2> test)
       throws AssertionError {
+    exceptException(null, exception, test);
+  }
+
+  /**
+   * 에외가 발생해야 하는 테스트를 실행하고, 기대한 타입의 예외 인스턴스를 던지는지 검증한다.
+   *
+   * @param message
+   *          테스트 실패시의 에러 메시지. <code>null</code>일 경우 기본 메시지를 사용한다.
+   * @param exception
+   *          테스트 코드가 던져야 하는 예외 타입.
+   * @param test
+   *          테스트 코드.
+   * @throws AssertionError
+   */
+  public static <E1 extends Throwable, E2 extends Throwable> void exceptException(String message, Class<E1> exception,
+      Test<E2> test)
+          throws AssertionError {
     if (null == exception) {
       throw new IllegalArgumentException("exception is null.");
     } else if (null == test) {
@@ -60,11 +77,18 @@ public abstract class Tests {
       if (Conditions.instance(e, exception)) {
         return;
       } else {
-        throw new AssertionError(String.format("expected exception is [%s] but actual exception is [%s]",
-            exception.getName(), e.getClass().getName()), e);
+        if (null == message) {
+          message = String.format("expected exception is [%s] but actual exception is [%s]",
+              exception.getName(), e.getClass().getName());
+        }
+        throw new AssertionError(message, e);
       }
     }
-    throw new AssertionError(String.format("expected exception [%s] does not occured.", exception.getName()));
+
+    if (null == message) {
+      message = String.format("expected exception [%s] does not occured.", exception.getName());
+    }
+    throw new AssertionError(message);
   }
 
   /**
