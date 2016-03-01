@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /**
- * 각 데이터 타입의 최대 범위를 엄밀하게 고려하지는 않지만, 대략적인 임의의 값을 만드는 유틸리티 메서드 모음.
+ * 각 데이터 타입의 최대 범위와 확률을 엄밀하게 고려하지는 않지만, 대략적인 임의의 값을 만드는 유틸리티 메서드 모음.
  *
  * @author just.burrow@lul.kr
  */
@@ -167,7 +167,7 @@ public abstract class Randoms {
    * @param min
    *          최소값(포함).
    * @param max
-   *          최대값(포함).
+   *          최대값(미포함).
    * @return 임의의 수.
    * @throws IllegalArgumentException
    *           임의의 수를 만드는 범위가 <code>int</code>형으로 표현 불가능할 때.
@@ -189,7 +189,7 @@ public abstract class Randoms {
    * @param min
    *          최소값(포함).
    * @param max
-   *          최대값(포함).
+   *          최대값(미포함).
    * @return 임의의 수.
    */
   public static long in(long min, long max) {

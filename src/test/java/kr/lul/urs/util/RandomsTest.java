@@ -163,10 +163,13 @@ public class RandomsTest {
   public void testInWithInt() throws Exception {
     for (int i = 0; i < COUNT; i++) {
       int min = this.rand.nextInt();
+      int number = in(min, min + 1);
+      assertEquals(min, number);
+
       int max = min + (int) Math.min(Integer.MAX_VALUE, (long) Integer.MAX_VALUE - min);
       exceptException(AssertionException.class, () -> in(max, min));
 
-      int number = in(min, max);
+      number = in(min, max);
       assertThat(format("min=%d, max=%d, number=%d", min, max, number), number,
           allOf(greaterThanOrEqualTo(min), lessThan(max)));
     }
@@ -179,6 +182,9 @@ public class RandomsTest {
     BigInteger longMax = BigInteger.valueOf(Long.MAX_VALUE);
     for (int i = 0; i < COUNT; i++) {
       long min = this.rand.nextLong();
+      long number = in(min, min + 1L);
+      assertEquals(min, number);
+
       long width;
       if (0 > longMax.compareTo(longMax.subtract(BigInteger.valueOf(min)))) {
         width = Long.MAX_VALUE;
@@ -188,7 +194,7 @@ public class RandomsTest {
       long max = min + 1L + notNegative(width);
       exceptException(AssertionException.class, () -> in(max, min));
 
-      long number = in(min, max);
+      number = in(min, max);
       assertThat(format("min=%d, max=%d, number=%d", min, max, number), number,
           allOf(greaterThanOrEqualTo(min), lessThan(max)));
     }
