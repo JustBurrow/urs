@@ -36,7 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class RandomsTest {
-  private static final int COUNT = Integer.MAX_VALUE / 1024;
+  private static final int COUNT = Integer.MAX_VALUE >> 11;
   private Random           rand;
 
   @Before
@@ -201,7 +201,7 @@ public class RandomsTest {
   }
 
   @Test
-  public void testNotIn() throws Exception {
+  public void testNotInWithInt() throws Exception {
     for (int i = 0; i < COUNT; i++) {
       int min = this.rand.nextInt();
       int max = 0 > min ? min + 1 + this.rand.nextInt(Integer.MAX_VALUE)
@@ -214,7 +214,30 @@ public class RandomsTest {
   }
 
   @Test
-  public void testLt() throws Exception {
+  public void testNotInWithLong() throws Exception {
+    exceptException(AssertionException.class, () -> notIn(Long.MIN_VALUE, Long.MAX_VALUE));
+
+    for (int i = 0; i < COUNT; i++) {
+      long min = this.rand.nextLong();
+      long diff;
+      do {
+        diff = this.rand.nextLong();
+      } while (0L == diff);
+      long max = 0L > min ? min + Math.abs(diff) : min + Math.min(Long.MAX_VALUE - min - 1, Math.abs(diff));
+      exceptException(AssertionException.class, () -> notIn(max, min));
+
+      long number = notIn(min, max);
+      assertThat(number, anyOf(lessThan(min), greaterThanOrEqualTo(max)));
+
+      assertThat(notIn(Long.MIN_VALUE, min), greaterThanOrEqualTo(min));
+      assertThat(notIn(max, Long.MAX_VALUE), lessThan(max));
+    }
+  }
+
+  @Test
+  public void testLtWithInt() throws Exception {
+    exceptException(AssertionException.class, () -> lt(Integer.MIN_VALUE));
+    assertEquals(Integer.MIN_VALUE, lt(Integer.MIN_VALUE + 1));
     for (int i = 0; i < COUNT; i++) {
       int boundary = this.rand.nextInt();
       int number = lt(boundary);
@@ -224,7 +247,19 @@ public class RandomsTest {
   }
 
   @Test
-  public void testLe() throws Exception {
+  public void testLtWithLong() throws Exception {
+    exceptException(AssertionException.class, () -> lt(Long.MIN_VALUE));
+    assertEquals(Long.MIN_VALUE, lt(Long.MIN_VALUE + 1L));
+    for (int i = 0; i < COUNT; i++) {
+      long boundary = this.rand.nextLong();
+      long number = lt(boundary);
+      assertThat(number, lessThan(boundary));
+    }
+  }
+
+  @Test
+  public void testLeWithInt() throws Exception {
+    assertEquals(Integer.MIN_VALUE, le(Integer.MIN_VALUE));
     for (int i = 0; i < COUNT; i++) {
       int boundary = this.rand.nextInt();
       int number = le(boundary);
@@ -235,7 +270,19 @@ public class RandomsTest {
   }
 
   @Test
-  public void testGt() throws Exception {
+  public void testLeWithLong() throws Exception {
+    assertEquals(Long.MIN_VALUE, le(Long.MIN_VALUE));
+    for (int i = 0; i < COUNT; i++) {
+      long boundary = this.rand.nextLong();
+      long number = le(boundary);
+      assertThat(number, lessThanOrEqualTo(boundary));
+    }
+  }
+
+  @Test
+  public void testGtWithInt() throws Exception {
+    exceptException(AssertionException.class, () -> gt(Integer.MAX_VALUE));
+    assertEquals(Integer.MAX_VALUE, gt(Integer.MAX_VALUE - 1));
     for (int i = 0; i < COUNT; i++) {
       int boundary = this.rand.nextInt();
       int number = gt(boundary);
@@ -246,10 +293,36 @@ public class RandomsTest {
   }
 
   @Test
-  public void testGe() throws Exception {
+  public void testGtWithLong() throws Exception {
+    exceptException(AssertionException.class, () -> gt(Long.MAX_VALUE));
+    assertEquals(Long.MAX_VALUE, gt(Long.MAX_VALUE - 1L));
+    for (int i = 0; i < COUNT; i++) {
+      long boundary = this.rand.nextLong();
+      long number = gt(boundary);
+
+      assertThat(format("number[%d] is not greater than boundary[%d].", number, boundary), number,
+          greaterThan(boundary));
+    }
+  }
+
+  @Test
+  public void testGeWithInt() throws Exception {
+    assertEquals(Integer.MAX_VALUE, ge(Integer.MAX_VALUE));
     for (int i = 0; i < COUNT; i++) {
       int boundary = this.rand.nextInt();
       int number = ge(boundary);
+
+      assertThat(format("number[%d] is not greater than or equal to boundary[%d].", number, boundary), number,
+          greaterThanOrEqualTo(boundary));
+    }
+  }
+
+  @Test
+  public void testGeWithLong() throws Exception {
+    assertEquals(Long.MAX_VALUE, ge(Long.MAX_VALUE));
+    for (int i = 0; i < COUNT; i++) {
+      long boundary = this.rand.nextLong();
+      long number = ge(boundary);
 
       assertThat(format("number[%d] is not greater than or equal to boundary[%d].", number, boundary), number,
           greaterThanOrEqualTo(boundary));

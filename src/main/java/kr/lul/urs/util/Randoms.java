@@ -104,7 +104,6 @@ public abstract class Randoms {
    * @param max
    *          최대값(미포함).
    * @return 임의의 0 이상의 수.
-   *
    * @see http://stackoverflow.com/a/2546186
    */
   public static long notNegative(long max) {
@@ -206,14 +205,39 @@ public abstract class Randoms {
    * <code>int</code>형으로 표현 가능한 값 중에서, 최소값과 최대값 사이를 제외한 임의의 수를 반환한다.
    *
    * @param min
-   *          최소값(포함).
+   *          최소값(제외 영역에 포함).
    * @param max
-   *          최대값(미포함).
+   *          최대값(제외 영역에 미포함).
    * @return 범위 밖의 임의의 수.
    */
   public static int notIn(int min, int max) {
     Asserts.lt(min, max);
     return R.nextBoolean() ? in(Integer.MIN_VALUE, min + 1) : in(max, Integer.MAX_VALUE);
+  }
+
+  /**
+   * <code>long</code>형으로 표현 가능한 값 중에서, 최소값과 최대값 사이를 제외한 임의의 수를 반환한다.
+   *
+   * @param min
+   *          최소값(제외 영역에 포함).
+   * @param max
+   *          최대값(제외 영역에 미포함).
+   * @return 범위 밖의 임의의 수.
+   */
+  public static long notIn(long min, long max) {
+    Asserts.lt(min, max);
+
+    long underWidth = (min >> 1) - (Long.MIN_VALUE >> 1);
+    long overWidth = (Long.MAX_VALUE >> 1) - (max >> 1);
+    long width = underWidth + overWidth;
+
+    long number = notNegative(width);
+    if (underWidth >= number) {
+      number = Long.MIN_VALUE + (number << 1);
+      return 0L == min % 2L && R.nextBoolean() ? number + 1L : number;
+    } else {
+      return Long.MIN_VALUE + (max - min) + (number << 1) + (1L == (min % 2L + max % 2L) ? 1L : 0L);
+    }
   }
 
   /**
@@ -224,11 +248,31 @@ public abstract class Randoms {
    * @return 기준값보다 작은 임의의 수.
    */
   public static int lt(int boundary) {
-    if (0 > boundary) {
+    Asserts.gt(boundary, Integer.MIN_VALUE);
+    if (Integer.MIN_VALUE + 1 == boundary) {
+      return Integer.MIN_VALUE;
+    } else if (0 > boundary) {
       return boundary - 1 - R.nextInt(boundary - Integer.MIN_VALUE);
     } else {
       return (int) in((long) Integer.MIN_VALUE, (long) boundary);
     }
+  }
+
+  /**
+   * 기준값보다 작은 임의의 수를 반환한다.
+   *
+   * @param boundary
+   *          기준값(미포함).
+   * @return 기준값보다 작은 임의의 수.
+   */
+  public static long lt(long boundary) {
+    Asserts.gt(boundary, Long.MIN_VALUE);
+    if (Long.MIN_VALUE + 1L == boundary) {
+      return Long.MIN_VALUE;
+    }
+    long number = notNegative((boundary >> 1) - (Long.MIN_VALUE >> 1));
+    number = Long.MIN_VALUE + (number << 1);
+    return 0L == boundary % 2L && R.nextBoolean() ? number : number + 1L;
   }
 
   /**
@@ -239,11 +283,29 @@ public abstract class Randoms {
    * @return 기준값보다 작거나 같은 임의의 수.
    */
   public static int le(int boundary) {
-    if (0 > boundary) {
+    if (Integer.MIN_VALUE == boundary) {
+      return Integer.MIN_VALUE;
+    } else if (0 > boundary) {
       return boundary - R.nextInt(boundary - Integer.MIN_VALUE);
     } else {
       return (int) in(Integer.MIN_VALUE, 1L + boundary);
     }
+  }
+
+  /**
+   * 기준값보다 작거나 같은 임의의 수를 반환한다.
+   *
+   * @param boundary
+   *          기준값(미포함).
+   * @return 기준값보다 작거나 같은 임의의 수.
+   */
+  public static long le(long boundary) {
+    if (Long.MIN_VALUE == boundary) {
+      return Long.MIN_VALUE;
+    }
+    long number = notNegative(((boundary + 1L) >> 1) - (Long.MIN_VALUE >> 1));
+    number = Long.MIN_VALUE + (number << 1);
+    return 0L != boundary % 2L && R.nextBoolean() ? number : number + 1L;
   }
 
   /**
@@ -254,11 +316,32 @@ public abstract class Randoms {
    * @return 기준갑보다 큰 임의의 수.
    */
   public static int gt(int boundary) {
-    if (0 > boundary) {
+    Asserts.lt(boundary, Integer.MAX_VALUE);
+    if (Integer.MAX_VALUE - 1 == boundary) {
+      return Integer.MAX_VALUE;
+    } else if (0 > boundary) {
       return boundary + 1 + (int) notNegative((long) Integer.MAX_VALUE - boundary);
     } else {
       return boundary + 1 + R.nextInt(Integer.MAX_VALUE - boundary);
     }
+  }
+
+  /**
+   * 기준값보다 큰 임의의 수를 반환한다.
+   *
+   * @param boundary
+   *          기준값(미포함).
+   * @return 기준갑보다 큰 임의의 수.
+   */
+  public static long gt(long boundary) {
+    Asserts.lt(boundary, Long.MAX_VALUE);
+    if (Long.MAX_VALUE - 1L == boundary) {
+      return Long.MAX_VALUE;
+    }
+
+    long number = notNegative((Long.MAX_VALUE >> 1) - (boundary >> 1));
+    number = boundary + (number << 1);
+    return 0L == boundary % 2L ? number + R.nextInt(1) : number + 1L + R.nextInt(1);
   }
 
   /**
@@ -269,11 +352,29 @@ public abstract class Randoms {
    * @return 기준갑보다 크거나 같은 임의의 수.
    */
   public static int ge(int boundary) {
-    if (0 > boundary) {
+    if (Integer.MAX_VALUE == boundary) {
+      return Integer.MAX_VALUE;
+    } else if (0 > boundary) {
       return boundary + (int) notNegative((long) Integer.MAX_VALUE - boundary);
     } else {
       return boundary + R.nextInt(Integer.MAX_VALUE - boundary);
     }
+  }
+
+  /**
+   * 기준값보다 크거나 같은 임의의 수를 반환한다.
+   *
+   * @param boundary
+   *          기준값(미포함).
+   * @return 기준갑보다 크거나 같은 임의의 수.
+   */
+  public static long ge(long boundary) {
+    if (Long.MAX_VALUE == boundary) {
+      return Long.MAX_VALUE;
+    }
+    long number = notNegative((Long.MAX_VALUE >> 1) - (boundary >> 1));
+    number = boundary + (number << 1);
+    return 0L != boundary % 2L ? number + R.nextInt(1) : number + 1L + R.nextInt(1);
   }
 
   protected Randoms() {
