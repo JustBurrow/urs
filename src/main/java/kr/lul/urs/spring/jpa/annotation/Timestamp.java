@@ -7,10 +7,9 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import kr.lul.urs.spring.jpa.enumeration.TimestampTrigger;
 
 /**
  * 엔티티가 언제 타임스탬프를 찍는지 설정한다.
@@ -25,12 +24,13 @@ public @interface Timestamp {
    *
    * @return 타임스탬프 트리거.
    */
-  TimestampTrigger trigger();
+  Class<? extends Annotation> trigger();
 
   /**
-   * 타임스탬프를 찍을 속성의 이름.
+   * (Optional)타임스탬프를 찍을 속성의 이름.
+   * 기본값은 필드에 설정한 경우에만 사용할 수 있다.
    *
    * @return 대상 속성 이름.
    */
-  String name();
+  String name() default "";
 }
