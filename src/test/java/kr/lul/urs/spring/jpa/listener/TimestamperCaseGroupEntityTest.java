@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import kr.lul.urs.spring.jpa.annotation.Timestamp;
 import kr.lul.urs.spring.jpa.annotation.Timestamps;
-import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 import lombok.Data;
 
@@ -79,13 +78,13 @@ public class TimestamperCaseGroupEntityTest {
     assertNull(entity.getAaa());
 
     // When & Then
-    exceptException(AssertionException.class, () -> this.listener.prePersist(entity));
+    exceptException(IllegalArgumentException.class, () -> this.listener.prePersist(entity));
     assertNull(entity.getAaa());
 
-    exceptException(AssertionException.class, () -> this.listener.preUpdate(entity));
+    exceptException(IllegalArgumentException.class, () -> this.listener.preUpdate(entity));
     assertNull(entity.getAaa());
 
-    exceptException(AssertionException.class, () -> this.listener.postLoad(entity));
+    exceptException(IllegalArgumentException.class, () -> this.listener.postLoad(entity));
     assertNull(entity.getAaa());
   }
 
@@ -147,9 +146,8 @@ public class TimestamperCaseGroupEntityTest {
     this.listener.prePersist(entity);
     final Instant create = entity.getCreate();
     final Instant update = entity.getUpdate();
-    assertEquals(update, create);
     assertThat(create, after(this.now));
-    assertThat(update, after(this.now));
+    assertEquals(create, update);
     assertEquals(entity.getCreate(), create);
     assertEquals(entity.getUpdate(), update);
 
@@ -158,7 +156,7 @@ public class TimestamperCaseGroupEntityTest {
     this.listener.preUpdate(entity);
     Instant update2 = entity.getUpdate();
     assertEquals(create, entity.getCreate());
-    assertThat(update2, after(update));
+    assertThat(update2, after(create));
     Thread.sleep(10L);
     assertEquals(create, entity.getCreate());
     assertEquals(update2, entity.getUpdate());
@@ -180,7 +178,6 @@ public class TimestamperCaseGroupEntityTest {
     final Instant create = entity.getCreate();
     final Instant update = entity.getUpdate();
     assertThat(create, after(this.now));
-    assertThat(update, after(this.now));
     assertEquals(create, update);
 
     Thread.sleep(Randoms.in(500L, 1000L));
@@ -188,7 +185,7 @@ public class TimestamperCaseGroupEntityTest {
     this.listener.preUpdate(entity);
     Instant update2 = entity.getUpdate();
     assertEquals(create, entity.getCreate());
-    assertThat(update2, after(update));
+    assertThat(update2, after(create));
     Thread.sleep(10L);
     assertEquals(create, entity.getCreate());
     assertEquals(update2, entity.getUpdate());

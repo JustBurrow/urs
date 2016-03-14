@@ -125,8 +125,8 @@ public class TimestamperCaseGroupMappedSuperclassTest {
     this.listener.prePersist(entity);
     final Instant create = entity.getCreate();
     final Instant update = entity.getUpdate();
-    assertEquals(create, update);
     assertThat(create, after(this.now));
+    assertEquals(create, update);
 
     this.listener.postLoad(entity);
     assertEquals(create, entity.getCreate());
