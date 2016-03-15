@@ -2,11 +2,12 @@ package kr.lul.urs.util;
 
 import static java.lang.String.format;
 
+import java.time.Instant;
+
 /**
  * <code>assert</code>를 보완하는 단정 유틸리티 모음.
  *
  * @author just.burrow@lul.kr
- *
  * @see Conditions
  */
 public abstract class Asserts {
@@ -2399,6 +2400,150 @@ public abstract class Asserts {
    */
   public static void matches(CharSequence string, String regex, String message) throws AssertionException {
     if (Conditions.matches(string, regex)) {
+      return;
+    }
+    throw new AssertionException(message);
+  }
+
+  /**
+   * 시각이 기준시각보다 이전임을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void before(Instant instant, Instant boundary) throws AssertionException {
+    if (Conditions.before(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(format("instant[%s] is not before than boundary[%s].", instant, boundary));
+  }
+
+  /**
+   * 시각이 기준시각보다 이전임을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param message
+   *          단정 실패시의 예외 메시지.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void before(Instant instant, Instant boundary, String message) throws AssertionException {
+    if (Conditions.before(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(message);
+  }
+
+  /**
+   * 시각이 기죽시각보다 이후임을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void after(Instant instant, Instant boundary) throws AssertionException {
+    if (Conditions.after(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(format("instant[%s] is not after than boundary[%s].", instant, boundary));
+  }
+
+  /**
+   * 시각이 기죽시각보다 이후임을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param message
+   *          단정 실패시의 예외 메시지.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void after(Instant instant, Instant boundary, String message) throws AssertionException {
+    if (Conditions.after(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(message);
+  }
+
+  /**
+   * 시각이 기준시각보다 이전이 아님을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void notBefore(Instant instant, Instant boundary) throws AssertionException {
+    if (Conditions.notBefore(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(format("instant[%s] is before than boundary[%s].", instant, boundary));
+  }
+
+  /**
+   * 시각이 기준시각보다 이전이 아님을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param message
+   *          단정 실패시의 예외 메시지.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void notBefore(Instant instant, Instant boundary, String message) throws AssertionException {
+    if (Conditions.notBefore(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(message);
+  }
+
+  /**
+   * 시각이 기준시각보다 이후가 아님을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void notAfter(Instant instant, Instant boundary) throws AssertionException {
+    if (Conditions.notAfter(instant, boundary)) {
+      return;
+    }
+    throw new AssertionException(format("instant[%s] is after than boundary[%s].", instant, boundary));
+  }
+
+  /**
+   * 시각이 기준시각보다 이후가 아님을 단정한다.
+   *
+   * @param instant
+   *          단정할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param message
+   *          단정 실패시의 예외 메시지.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void notAfter(Instant instant, Instant boundary, String message) throws AssertionException {
+    if (Conditions.notAfter(instant, boundary)) {
       return;
     }
     throw new AssertionException(message);

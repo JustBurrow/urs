@@ -1,7 +1,9 @@
 package kr.lul.urs.util;
 
 import static java.lang.String.format;
+import static kr.lul.urs.util.Asserts.after;
 import static kr.lul.urs.util.Asserts.assignable;
+import static kr.lul.urs.util.Asserts.before;
 import static kr.lul.urs.util.Asserts.ge;
 import static kr.lul.urs.util.Asserts.gt;
 import static kr.lul.urs.util.Asserts.hasLength;
@@ -13,6 +15,8 @@ import static kr.lul.urs.util.Asserts.longer;
 import static kr.lul.urs.util.Asserts.lt;
 import static kr.lul.urs.util.Asserts.matches;
 import static kr.lul.urs.util.Asserts.negative;
+import static kr.lul.urs.util.Asserts.notAfter;
+import static kr.lul.urs.util.Asserts.notBefore;
 import static kr.lul.urs.util.Asserts.notNegative;
 import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Asserts.notPositive;
@@ -24,9 +28,20 @@ import static org.junit.Assert.fail;
 
 import java.time.Instant;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 public class AssertsTest {
+  private String message;
+
+  @Before
+  public void setUp() throws Exception {
+    this.message = RandomStringUtils.randomAlphanumeric(10);
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   @Test(expected = UnsupportedOperationException.class)
   public void test() {
     new Asserts() {
@@ -811,5 +826,175 @@ public class AssertsTest {
     exceptException(AssertionException.class, () -> matches("a", "\\d+"));
     exceptException(AssertionException.class, () -> matches("a", "\\d+", message),
         e -> e.getMessage().equals(message) ? null : e.getMessage());
+  }
+
+  @Test
+  public void testBefore() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    exceptException(IllegalArgumentException.class, () -> before(null, null));
+    exceptException(IllegalArgumentException.class, () -> before(null, now));
+    exceptException(IllegalArgumentException.class, () -> before(now, null));
+
+    before(before, now);
+    exceptException(AssertionException.class, () -> before(now, before));
+    exceptException(AssertionException.class, () -> before(now, before, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+
+    before(now, after);
+    exceptException(AssertionException.class, () -> before(after, now));
+    exceptException(AssertionException.class, () -> before(after, now, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+
+    before(before, after);
+    exceptException(AssertionException.class, () -> before(after, before));
+    exceptException(AssertionException.class, () -> before(after, before, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+
+    exceptException(AssertionException.class, () -> before(before, before));
+    exceptException(AssertionException.class, () -> before(before, Instant.ofEpochMilli(before.toEpochMilli())));
+    exceptException(AssertionException.class, () -> before(now, now));
+    exceptException(AssertionException.class, () -> before(now, Instant.ofEpochMilli(now.toEpochMilli())));
+    exceptException(AssertionException.class, () -> before(after, after));
+    exceptException(AssertionException.class, () -> before(after, Instant.ofEpochMilli(after.toEpochMilli())));
+
+    exceptException(AssertionException.class, () -> before(before, before, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class,
+        () -> before(before, Instant.ofEpochMilli(before.toEpochMilli()), this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class, () -> before(now, now, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class, () -> before(now, Instant.ofEpochMilli(now.toEpochMilli()), this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class, () -> before(after, after, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class,
+        () -> before(after, Instant.ofEpochMilli(after.toEpochMilli()), this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+  }
+
+  @Test
+  public void testAfter() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    exceptException(IllegalArgumentException.class, () -> after(null, null));
+    exceptException(IllegalArgumentException.class, () -> after(null, now));
+    exceptException(IllegalArgumentException.class, () -> after(now, null));
+
+    exceptException(AssertionException.class, () -> after(before, now));
+    exceptException(AssertionException.class, () -> after(before, now, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    after(now, before);
+
+    exceptException(AssertionException.class, () -> after(now, after));
+    exceptException(AssertionException.class, () -> after(now, after, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    after(after, now);
+
+    exceptException(AssertionException.class, () -> after(before, after));
+    exceptException(AssertionException.class, () -> after(before, after, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    after(after, before);
+
+    exceptException(AssertionException.class, () -> after(before, before));
+    exceptException(AssertionException.class, () -> after(before, Instant.ofEpochMilli(before.toEpochMilli())));
+    exceptException(AssertionException.class, () -> after(now, now));
+    exceptException(AssertionException.class, () -> after(now, Instant.ofEpochMilli(now.toEpochMilli())));
+    exceptException(AssertionException.class, () -> after(after, after));
+    exceptException(AssertionException.class, () -> after(after, Instant.ofEpochMilli(after.toEpochMilli())));
+
+    exceptException(AssertionException.class, () -> after(before, before, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class,
+        () -> after(before, Instant.ofEpochMilli(before.toEpochMilli()), this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class, () -> after(now, now, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class, () -> after(now, Instant.ofEpochMilli(now.toEpochMilli()), this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class, () -> after(after, after, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    exceptException(AssertionException.class,
+        () -> after(after, Instant.ofEpochMilli(after.toEpochMilli()), this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+  }
+
+  @Test
+  public void testNotBefore() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    exceptException(IllegalArgumentException.class, () -> notBefore(null, null));
+    exceptException(IllegalArgumentException.class, () -> notBefore(null, now));
+    exceptException(IllegalArgumentException.class, () -> notBefore(now, null));
+
+    exceptException(AssertionException.class, () -> notBefore(before, now));
+    exceptException(AssertionException.class, () -> notBefore(before, now, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    notBefore(now, before);
+
+    exceptException(AssertionException.class, () -> notBefore(now, after));
+    exceptException(AssertionException.class, () -> notBefore(now, after, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    notBefore(after, now);
+
+    exceptException(AssertionException.class, () -> notBefore(before, after));
+    exceptException(AssertionException.class, () -> notBefore(before, after, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+    notBefore(after, before);
+
+    notBefore(before, before);
+    notBefore(before, Instant.ofEpochMilli(before.toEpochMilli()));
+    notBefore(now, now);
+    notBefore(now, Instant.ofEpochMilli(now.toEpochMilli()));
+    notBefore(after, after);
+    notBefore(after, Instant.ofEpochMilli(after.toEpochMilli()));
+  }
+
+  @Test
+  public void testNotAfter() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, null));
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, now));
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, null));
+
+    notAfter(before, now);
+    exceptException(AssertionException.class, () -> notAfter(now, before));
+    exceptException(AssertionException.class, () -> notAfter(now, before, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+
+    notAfter(now, after);
+    exceptException(AssertionException.class, () -> notAfter(after, now));
+    exceptException(AssertionException.class, () -> notAfter(after, now, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+
+    notAfter(before, after);
+    exceptException(AssertionException.class, () -> notAfter(after, before));
+    exceptException(AssertionException.class, () -> notAfter(after, before, this.message),
+        e -> this.message.equals(e.getMessage()) ? null : e.getMessage());
+
+    notAfter(before, before);
+    notAfter(before, Instant.ofEpochMilli(before.toEpochMilli()));
+    notAfter(now, now);
+    notAfter(now, Instant.ofEpochMilli(now.toEpochMilli()));
+    notAfter(after, after);
+    notAfter(after, Instant.ofEpochMilli(after.toEpochMilli()));
   }
 }
