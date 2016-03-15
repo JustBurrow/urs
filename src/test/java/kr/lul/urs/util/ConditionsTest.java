@@ -1,6 +1,8 @@
 package kr.lul.urs.util;
 
+import static kr.lul.urs.util.Conditions.after;
 import static kr.lul.urs.util.Conditions.assignable;
+import static kr.lul.urs.util.Conditions.before;
 import static kr.lul.urs.util.Conditions.ge;
 import static kr.lul.urs.util.Conditions.gt;
 import static kr.lul.urs.util.Conditions.hasLength;
@@ -13,6 +15,8 @@ import static kr.lul.urs.util.Conditions.longer;
 import static kr.lul.urs.util.Conditions.lt;
 import static kr.lul.urs.util.Conditions.matches;
 import static kr.lul.urs.util.Conditions.negative;
+import static kr.lul.urs.util.Conditions.notAfter;
+import static kr.lul.urs.util.Conditions.notBefore;
 import static kr.lul.urs.util.Conditions.notNegative;
 import static kr.lul.urs.util.Conditions.notNull;
 import static kr.lul.urs.util.Conditions.notPositive;
@@ -22,6 +26,8 @@ import static kr.lul.urs.util.Conditions.zero;
 import static kr.lul.urs.util.Tests.exceptException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.time.Instant;
 
 import org.junit.Test;
 
@@ -446,5 +452,117 @@ public class ConditionsTest {
     assertTrue(matches("", ".*"));
     assertTrue(matches("a", ".*"));
     assertFalse(matches("a", "\\d+"));
+  }
+
+  @Test
+  public void testBeforeWithInstant() throws Exception {
+    // Given
+    final long diff = Randoms.in(1L, 1000L);
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(diff);
+    final Instant after = now.plusMillis(diff);
+
+    // Then
+    exceptException(IllegalArgumentException.class, () -> before(null, null));
+    exceptException(IllegalArgumentException.class, () -> before(now, null));
+    exceptException(IllegalArgumentException.class, () -> before(null, now));
+
+    assertTrue(before(before, now));
+    assertFalse(before(now, before));
+
+    assertTrue(before(now, after));
+    assertFalse(before(after, before));
+
+    assertTrue(before(before, after));
+    assertFalse(before(after, before));
+
+    assertFalse(before(before, before));
+    assertFalse(before(now, now));
+    assertFalse(before(after, after));
+  }
+
+  @Test
+  public void testAfter() throws Exception {
+    // Given
+    final long diff = Randoms.in(1L, 1000L);
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(diff);
+    final Instant after = now.plusMillis(diff);
+
+    // Then
+    exceptException(IllegalArgumentException.class, () -> after(null, null));
+    exceptException(IllegalArgumentException.class, () -> after(now, null));
+    exceptException(IllegalArgumentException.class, () -> after(null, now));
+
+    assertFalse(after(before, now));
+    assertTrue(after(now, before));
+
+    assertFalse(after(now, after));
+    assertTrue(after(after, before));
+
+    assertFalse(after(before, after));
+    assertTrue(after(after, before));
+
+    assertFalse(after(before, before));
+    assertFalse(after(now, now));
+    assertFalse(after(after, after));
+  }
+
+  @Test
+  public void testNotBefore() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+    final Instant after = now.plusMillis(1L);
+
+    // Then
+    exceptException(IllegalArgumentException.class, () -> notBefore(null, null));
+    exceptException(IllegalArgumentException.class, () -> notBefore(now, null));
+    exceptException(IllegalArgumentException.class, () -> notBefore(null, now));
+
+    assertFalse(notBefore(before, now));
+    assertTrue(notBefore(now, before));
+
+    assertFalse(notBefore(now, after));
+    assertTrue(notBefore(after, before));
+
+    assertFalse(notBefore(before, after));
+    assertTrue(notBefore(after, before));
+
+    assertTrue(notBefore(before, before));
+    assertTrue(notBefore(before, Instant.ofEpochMilli(before.toEpochMilli())));
+    assertTrue(notBefore(now, now));
+    assertTrue(notBefore(now, Instant.ofEpochMilli(now.toEpochMilli())));
+    assertTrue(notBefore(after, after));
+    assertTrue(notBefore(after, Instant.ofEpochMilli(after.toEpochMilli())));
+  }
+
+  @Test
+  public void testNotAfter() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+    final Instant after = now.plusMillis(1L);
+
+    // Then
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, null));
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, null));
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, now));
+
+    assertTrue(notAfter(before, now));
+    assertFalse(notAfter(now, before));
+
+    assertTrue(notAfter(now, after));
+    assertFalse(notAfter(after, before));
+
+    assertTrue(notAfter(before, after));
+    assertFalse(notAfter(after, before));
+
+    assertTrue(notAfter(before, before));
+    assertTrue(notAfter(before, Instant.ofEpochMilli(before.toEpochMilli())));
+    assertTrue(notAfter(now, now));
+    assertTrue(notAfter(now, Instant.ofEpochMilli(now.toEpochMilli())));
+    assertTrue(notAfter(after, after));
+    assertTrue(notAfter(after, Instant.ofEpochMilli(after.toEpochMilli())));
   }
 }

@@ -2,6 +2,7 @@ package kr.lul.urs.util;
 
 import static java.lang.String.format;
 
+import java.time.Instant;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -952,6 +953,90 @@ public abstract class Conditions {
       return Pattern.compile(regex).matcher(string).matches();
     } catch (PatternSyntaxException e) {
       throw new IllegalArgumentException(e);
+    }
+  }
+
+  /**
+   * 확인할 시각이 기준 시각보다 이전인지 여부를 반환한다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @return 확인할 시각이 기준 시각보다 빠르면 <code>true</code>.
+   * @throws IllegalArgumentException
+   *           인자가 <code>null</code>일 때.
+   */
+  public static boolean before(Instant instant, Instant boundary) {
+    if (null == instant) {
+      throw new IllegalArgumentException("instant is null.");
+    } else if (null == boundary) {
+      throw new IllegalArgumentException("boundary is null.");
+    } else {
+      return 0 > instant.compareTo(boundary);
+    }
+  }
+
+  /**
+   * 확인할 시각이 기준 시각보다 이후지 여부를 반환한다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @return 확인할 시각이 기준 시각보다 느리면 <code>true</code>.
+   * @throws IllegalArgumentException
+   *           인자가 <code>null</code>일 때.
+   */
+  public static boolean after(Instant instant, Instant boundary) throws IllegalArgumentException {
+    if (null == instant) {
+      throw new IllegalArgumentException("instant is null.");
+    } else if (null == boundary) {
+      throw new IllegalArgumentException("boundary is null.");
+    } else {
+      return 0 < instant.compareTo(boundary);
+    }
+  }
+
+  /**
+   * 확인할 시각이 기준 시각보다 같거나 이후인지 확인한다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준시각.
+   * @return 확인할 시각이 기준시각보다 같거나 이후이면 <code>true</code>.
+   * @throws IllegalArgumentException
+   *           인자가 <code>null</code>일 때.
+   */
+  public static boolean notBefore(Instant instant, Instant boundary) throws IllegalArgumentException {
+    if (null == instant) {
+      throw new IllegalArgumentException("instant is null.");
+    } else if (null == boundary) {
+      throw new IllegalArgumentException("boundary is null.");
+    } else {
+      return 0 <= instant.compareTo(boundary);
+    }
+  }
+
+  /**
+   * 확인할 시각이 기준 시각보다 같거나 이전인지 확인한다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준시각.
+   * @return 확인할 시각이 기준시각보다 같거나 이전이면 <code>true</code>.
+   * @throws IllegalArgumentException
+   *           인자가 <code>null</code>일 때.
+   */
+  public static boolean notAfter(Instant instant, Instant boundary) throws IllegalArgumentException {
+    if (null == instant) {
+      throw new IllegalArgumentException("instant is null.");
+    } else if (null == boundary) {
+      throw new IllegalArgumentException("boundary is null.");
+    } else {
+      return 0 >= instant.compareTo(boundary);
     }
   }
 
