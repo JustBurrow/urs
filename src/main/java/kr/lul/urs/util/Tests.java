@@ -98,7 +98,7 @@ public abstract class Tests {
    *          테스트에서 발생해야 하는 예외.
    * @param test
    *          테스트 코드.
-   * @param exceptionValidator
+   * @param validator
    *          테스트 코드가 던진 예외의 확인로직.
    * @throws IllegalArgumentException
    *           인자가 <code>null</code>인 경우.
@@ -110,12 +110,12 @@ public abstract class Tests {
    *           </ul>
    */
   public static <E1 extends Throwable, E2 extends Throwable> void exceptException(Class<E1> exception, Test<E2> test,
-      ExceptionValidator<E1> exceptionValidator) throws IllegalArgumentException, AssertionError {
+      ExceptionValidator<E1> validator) throws IllegalArgumentException, AssertionError {
     if (null == exception) {
       throw new IllegalArgumentException("exception is null.");
     } else if (null == test) {
       throw new IllegalArgumentException("test code is null.");
-    } else if (null == exceptionValidator) {
+    } else if (null == validator) {
       throw new IllegalArgumentException("exceptionValidator is null.");
     }
 
@@ -128,7 +128,7 @@ public abstract class Tests {
       }
 
       @SuppressWarnings("unchecked")
-      String detailMessage = exceptionValidator.validate((E1) e);
+      String detailMessage = validator.validate((E1) e);
       if (null != detailMessage) {
         throw new AssertionError(detailMessage, e);
       }

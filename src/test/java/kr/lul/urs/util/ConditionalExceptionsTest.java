@@ -1,6 +1,8 @@
 package kr.lul.urs.util;
 
+import static kr.lul.urs.util.ConditionalExceptions.after;
 import static kr.lul.urs.util.ConditionalExceptions.assignable;
+import static kr.lul.urs.util.ConditionalExceptions.before;
 import static kr.lul.urs.util.ConditionalExceptions.ge;
 import static kr.lul.urs.util.ConditionalExceptions.gt;
 import static kr.lul.urs.util.ConditionalExceptions.hasLength;
@@ -13,6 +15,8 @@ import static kr.lul.urs.util.ConditionalExceptions.longer;
 import static kr.lul.urs.util.ConditionalExceptions.lt;
 import static kr.lul.urs.util.ConditionalExceptions.matches;
 import static kr.lul.urs.util.ConditionalExceptions.negative;
+import static kr.lul.urs.util.ConditionalExceptions.notAfter;
+import static kr.lul.urs.util.ConditionalExceptions.notBefore;
 import static kr.lul.urs.util.ConditionalExceptions.notNegative;
 import static kr.lul.urs.util.ConditionalExceptions.notNull;
 import static kr.lul.urs.util.ConditionalExceptions.notPositive;
@@ -22,12 +26,14 @@ import static kr.lul.urs.util.ConditionalExceptions.zero;
 import static kr.lul.urs.util.Tests.exceptException;
 import static org.junit.Assert.fail;
 
+import java.time.Instant;
 import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import kr.lul.urs.util.ConditionalExceptions.Pitcher;
+import kr.lul.urs.util.Tests.ExceptionValidator;
 import kr.lul.urs.util.config.UtilConstants;
 
 public class ConditionalExceptionsTest {
@@ -61,13 +67,15 @@ public class ConditionalExceptionsTest {
     }
   }
 
-  private Random                 r;
-  private TestException          testException;
-  private Pitcher<Exception>     emptyPitcher = () -> {
-                                              };
-  private Pitcher<TestException> testPitcher  = () -> {
-                                                throw this.testException;
-                                              };
+  private Random                            r;
+  private TestException                     testException;
+  private Pitcher<Exception>                emptyPitcher  = () -> {
+                                                          };
+  private Pitcher<TestException>            testPitcher   = () -> {
+                                                            throw this.testException;
+                                                          };
+  private ExceptionValidator<TestException> testValidator = (
+      e) -> ConditionalExceptionsTest.this.testException.equals(e) ? null : e.getMessage();
 
   @Before
   public void setUp() throws Exception {
@@ -1999,5 +2007,216 @@ public class ConditionalExceptionsTest {
     exceptException(IllegalArgumentException.class, () -> matches("1", "{[", null));
     exceptException(IllegalArgumentException.class, () -> matches("1", null, this.testPitcher));
     exceptException(IllegalArgumentException.class, () -> matches("1", "{[", this.testPitcher));
+  }
+
+  @Test
+  public void testBeforeWithException() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+
+    // When & Then
+    before(before, now, null);
+    before(before, now, TestException.class);
+
+    exceptException(TestException.class,
+        () -> before(now, before, TestException.class, this.testException.i, this.testException.s), this.testValidator);
+    exceptException(TestException.class,
+        () -> before(now, now, TestException.class, this.testException.i, this.testException.s), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> before(null, null, null));
+    exceptException(IllegalArgumentException.class, () -> before(null, now, null));
+    exceptException(IllegalArgumentException.class, () -> before(now, null, null));
+
+    exceptException(IllegalArgumentException.class, () -> before(null, null, TestException.class));
+    exceptException(IllegalArgumentException.class, () -> before(null, now, TestException.class));
+    exceptException(IllegalArgumentException.class, () -> before(now, null, TestException.class));
+  }
+
+  @Test
+  public void testBeforeWithPitcher() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+
+    // When & Then
+    before(before, now, this.testPitcher);
+
+    exceptException(TestException.class, () -> before(now, before, this.testPitcher), this.testValidator);
+    exceptException(TestException.class, () -> before(now, now, this.testPitcher), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> before(null, null, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> before(null, now, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> before(now, null, this.testPitcher));
+  }
+
+  @Test
+  public void testAfterWithException() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    after(after, now, null);
+    after(after, now, TestException.class);
+
+    exceptException(TestException.class,
+        () -> after(now, after, TestException.class, this.testException.i, this.testException.s), this.testValidator);
+    exceptException(TestException.class,
+        () -> after(now, now, TestException.class, this.testException.i, this.testException.s), this.testValidator);
+    exceptException(TestException.class,
+        () -> after(after, after, TestException.class, this.testException.i, this.testException.s), this.testValidator);
+    exceptException(TestException.class, () -> after(now, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class,
+        this.testException.i, this.testException.s), this.testValidator);
+    exceptException(TestException.class, () -> after(after, Instant.ofEpochMilli(after.toEpochMilli()),
+        TestException.class, this.testException.i, this.testException.s), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> after(null, null, null));
+    exceptException(IllegalArgumentException.class, () -> after(null, now, null));
+    exceptException(IllegalArgumentException.class, () -> after(now, null, null));
+    exceptException(IllegalArgumentException.class, () -> after(null, null, null, TestException.class));
+    exceptException(IllegalArgumentException.class, () -> after(null, now, null, TestException.class));
+    exceptException(IllegalArgumentException.class, () -> after(now, null, null, TestException.class));
+  }
+
+  @Test
+  public void testAfterWithPitcher() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    after(after, now, this.testPitcher);
+    exceptException(TestException.class, () -> after(now, after, this.testPitcher), this.testValidator);
+    exceptException(TestException.class, () -> after(now, now, this.testPitcher), this.testValidator);
+    exceptException(TestException.class, () -> after(after, after, this.testPitcher), this.testValidator);
+    exceptException(TestException.class, () -> after(now, Instant.ofEpochMilli(now.toEpochMilli()), this.testPitcher),
+        this.testValidator);
+    exceptException(TestException.class,
+        () -> after(after, Instant.ofEpochMilli(after.toEpochMilli()), this.testPitcher), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> after(null, null, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> after(null, now, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> after(now, null, this.testPitcher));
+  }
+
+  @Test
+  public void testNotBeforeWithException() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    notBefore(now, now, null);
+    notBefore(now, now, TestException.class);
+    notBefore(now, Instant.ofEpochMilli(now.toEpochMilli()), null);
+    notBefore(now, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class);
+
+    notBefore(after, now, null);
+    notBefore(after, now, TestException.class);
+    notBefore(after, Instant.ofEpochMilli(now.toEpochMilli()), null);
+    notBefore(after, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class);
+
+    exceptException(TestException.class,
+        () -> notBefore(now, after, TestException.class, this.testException.i, this.testException.s),
+        this.testValidator);
+
+    exceptException(IllegalArgumentException.class,
+        () -> notBefore(null, null, TestException.class, this.testException.i, this.testException.s));
+    exceptException(IllegalArgumentException.class,
+        () -> notBefore(null, now, TestException.class, this.testException.i, this.testException.s));
+    exceptException(IllegalArgumentException.class,
+        () -> notBefore(now, null, TestException.class, this.testException.i, this.testException.s));
+  }
+
+  @Test
+  public void testNotBeforeWithPitcher() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant after = now.plusMillis(1L);
+
+    // When & Then
+    notBefore(now, now, this.testPitcher);
+    notBefore(after, now, this.testPitcher);
+    notBefore(now, Instant.ofEpochMilli(now.toEpochMilli()), this.testPitcher);
+    notBefore(after, Instant.ofEpochMilli(now.getEpochSecond()), this.testPitcher);
+
+    exceptException(TestException.class, () -> notBefore(now, after, this.testPitcher), this.testValidator);
+    exceptException(TestException.class,
+        () -> notBefore(now, Instant.ofEpochMilli(after.toEpochMilli()), this.testPitcher), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> notBefore(null, null, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> notBefore(null, now, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> notBefore(now, null, this.testPitcher));
+  }
+
+  @Test
+  public void testNotAfterWithException() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+
+    // When & Then
+    notAfter(now, now, null);
+    notAfter(now, Instant.ofEpochMilli(now.toEpochMilli()), null);
+    notAfter(now, now, TestException.class);
+    notAfter(now, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class);
+    notAfter(now, now, TestException.class, this.testException.i, this.testException.s);
+    notAfter(now, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class, this.testException.i,
+        this.testException.s);
+
+    notAfter(before, now, null);
+    notAfter(before, Instant.ofEpochMilli(now.toEpochMilli()), null);
+    notAfter(before, now, TestException.class);
+    notAfter(before, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class);
+    notAfter(before, now, TestException.class, this.testException.i, this.testException.s);
+    notAfter(before, Instant.ofEpochMilli(now.toEpochMilli()), TestException.class, this.testException.i,
+        this.testException.s);
+
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, before, TestException.class));
+    exceptException(IllegalArgumentException.class,
+        () -> notAfter(now, Instant.ofEpochMilli(before.toEpochMilli()), TestException.class));
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, before, null));
+    exceptException(IllegalArgumentException.class,
+        () -> notAfter(now, Instant.ofEpochMilli(before.toEpochMilli()), null));
+    exceptException(TestException.class,
+        () -> notAfter(now, before, TestException.class, this.testException.i, this.testException.s),
+        this.testValidator);
+    exceptException(TestException.class, () -> notAfter(now, Instant.ofEpochMilli(before.toEpochMilli()),
+        TestException.class, this.testException.i, this.testException.s), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, null, null));
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, now, null));
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, null, null));
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, null, TestException.class));
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, now, TestException.class));
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, null, TestException.class));
+    exceptException(IllegalArgumentException.class,
+        () -> notAfter(null, null, TestException.class, this.testException.i, this.testException.s));
+    exceptException(IllegalArgumentException.class,
+        () -> notAfter(null, now, TestException.class, this.testException.i, this.testException.s));
+    exceptException(IllegalArgumentException.class,
+        () -> notAfter(now, null, TestException.class, this.testException.i, this.testException.s));
+  }
+
+  @Test
+  public void testNotAfterWithPitcher() throws Exception {
+    // Given
+    final Instant now = Instant.now();
+    final Instant before = now.minusMillis(1L);
+
+    // When & Then
+    notAfter(now, now, this.testPitcher);
+    notAfter(now, Instant.ofEpochMilli(now.toEpochMilli()), this.testPitcher);
+    notAfter(before, now, this.testPitcher);
+    notAfter(before, Instant.ofEpochMilli(now.toEpochMilli()), this.testPitcher);
+
+    exceptException(TestException.class, () -> notAfter(now, before, this.testPitcher), this.testValidator);
+    exceptException(TestException.class,
+        () -> notAfter(now, Instant.ofEpochMilli(before.toEpochMilli()), this.testPitcher), this.testValidator);
+
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, null, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> notAfter(null, now, this.testPitcher));
+    exceptException(IllegalArgumentException.class, () -> notAfter(now, null, this.testPitcher));
   }
 }

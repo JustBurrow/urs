@@ -3,6 +3,7 @@ package kr.lul.urs.util;
 import static java.lang.String.format;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
@@ -525,7 +526,6 @@ public abstract class ConditionalExceptions {
 
   /**
    * 숫자가 0인지 확인해서 0이 아니면 예외를 던진다.
-   *
    *
    * @param number
    *          확인할 숫자.
@@ -3403,6 +3403,212 @@ public abstract class ConditionalExceptions {
     } else if (null == pitcher) {
       throw new IllegalArgumentException(
           format("string[%s] does not match to regex[%s], but exception pitcher is null.", string, regex));
+    } else {
+      pitcher.pitch();
+    }
+  }
+
+  /**
+   * 시각이 기준시각 이전인지 확인해서, 이전이 아니라면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param exception
+   *          던질 예외 타입.
+   * @param args
+   *          예외 생성자용 인자.
+   * @throws E
+   *           확인할 시각이 기준시각 이전이 아니고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각 이전이 아니고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   * @see Conditions#before(Instant, Instant)
+   */
+  public static <E extends Throwable> void before(Instant instant, Instant boundary, Class<E> exception, Object... args)
+      throws E, IllegalArgumentException {
+    if (Conditions.before(instant, boundary)) {
+      return;
+    } else {
+      pitch(exception, args);
+    }
+  }
+
+  /**
+   * 시각이 기준시각 이전인지 확인해서, 이전이 아니라면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param pitcher
+   *          예외 투수.
+   * @throws E
+   *           확인할 시각이 기준시각 이전이 아니고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각 이전이 아니고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   * @see Conditions#before(Instant, Instant)
+   */
+  public static <E extends Throwable> void before(Instant instant, Instant boundary, Pitcher<E> pitcher)
+      throws E, IllegalArgumentException {
+    if (Conditions.before(instant, boundary)) {
+      return;
+    } else if (null == pitcher) {
+      throw new IllegalArgumentException(
+          format("instant[%s] is not before than boundary[%s], but exception pitcher is null.", instant, boundary));
+    } else {
+      pitcher.pitch();
+    }
+  }
+
+  /**
+   * 시각이 기준시각 이후인지 확인해서, 이후가 아니라면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param exception
+   *          던질 예외 타입.
+   * @param args
+   *          예외 생성자용 인자.
+   * @throws E
+   *           확인할 시각이 기준시각 이후가 아니고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각 이후가 아니고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   * @see Conditions#after(Instant, Instant)
+   */
+  public static <E extends Throwable> void after(Instant instant, Instant boundary, Class<E> exception, Object... args)
+      throws E, IllegalArgumentException {
+    if (Conditions.after(instant, boundary)) {
+      return;
+    } else {
+      pitch(exception, args);
+    }
+  }
+
+  /**
+   * 시각이 기준시각 이후인지 확인해서, 이후가 아니라면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준 시각.
+   * @param pitcher
+   *          예외 투수.
+   * @throws E
+   *           확인할 시각이 기준시각 이후가 아니고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각 이후가 아니고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   * @see Conditions#after(Instant, Instant)
+   */
+  public static <E extends Throwable> void after(Instant instant, Instant boundary, Pitcher<E> pitcher)
+      throws E, IllegalArgumentException {
+    if (Conditions.after(instant, boundary)) {
+      return;
+    } else if (null == pitcher) {
+      throw new IllegalArgumentException(
+          format("instant[%s] is not after than boundary[%s], but exception pitcher is null.", instant, boundary));
+    } else {
+      pitcher.pitch();
+    }
+  }
+
+  /**
+   * 시각이 기준시각보다 이후인지 확인해서, 이전이거나 기준시각과 같다면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준시각.
+   * @param exception
+   *          던질 예외 타입.
+   * @param args
+   *          예외 생성자용 인자.
+   * @throws E
+   *           확인할 시각이 기준시각보다 이전이거나 같고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각보다 이전이거나 같고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   */
+  public static <E extends Throwable> void notBefore(Instant instant, Instant boundary, Class<E> exception,
+      Object... args) throws E, IllegalArgumentException {
+    if (Conditions.notBefore(instant, boundary)) {
+      return;
+    }
+    pitch(exception, args);
+  }
+
+  /**
+   * 시각이 기준시각보다 이후인지 확인해서, 이전이거나 기준시각과 같다면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준시각.
+   * @param pitcher
+   *          예외 투수.
+   * @throws E
+   *           확인할 시각이 기준시각보다 이전이거나 같고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각보다 이전이거나 같고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   */
+  public static <E extends Throwable> void notBefore(Instant instant, Instant boundary, Pitcher<E> pitcher)
+      throws E, IllegalArgumentException {
+    if (Conditions.notBefore(instant, boundary)) {
+      return;
+    } else if (null == pitcher) {
+      throw new IllegalArgumentException(
+          format("instant[%s] is before than boundary[%s], but exception pitcher is null.", instant, boundary));
+    } else {
+      pitcher.pitch();
+    }
+  }
+
+  /**
+   * 시각이 기준시각보다 이전인지 확인해서, 이후이거나 기준시각과 같다면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준시각.
+   * @param exception
+   *          던질 예외 타입.
+   * @param args
+   *          예외 생성자용 인자.
+   * @throws E
+   *           확인할 시각이 기준시각보다 이후이거나 같고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각보다 이후이거나 같고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   */
+  public static <E extends Throwable> void notAfter(Instant instant, Instant boundary, Class<E> exception,
+      Object... args) throws E, IllegalArgumentException {
+    if (Conditions.notAfter(instant, boundary)) {
+      return;
+    }
+    pitch(exception, args);
+  }
+
+  /**
+   * 시각이 기준시각보다 이전인지 확인해서, 이후이거나 기준시각과 같다면 예외를 던진다.
+   *
+   * @param instant
+   *          확인할 시각.
+   * @param boundary
+   *          기준시각.
+   * @param pitcher
+   *          예외 투수.
+   * @throws E
+   *           확인할 시각이 기준시각보다 이후이거나 같고, 정상적으로 예외 인스턴스를 만든 경우.
+   * @throws IllegalArgumentException
+   *           확인할 시각이 기준시각보다 이후이거나 같고, 정상적으로 예외 인스턴스를 만들지 못한 경우.
+   */
+  public static <E extends Throwable> void notAfter(Instant instant, Instant boundary, Pitcher<E> pitcher)
+      throws E, IllegalArgumentException {
+    if (Conditions.notAfter(instant, boundary)) {
+      return;
+    } else if (null == pitcher) {
+      throw new IllegalArgumentException(
+          format("instant[%s] is after than boundary[%s], but exception pitcher is null.", instant, boundary));
     } else {
       pitcher.pitch();
     }
