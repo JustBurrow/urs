@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: 'com.mysql.jdbc.Driver'
+    sql-script-encoding: UTF-8
+    url: jdbc:mysql://localhost/urs_test
+    username: database_instance_username
+    password: database_instance_password
+    connection-test-query: 'SELECT 1'
+    validation-query: 'SELECT 1'
+  jpa:
+    show-sql: false
+    generate-ddl: false
