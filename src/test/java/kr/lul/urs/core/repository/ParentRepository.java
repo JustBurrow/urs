@@ -4,7 +4,6 @@
 package kr.lul.urs.core.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import kr.lul.urs.application.configuration.JpaConfiguration;
 import kr.lul.urs.core.domain.entity.ParentEntity;
@@ -16,6 +15,6 @@ import kr.lul.urs.core.domain.entity.ParentEntity;
  * @see JpaConfiguration
  * @see ParentEntity
  */
-@Repository
+// @Repository
 public interface ParentRepository extends JpaRepository<ParentEntity, Integer> {
 }

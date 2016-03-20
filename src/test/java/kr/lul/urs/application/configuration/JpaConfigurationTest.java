@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import kr.lul.urs.core.repository.ParentRepository;
 @SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(ApplicationTestConfig.ROLLBACK)
+@Ignore
 public class JpaConfigurationTest {
   @Autowired
   private ParentRepository parentRepository;

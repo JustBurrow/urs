@@ -4,11 +4,9 @@
 package kr.lul.urs.core.domain.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import kr.lul.urs.application.configuration.JpaConfiguration;
 
@@ -18,8 +16,8 @@ import kr.lul.urs.application.configuration.JpaConfiguration;
  * @author Just Burrow just.burrow@lul.kr
  * @see JpaConfiguration
  */
-@Entity(name = "Parent")
-@Table(name = "some_parent")
+// @Entity(name = "Parent")
+// @Table(name = "some_parent")
 public class ParentEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
