@@ -30,18 +30,21 @@ public class TimestamperTest {
   @Entity
   @Timestamp(trigger = PrePersist.class)
   class TimestampPrePersistAsDefaultName {
+    @SuppressWarnings("unused")
     private Instant create;
   }
 
   @Entity
   @Timestamp(trigger = PostLoad.class)
   class TimestampPostLoadAsDefaultName {
+    @SuppressWarnings("unused")
     private Instant read;
   }
 
   @Entity
   @Timestamp(trigger = PreUpdate.class)
   class TimestampPreUpdateAsDefaultName {
+    @SuppressWarnings("unused")
     private Instant update;
   }
 
