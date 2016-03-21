@@ -1,4 +1,4 @@
-package kr.lul.urs.spring.jpa.listener;
+package kr.lul.urs.spring.jpa.timestamp;
 
 import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
 import static org.junit.Assert.assertEquals;
@@ -17,7 +17,8 @@ import javax.persistence.PreUpdate;
 import org.junit.Before;
 import org.junit.Test;
 
-import kr.lul.urs.spring.jpa.annotation.Timestamp;
+import kr.lul.urs.spring.jpa.timestamp.Timestamp;
+import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 import kr.lul.urs.util.Randoms;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

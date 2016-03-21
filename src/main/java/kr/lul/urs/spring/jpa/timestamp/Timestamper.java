@@ -1,4 +1,4 @@
-package kr.lul.urs.spring.jpa.listener;
+package kr.lul.urs.spring.jpa.timestamp;
 
 import static java.lang.String.format;
 
@@ -17,8 +17,6 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import kr.lul.urs.spring.jpa.annotation.Timestamp;
-import kr.lul.urs.spring.jpa.annotation.Timestamps;
 import kr.lul.urs.util.MapBuilder;
 
 /**

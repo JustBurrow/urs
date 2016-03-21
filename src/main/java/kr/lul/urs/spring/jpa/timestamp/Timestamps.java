@@ -1,4 +1,4 @@
-package kr.lul.urs.spring.jpa.annotation;
+package kr.lul.urs.spring.jpa.timestamp;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

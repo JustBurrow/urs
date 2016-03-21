@@ -1,4 +1,4 @@
-package kr.lul.urs.spring.jpa.listener;
+package kr.lul.urs.spring.jpa.timestamp;
 
 import static kr.lul.urs.util.Tests.exceptException;
 
@@ -12,8 +12,10 @@ import javax.persistence.PreUpdate;
 import org.junit.Before;
 import org.junit.Test;
 
-import kr.lul.urs.spring.jpa.annotation.Timestamp;
-import kr.lul.urs.spring.jpa.annotation.Timestamps;
+import kr.lul.urs.spring.jpa.timestamp.IllegalJpaSupportConfigurationException;
+import kr.lul.urs.spring.jpa.timestamp.Timestamp;
+import kr.lul.urs.spring.jpa.timestamp.Timestamper;
+import kr.lul.urs.spring.jpa.timestamp.Timestamps;
 import lombok.Data;
 
 public class TimestamperTest {

@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.spring.jpa.annotation;
+package kr.lul.urs.spring.jpa.timestamp;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;

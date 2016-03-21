@@ -19,16 +19,16 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.spring.jpa.annotation.Timestamp;
-import kr.lul.urs.spring.jpa.annotation.Timestamps;
-import kr.lul.urs.spring.jpa.listener.Timestamper;
+import kr.lul.urs.spring.jpa.timestamp.Timestamp;
+import kr.lul.urs.spring.jpa.timestamp.Timestamper;
+import kr.lul.urs.spring.jpa.timestamp.Timestamps;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
  */
 @Entity(name = "Operator")
 @Table(name = "op_operators",
-    uniqueConstraints = { @UniqueConstraint(name = "UQ_OPERATORS_USERNAME", columnNames = { "email" }) })
+    uniqueConstraints = { @UniqueConstraint(name = "UQ_OPERATORS_EMAIL", columnNames = { "email" }) })
 @EntityListeners({ Timestamper.class })
 @Timestamps({ @Timestamp(trigger = PrePersist.class, name = "create"),
     @Timestamp(trigger = PreUpdate.class, name = "update") })

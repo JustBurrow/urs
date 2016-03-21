@@ -1,4 +1,4 @@
-package kr.lul.urs.spring.jpa.listener;
+package kr.lul.urs.spring.jpa.timestamp;
 
 public class IllegalJpaSupportConfigurationException extends RuntimeException {
   private static final long serialVersionUID = -1643100055513842459L;

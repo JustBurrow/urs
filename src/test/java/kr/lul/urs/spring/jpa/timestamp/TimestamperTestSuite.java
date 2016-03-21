@@ -1,4 +1,4 @@
-package kr.lul.urs.spring.jpa.listener;
+package kr.lul.urs.spring.jpa.timestamp;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
