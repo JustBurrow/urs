@@ -14,4 +14,9 @@ import kr.lul.urs.core.domain.entity.OperatorEntity;
  */
 @Repository
 public interface OperatorRepository extends JpaRepository<OperatorEntity, Integer> {
+  /**
+   * @param email
+   * @return
+   */
+  public OperatorEntity findByEmail(String email);
 }

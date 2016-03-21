@@ -4,6 +4,7 @@
 package kr.lul.urs.core.dao;
 
 import static kr.lul.urs.util.Asserts.assignable;
+import static kr.lul.urs.util.Asserts.hasLength;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,12 @@ class OperatorDaoImpl implements OperatorDao {
     assignable(operator, OperatorEntity.class);
 
     return this.operatorRepository.save((OperatorEntity) operator);
+  }
+
+  @Override
+  public Operator selectByEmail(String email) {
+    hasLength(email);
+
+    return this.operatorRepository.findByEmail(email);
   }
 }

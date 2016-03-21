@@ -3,6 +3,7 @@
  */
 package kr.lul.urs.core.service.internal;
 
+import static kr.lul.urs.util.Asserts.hasLength;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,12 @@ class OperatorInternalServiceImpl implements OperatorInternalService {
     operator = (OperatorEntity) this.operatorDao.insert(operator);
 
     return operator;
+  }
+
+  @Override
+  public Operator readByEmail(String email) {
+    hasLength(email);
+
+    return this.operatorDao.selectByEmail(email);
   }
 }

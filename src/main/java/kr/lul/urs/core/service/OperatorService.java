@@ -6,7 +6,10 @@ package kr.lul.urs.core.service;
 import static kr.lul.urs.application.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
@@ -28,4 +31,8 @@ public interface OperatorService extends UserDetailsService {
    * @return
    */
   public Return<OperatorDto> create(CreateOperatorCmd cmd);
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

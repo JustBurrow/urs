@@ -17,4 +17,10 @@ public interface OperatorDao {
    * @return
    */
   public Operator insert(Operator operator);
+
+  /**
+   * @param email
+   * @return
+   */
+  public Operator selectByEmail(String email);
 }
