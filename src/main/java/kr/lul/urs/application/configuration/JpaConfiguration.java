@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import kr.lul.urs.core.domain.entity.EntityAnchor;
 import kr.lul.urs.core.repository.RepositoryAnchor;
-import kr.lul.urs.spring.jpa.converter.auto.JpaAutoConverterAnchor;
+import kr.lul.urs.spring.jpa.time.JpaTimeSupportAnchor;
 
 /**
  * Spring Data JPA의 DB 연동에 필요한 설정을 제공한다.
@@ -49,7 +49,7 @@ public class JpaConfiguration {
    * @return
    */
   private String[] getPackagesToScan() {
-    return new String[] { EntityAnchor.PACKAGE_NAME, JpaAutoConverterAnchor.PACKAGE_NAME };
+    return new String[] { EntityAnchor.PACKAGE_NAME, JpaTimeSupportAnchor.PACKAGE_NAME };
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

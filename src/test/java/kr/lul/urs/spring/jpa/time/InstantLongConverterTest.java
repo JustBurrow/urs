@@ -1,4 +1,7 @@
-package kr.lul.urs.spring.jpa.converter.manual;
+/**
+ *
+ */
+package kr.lul.urs.spring.jpa.time;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,9 +12,11 @@ import java.time.Instant;
 import org.junit.Before;
 import org.junit.Test;
 
-import kr.lul.urs.spring.jpa.converter.InstantLongConverter;
-
-public class ManualInstantLongConverterTest {
+/**
+ * @author Just Burrow just.burrow@lul.kr
+ * @since 2016. 3. 21.
+ */
+public class InstantLongConverterTest {
   private Instant              now;
   private long                 currentUtc;
   private InstantLongConverter converter;
@@ -20,7 +25,7 @@ public class ManualInstantLongConverterTest {
   public void setUp() throws Exception {
     this.currentUtc = System.currentTimeMillis();
     this.now = Instant.ofEpochMilli(this.currentUtc);
-    this.converter = new ManualInstantLongConverter();
+    this.converter = new InstantLongConverter();
   }
 
   @Test
