@@ -8,6 +8,9 @@ import static org.springframework.transaction.annotation.Propagation.MANDATORY;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.lul.urs.core.command.CreateOperatorCmd;
+import kr.lul.urs.core.domain.Operator;
+
 /**
  * 프로덕트 운영자를 다루는 내부 로직.
  *
@@ -16,4 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER, propagation = MANDATORY)
 public interface OperatorInternalService {
+  /**
+   * @param cmd
+   * @return
+   */
+  public Operator create(CreateOperatorCmd cmd);
 }

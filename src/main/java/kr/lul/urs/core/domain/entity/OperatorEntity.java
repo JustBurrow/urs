@@ -3,17 +3,25 @@
  */
 package kr.lul.urs.core.domain.entity;
 
+import static kr.lul.urs.util.Asserts.notNull;
+
 import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import kr.lul.urs.core.domain.Operator;
+import kr.lul.urs.spring.jpa.annotation.Timestamp;
+import kr.lul.urs.spring.jpa.annotation.Timestamps;
+import kr.lul.urs.spring.jpa.listener.Timestamper;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -21,6 +29,9 @@ import kr.lul.urs.core.domain.Operator;
 @Entity(name = "Operator")
 @Table(name = "op_operators",
     uniqueConstraints = { @UniqueConstraint(name = "UQ_OPERATORS_USERNAME", columnNames = { "email" }) })
+@EntityListeners({ Timestamper.class })
+@Timestamps({ @Timestamp(trigger = PrePersist.class, name = "create"),
+    @Timestamp(trigger = PreUpdate.class, name = "update") })
 public class OperatorEntity implements Operator {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +55,21 @@ public class OperatorEntity implements Operator {
   private Instant update;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  public OperatorEntity() {
+  }
+
+  public OperatorEntity(String email, String password) {
+    this.setEmail(email);
+    this.setPassword(password);
+  }
+
+  private void setEmail(String email) {
+    notNull(email);
+    this.email = email;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // <I>Operator
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
@@ -63,6 +89,7 @@ public class OperatorEntity implements Operator {
 
   @Override
   public void setPassword(String password) {
+    notNull(password);
     this.password = password;
   }
 

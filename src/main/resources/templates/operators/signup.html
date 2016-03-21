@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="#{operators.signup.title}">계정 만들기</title>
+</head>
+<body>
+  <h1 th:text="#{operators.signup.h1}">계정 정보</h1>
+  <form action="/sessions/new" method="post" th:action="@{/operators}" th:object="${cmd}">
+    <div>
+      <label for="email" th:text="#{operators.signup.form.label.email}">메일주소</label>
+      <input type="email" th:field="*{email}" />
+    </div>
+    <div>
+      <label for="password" th:text="#{operators.signup.form.label.password}">비밀번호</label>
+      <input type="password" th:field="*{password}" />
+    </div>
+    <div>
+      <label for="password2" th:text="#{operators.signup.form.label.password2}">비밀번호 확인</label>
+      <input type="password" th:field="*{password2}"/>
+    </div>
+    <button th:text="#{operators.signup.form.submit}">전송</button>
+  </form>
+</body>
+</html>

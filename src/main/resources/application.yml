@@ -10,6 +10,9 @@ spring:
   jpa:
     show-sql: false
     generate-ddl: false
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
 server:
   address: 127.0.0.1 # Change to test microservice architecture.
   port: 80 # Change for dev & test to pass OS security policy.
