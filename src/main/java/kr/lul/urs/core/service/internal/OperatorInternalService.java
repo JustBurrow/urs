@@ -24,10 +24,4 @@ public interface OperatorInternalService {
    * @return
    */
   public Operator create(CreateOperatorCmd cmd);
-
-  /**
-   * @param email
-   * @return
-   */
-  public Operator readByEmail(String email);
 }

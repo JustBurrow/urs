@@ -6,10 +6,6 @@ package kr.lul.urs.core.service;
 import static kr.lul.urs.application.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
@@ -23,7 +19,7 @@ import kr.lul.urs.spring.tx.util.Return;
  * @since 2016. 3. 21.
  */
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER, propagation = REQUIRES_NEW)
-public interface OperatorService extends UserDetailsService {
+public interface OperatorService {
   /**
    * 운영자의 계정을 생성한다.
    *
@@ -31,8 +27,4 @@ public interface OperatorService extends UserDetailsService {
    * @return
    */
   public Return<OperatorDto> create(CreateOperatorCmd cmd);
-
-  @Override
-  @Transactional(propagation = Propagation.REQUIRED)
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

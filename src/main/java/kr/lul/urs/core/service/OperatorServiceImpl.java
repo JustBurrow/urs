@@ -5,13 +5,7 @@ package kr.lul.urs.core.service;
 
 import static kr.lul.urs.util.Asserts.notNull;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
@@ -19,7 +13,6 @@ import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.spring.tx.util.Return;
-import kr.lul.urs.util.AssertionException;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -46,23 +39,5 @@ class OperatorServiceImpl implements OperatorService {
       dto.setCreate(operator.getCreate());
       return dto;
     };
-  }
-
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Operator operator;
-    try {
-      operator = this.operatorInternalService.readByEmail(username);
-      if (null == operator) {
-        throw new UsernameNotFoundException(String.format("operator does not exist for [%s].", username));
-      }
-    } catch (AssertionException e) {
-      throw new UsernameNotFoundException(String.format("operator does not exist for [%s].", username), e);
-    }
-
-    User user = new User(operator.getEmail(), operator.getPassword(), operator.isEnabled(), operator.isNonExpired(),
-        operator.isCredentialsNonExpired(), operator.isNonLocked(),
-        Arrays.asList(new SimpleGrantedAuthority("ROLE_OPERATOR")));
-    return user;
   }
 }
