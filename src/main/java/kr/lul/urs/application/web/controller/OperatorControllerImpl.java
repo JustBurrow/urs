@@ -61,6 +61,6 @@ class OperatorControllerImpl implements OperatorController {
     if (log.isDebugEnabled()) {
       log.debug(operator.value().toString());
     }
-    return "redirect:/sessions/new";
+    return "redirect:/auth/login";
   }
 }

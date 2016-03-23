@@ -5,23 +5,18 @@ package kr.lul.urs.core.domain.entity;
 
 import static kr.lul.urs.util.Asserts.notNull;
 
-import java.time.Instant;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.spring.jpa.timestamp.Timestamp;
+import kr.lul.urs.spring.jpa.timestamp.AbstractUpdatable;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
-import kr.lul.urs.spring.jpa.timestamp.Timestamps;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -30,9 +25,7 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamps;
 @Table(name = "op_operators",
     uniqueConstraints = { @UniqueConstraint(name = "UQ_OPERATORS_EMAIL", columnNames = { "email" }) })
 @EntityListeners({ Timestamper.class })
-@Timestamps({ @Timestamp(trigger = PrePersist.class, name = "create"),
-    @Timestamp(trigger = PreUpdate.class, name = "update") })
-public class OperatorEntity implements Operator {
+public class OperatorEntity extends AbstractUpdatable implements Operator {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, insertable = false, updatable = false)
@@ -49,10 +42,6 @@ public class OperatorEntity implements Operator {
   private boolean credentialsNonExpired;
   @Column(name = "enabled", nullable = false)
   private boolean enabled;
-  @Column(name = "create_utc", nullable = false, updatable = false)
-  private Instant create;
-  @Column(name = "update_utc", nullable = false)
-  private Instant update;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,16 +122,6 @@ public class OperatorEntity implements Operator {
     this.enabled = enabled;
   }
 
-  @Override
-  public Instant getCreate() {
-    return this.create;
-  }
-
-  @Override
-  public Instant getUpdate() {
-    return this.update;
-  }
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Object
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,8 +148,7 @@ public class OperatorEntity implements Operator {
         .append(", nonLocked=").append(this.nonLocked)
         .append(", credentialsNonExpired=").append(this.credentialsNonExpired)
         .append(", enabled=").append(this.enabled)
-        .append(", create=").append(this.create)
-        .append(", update=").append(this.update)
+        .append(", ").append(super.toString())
         .append(']').toString();
   }
 }

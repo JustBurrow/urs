@@ -1,6 +1,9 @@
 package kr.lul.urs.spring.jpa.timestamp;
 
 import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -14,11 +17,11 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import kr.lul.urs.spring.jpa.timestamp.Timestamp;
-import kr.lul.urs.spring.jpa.timestamp.Timestamper;
+import kr.lul.urs.core.domain.entity.OperatorEntity;
 import kr.lul.urs.util.Randoms;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,17 +40,24 @@ public class TimestamperCaseGroupMappedSuperclassTest {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   @MappedSuperclass
-  @Data
-  class FieldCreateUpdateSuperclass {
+  class FieldCreateUpdateSuperclass implements Updatable {
     @Timestamp(trigger = PrePersist.class)
     private Instant create;
     @Timestamp(trigger = PreUpdate.class)
     private Instant update;
+
+    @Override
+    public Instant getCreate() {
+      return this.create;
+    }
+
+    @Override
+    public Instant getUpdate() {
+      return this.update;
+    }
   }
 
   @Entity
-  @Data
-  @EqualsAndHashCode(callSuper = true)
   class InheritFieldEntity extends FieldCreateUpdateSuperclass {
   }
 
@@ -82,6 +92,21 @@ public class TimestamperCaseGroupMappedSuperclassTest {
     assertEquals(create, entity.getCreate());
     assertThat(update2, after(update));
     assertEquals(update2, entity.getUpdate());
+  }
+
+  @Test
+  public void testWithOperatorEntity() throws Exception {
+    // Given
+    final String email = "aa@bb.cc";
+    final String password = RandomStringUtils.randomAlphanumeric(10);
+    final OperatorEntity operator = new OperatorEntity(email, password);
+
+    // When
+    this.listener.prePersist(operator);
+
+    // Then
+    assertThat(operator.getCreate(), allOf(notNullValue(), after(this.now)));
+    assertThat(operator.getUpdate(), allOf(notNullValue(), equalTo(operator.getCreate())));
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -74,7 +74,6 @@ public class Timestamper {
      */
     private void checkTimestamps(final Class<?> entityType, final Set<Field> targetFields)
         throws IllegalJpaSupportConfigurationException {
-      // TODO @MappedSuperclass
       Class<?> target = entityType;
       do {
         if (null != target.getAnnotation(Entity.class) || null != target.getAnnotation(MappedSuperclass.class)) {
@@ -257,8 +256,10 @@ public class Timestamper {
   public void prePersist(Object entity) {
     this.isEntity(entity);
     Instant now = Instant.now();
-    this.handlerMap.get(PrePersist.class).doTimestamp(entity, now);
-    this.handlerMap.get(PreUpdate.class).doTimestamp(entity, now);
+    this.handlerMap.get(PrePersist.class)
+        .doTimestamp(entity, now);
+    this.handlerMap.get(PreUpdate.class)
+        .doTimestamp(entity, now);
   }
 
   /**

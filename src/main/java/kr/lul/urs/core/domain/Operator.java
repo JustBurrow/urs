@@ -3,14 +3,14 @@
  */
 package kr.lul.urs.core.domain;
 
-import java.time.Instant;
+import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
  * 프로덕트 관리자.
  *
  * @author Just Burrow just.burrow@lul.kr
  */
-public interface Operator {
+public interface Operator extends Updatable {
   /**
    * 관리자 계정 ID.
    *
@@ -55,8 +55,4 @@ public interface Operator {
   public boolean isEnabled();
 
   public void setEnabled(boolean enabled);
-
-  public Instant getCreate();
-
-  public Instant getUpdate();
 }
