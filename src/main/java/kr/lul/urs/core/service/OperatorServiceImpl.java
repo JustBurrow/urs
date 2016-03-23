@@ -5,6 +5,9 @@ package kr.lul.urs.core.service;
 
 import static kr.lul.urs.util.Asserts.notNull;
 
+import javax.annotation.PostConstruct;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,13 @@ class OperatorServiceImpl implements OperatorService {
   @Autowired
   private OperatorInternalService operatorInternalService;
 
+  private ModelMapper             mapper;
+
+  @PostConstruct
+  private void postConstruct() {
+    this.mapper = new ModelMapper();
+  }
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // <I>OperatorService
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,12 +42,6 @@ class OperatorServiceImpl implements OperatorService {
 
     Operator operator = this.operatorInternalService.create(cmd);
 
-    return () -> {
-      OperatorDto dto = new OperatorDto();
-      dto.setId(operator.getId());
-      dto.setEmail(operator.getEmail());
-      dto.setCreate(operator.getCreate());
-      return dto;
-    };
+    return () -> this.mapper.map(operator, OperatorDto.class);
   }
 }
