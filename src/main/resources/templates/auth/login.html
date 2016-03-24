@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1 th:text="#{auth.login.h1}">로그인</h1>
-  <form action="#" method="post" th:action="@{/auth/login}" th:object="${cmd}">
+  <form action="#" method="post" th:action="@{/auth/login}" th:object="${req}">
     <div>
       <label for="email" th:text="#{auth.login.form.label.email}">E메일</label>
       <input type="email" th:field="*{email}"/>

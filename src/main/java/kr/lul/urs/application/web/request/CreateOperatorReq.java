@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.application.web.command;
+package kr.lul.urs.application.web.request;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,7 +14,7 @@ import lombok.Data;
  * @since 2016. 3. 21.
  */
 @Data
-public class CreateOperatorWebCmd {
+public class CreateOperatorReq {
   @NotNull
   private String email;
   @NotNull

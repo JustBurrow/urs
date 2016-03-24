@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import kr.lul.urs.application.web.command.CreateOperatorWebCmd;
+import kr.lul.urs.application.web.request.CreateOperatorReq;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -29,12 +29,12 @@ public interface OperatorController {
   /**
    * 계정 등록 실행.
    *
-   * @param cmd
+   * @param req
    *          계정 등록 커맨드 오브젝트.
    * @param bind
    *          리퀘스트의 커맨드 오브젝트 바인딩 결과.
    * @return
    */
   @RequestMapping(method = POST)
-  public String signup(CreateOperatorWebCmd cmd, BindingResult bind, Model model);
+  public String signup(CreateOperatorReq req, BindingResult bind, Model model);
 }

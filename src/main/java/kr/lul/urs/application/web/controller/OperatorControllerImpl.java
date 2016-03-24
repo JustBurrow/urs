@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import kr.lul.urs.application.web.command.CreateOperatorWebCmd;
+import kr.lul.urs.application.web.request.CreateOperatorReq;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
@@ -38,25 +38,25 @@ class OperatorControllerImpl implements OperatorController {
   public String signupForm(final Model model) {
     notNull(model);
 
-    model.addAttribute("cmd", new CreateOperatorWebCmd());
+    model.addAttribute("req", new CreateOperatorReq());
     return "operators/signup";
   }
 
   @Override
-  public String signup(final @Valid CreateOperatorWebCmd cmd, final BindingResult bind, final Model model) {
-    notNull(cmd);
+  public String signup(final @Valid CreateOperatorReq req, final BindingResult bind, final Model model) {
+    notNull(req);
     notNull(bind);
     notNull(model);
 
-    if (!cmd.getPassword().equals(cmd.getPassword2())) {
+    if (!req.getPassword().equals(req.getPassword2())) {
       // TODO 에러 추가.
       return "operators/signup";
     }
 
-    CreateOperatorCmd command = new CreateOperatorCmd();
-    command.setEmail(cmd.getEmail());
-    command.setPassword(cmd.getPassword());
-    Return<OperatorDto> operator = this.operatorService.create(command);
+    CreateOperatorCmd cmd = new CreateOperatorCmd();
+    cmd.setEmail(req.getEmail());
+    cmd.setPassword(req.getPassword());
+    Return<OperatorDto> operator = this.operatorService.create(cmd);
 
     if (log.isDebugEnabled()) {
       log.debug(operator.value().toString());

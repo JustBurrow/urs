@@ -8,7 +8,7 @@ import static kr.lul.urs.util.Asserts.notNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import kr.lul.urs.application.web.command.LogInWebCmd;
+import kr.lul.urs.application.web.request.LogInReq;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -23,7 +23,7 @@ class AuthControllerImpl implements AuthController {
   public String loginForm(final Model model) {
     notNull(model);
 
-    model.addAttribute("cmd", new LogInWebCmd());
+    model.addAttribute("req", new LogInReq());
 
     return "auth/login";
   }
