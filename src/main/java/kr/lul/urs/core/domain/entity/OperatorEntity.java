@@ -3,6 +3,15 @@
  */
 package kr.lul.urs.core.domain.entity;
 
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Entity.ENTITY;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.CREDENTIALS_NON_EXPIRED;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.EMAIL;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.ENABLED;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.ID;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.NON_EXPIRED;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.NON_LOCKED;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.PASSWORD;
+import static kr.lul.urs.core.domain.mapping.OperatorMapping.Table.TABLE;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import javax.persistence.Column;
@@ -15,32 +24,33 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import kr.lul.urs.core.domain.Operator;
+import kr.lul.urs.core.domain.mapping.OperatorMapping.Table.INDEX;
 import kr.lul.urs.spring.jpa.timestamp.AbstractUpdatable;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
  */
-@Entity(name = "Operator")
-@Table(name = "op_operators",
-    uniqueConstraints = { @UniqueConstraint(name = "UQ_OPERATORS_EMAIL", columnNames = { "email" }) })
+@Entity(name = ENTITY)
+@Table(name = TABLE,
+    uniqueConstraints = { @UniqueConstraint(name = INDEX.UQ_OPERATORS_EMAIL, columnNames = { EMAIL }) })
 @EntityListeners({ Timestamper.class })
 public class OperatorEntity extends AbstractUpdatable implements Operator {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false, insertable = false, updatable = false)
+  @Column(name = ID, nullable = false, insertable = false, updatable = false)
   private int     id;
-  @Column(name = "email", nullable = false, updatable = false)
+  @Column(name = EMAIL, nullable = false, updatable = false)
   private String  email;
-  @Column(name = "password", nullable = false)
+  @Column(name = PASSWORD, nullable = false)
   private String  password;
-  @Column(name = "non_expired", nullable = false)
+  @Column(name = NON_EXPIRED, nullable = false)
   private boolean nonExpired;
-  @Column(name = "non_locked", nullable = false)
+  @Column(name = NON_LOCKED, nullable = false)
   private boolean nonLocked;
-  @Column(name = "credentials_non_expired", nullable = false)
+  @Column(name = CREDENTIALS_NON_EXPIRED, nullable = false)
   private boolean credentialsNonExpired;
-  @Column(name = "enabled", nullable = false)
+  @Column(name = ENABLED, nullable = false)
   private boolean enabled;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

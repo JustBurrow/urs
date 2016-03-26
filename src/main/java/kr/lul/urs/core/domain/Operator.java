@@ -3,6 +3,8 @@
  */
 package kr.lul.urs.core.domain;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
@@ -40,19 +42,51 @@ public interface Operator extends Updatable {
    */
   public void setPassword(String password);
 
+  /**
+   * @return
+   * @see UserDetails#isAccountNonExpired()
+   */
   public boolean isNonExpired();
 
+  /**
+   * @param nonExpired
+   * @see UserDetails#isAccountNonExpired()
+   */
   public void setNonExpired(boolean nonExpired);
 
+  /**
+   * @return
+   * @see UserDetails#isAccountNonLocked()
+   */
   public boolean isNonLocked();
 
+  /**
+   * @param nonLocked
+   * @see UserDetails#isAccountNonLocked()
+   */
   public void setNonLocked(boolean nonLocked);
 
+  /**
+   * @return
+   * @see UserDetails#isCredentialsNonExpired()
+   */
   public boolean isCredentialsNonExpired();
 
+  /**
+   * @param credentialsNonExpired
+   * @see UserDetails#isCredentialsNonExpired()
+   */
   public void setCredentialsNonExpired(boolean credentialsNonExpired);
 
+  /**
+   * @return
+   * @see UserDetails#isEnabled()
+   */
   public boolean isEnabled();
 
+  /**
+   * @param enabled
+   * @see UserDetails#isEnabled()
+   */
   public void setEnabled(boolean enabled);
 }

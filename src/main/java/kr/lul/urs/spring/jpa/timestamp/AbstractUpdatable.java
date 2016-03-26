@@ -3,6 +3,11 @@
  */
 package kr.lul.urs.spring.jpa.timestamp;
 
+import static kr.lul.urs.spring.jpa.timestamp.UpdatableMapping.UpdatableEntity.CREATE;
+import static kr.lul.urs.spring.jpa.timestamp.UpdatableMapping.UpdatableEntity.UPDATE;
+import static kr.lul.urs.spring.jpa.timestamp.UpdatableMapping.UpdatableTable.CREATE_UTC;
+import static kr.lul.urs.spring.jpa.timestamp.UpdatableMapping.UpdatableTable.UPDATE_UTC;
+
 import java.time.Instant;
 
 import javax.persistence.Column;
@@ -28,12 +33,12 @@ import javax.persistence.PreUpdate;
  * @since 2016. 3. 23.
  */
 @MappedSuperclass
-@Timestamps({ @Timestamp(trigger = PrePersist.class, name = "create"),
-    @Timestamp(trigger = PreUpdate.class, name = "update") })
+@Timestamps({ @Timestamp(trigger = PrePersist.class, name = CREATE),
+    @Timestamp(trigger = PreUpdate.class, name = UPDATE) })
 public abstract class AbstractUpdatable implements Updatable {
-  @Column(name = "create_utc", nullable = false, updatable = false)
+  @Column(name = CREATE_UTC, nullable = false, updatable = false)
   private Instant create;
-  @Column(name = "update_utc", nullable = false)
+  @Column(name = UPDATE_UTC, nullable = false)
   private Instant update;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
