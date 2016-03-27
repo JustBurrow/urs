@@ -75,15 +75,15 @@ public abstract class OperatorMapping {
     /**
      * @see Entity#NON_EXPIRED
      */
-    public static final String NON_EXPIRED             = Entity.NON_EXPIRED;
+    public static final String NON_EXPIRED             = "non_expired";
     /**
      * @see Entity#NON_LOCKED
      */
-    public static final String NON_LOCKED              = Entity.NON_LOCKED;
+    public static final String NON_LOCKED              = "non_locked";
     /**
      * @see Entity#CREDENTIALS_NON_EXPIRED
      */
-    public static final String CREDENTIALS_NON_EXPIRED = Entity.CREDENTIALS_NON_EXPIRED;
+    public static final String CREDENTIALS_NON_EXPIRED = "credentials_non_expired";
     /**
      * @see Entity#ENABLED
      */
