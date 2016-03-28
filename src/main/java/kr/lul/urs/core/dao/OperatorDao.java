@@ -23,4 +23,10 @@ public interface OperatorDao {
    * @return
    */
   public Operator selectByEmail(String email);
+
+  /**
+   * @param id
+   * @return
+   */
+  public Operator select(int id);
 }

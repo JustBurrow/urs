@@ -26,16 +26,26 @@ class OperatorDaoImpl implements OperatorDao {
   // <I>OperatorDao
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public Operator insert(Operator operator) {
+  public OperatorEntity insert(Operator operator) {
     assignable(operator, OperatorEntity.class);
 
     return this.operatorRepository.save((OperatorEntity) operator);
   }
 
   @Override
-  public Operator selectByEmail(String email) {
+  public OperatorEntity selectByEmail(String email) {
     hasLength(email);
 
     return this.operatorRepository.findByEmail(email);
+  }
+
+  @Override
+  public OperatorEntity select(int id) {
+    if (0 >= id) {
+      return null;
+    }
+
+    OperatorEntity operator = this.operatorRepository.findOne(id);
+    return operator;
   }
 }

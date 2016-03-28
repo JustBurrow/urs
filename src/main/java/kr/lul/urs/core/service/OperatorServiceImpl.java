@@ -44,4 +44,10 @@ class OperatorServiceImpl implements OperatorService {
 
     return () -> this.mapper.map(operator, OperatorDto.class);
   }
+
+  @Override
+  public Return<OperatorDto> read(int id) {
+    Operator operator = this.operatorInternalService.read(id);
+    return () -> this.mapper.map(operator, OperatorDto.class);
+  }
 }

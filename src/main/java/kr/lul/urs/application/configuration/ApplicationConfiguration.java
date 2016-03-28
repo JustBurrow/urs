@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import kr.lul.urs.application.ApplicationAnchor;
 import kr.lul.urs.core.CoreAnchor;
 
 /**
@@ -14,6 +15,6 @@ import kr.lul.urs.core.CoreAnchor;
  */
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses = { CoreAnchor.class })
+@ComponentScan(basePackageClasses = { CoreAnchor.class, ApplicationAnchor.class })
 public class ApplicationConfiguration {
 }

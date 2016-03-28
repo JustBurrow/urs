@@ -13,7 +13,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,7 +31,7 @@ import kr.lul.urs.core.repository.ParentRepository;
 @Rollback(ApplicationTestConfig.ROLLBACK)
 @Ignore
 public class JpaConfigurationTest {
-  @Autowired
+  // @Autowired
   private ParentRepository parentRepository;
 
   @Test

@@ -24,4 +24,10 @@ public interface OperatorInternalService {
    * @return
    */
   public Operator create(CreateOperatorCmd cmd);
+
+  /**
+   * @param id
+   * @return
+   */
+  public Operator read(int id);
 }

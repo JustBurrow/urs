@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dao.OperatorDao;
-import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.OperatorEntity;
 
 /**
@@ -29,7 +28,7 @@ class OperatorInternalServiceImpl implements OperatorInternalService {
   // <I>OperatorInternalService
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public Operator create(CreateOperatorCmd cmd) {
+  public OperatorEntity create(CreateOperatorCmd cmd) {
     notNull(cmd);
 
     OperatorEntity operator = new OperatorEntity(cmd.getEmail(), this.passwordEncoder.encode(cmd.getPassword()));
@@ -40,6 +39,12 @@ class OperatorInternalServiceImpl implements OperatorInternalService {
 
     operator = (OperatorEntity) this.operatorDao.insert(operator);
 
+    return operator;
+  }
+
+  @Override
+  public OperatorEntity read(int id) {
+    OperatorEntity operator = (OperatorEntity) this.operatorDao.select(id);
     return operator;
   }
 }

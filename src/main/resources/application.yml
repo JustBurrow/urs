@@ -8,8 +8,16 @@ spring:
     connection-test-query: 'SELECT 1'
     validation-query: 'SELECT 1'
   jpa:
+    database: mysql
     show-sql: false
     generate-ddl: false
+    open-in-view: false
+    properties:
+      javax.persistence.sharedCache.mode: ALL
+      hibernate.cache:
+        use_second_level_cache: true
+        use_query_cache: false
+        region.factory_class: net.sf.ehcache.hibernate.EhCacheProvider
   messages:
     basename: i18n/messages
     encoding: UTF-8

@@ -24,7 +24,17 @@ public interface OperatorService {
    * 운영자의 계정을 생성한다.
    *
    * @param cmd
-   * @return
+   *          커맨드.
+   * @return 생성된 계정 정보.
    */
   public Return<OperatorDto> create(CreateOperatorCmd cmd);
+
+  /**
+   * 운영자 계정 정보를 반환한다.
+   *
+   * @param id
+   *          계정 ID(PK).
+   * @return 계정 정보.
+   */
+  public Return<OperatorDto> read(int id);
 }

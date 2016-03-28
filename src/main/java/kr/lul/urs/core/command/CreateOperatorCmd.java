@@ -13,4 +13,12 @@ import lombok.Data;
 public class CreateOperatorCmd {
   private String email;
   private String password;
+
+  public CreateOperatorCmd() {
+  }
+
+  public CreateOperatorCmd(String email, String password) {
+    this.setEmail(email);
+    this.setPassword(password);
+  }
 }
