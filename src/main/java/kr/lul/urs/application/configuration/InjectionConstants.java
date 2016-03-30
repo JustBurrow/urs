@@ -19,11 +19,12 @@ public abstract class InjectionConstants {
    * @author Just Burrow just.burrow@lul.kr
    */
   public static abstract class Properties {
-    public static final String PREFIX_DATASOURCE = "spring.datasource";
-    public static final String PREFIX_JPA        = "spring.jpa";
+    public static final String PREFIX_DATASOURCE     = "spring.datasource";
+    public static final String PREFIX_JPA            = "spring.jpa";
+    public static final String PREFIX_JPA_PROPERTIES = PREFIX_JPA + ".properties";
 
-    public static final String KEY_SHOW_SQL      = PREFIX_JPA + ".show-sql";
-    public static final String KEY_GENERATE_DDL  = PREFIX_JPA + ".generate-ddl";
+    public static final String KEY_SHOW_SQL          = PREFIX_JPA + ".show-sql";
+    public static final String KEY_GENERATE_DDL      = PREFIX_JPA + ".generate-ddl";
 
     protected Properties() {
       throw new UnsupportedOperationException();

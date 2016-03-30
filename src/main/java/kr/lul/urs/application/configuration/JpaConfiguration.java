@@ -1,13 +1,15 @@
 package kr.lul.urs.application.configuration;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toMap;
 import static kr.lul.urs.application.configuration.InjectionConstants.Beans.NAME_DATA_SOURCE;
 import static kr.lul.urs.application.configuration.InjectionConstants.Beans.NAME_ENTITY_MANAGER_FACTORY;
 import static kr.lul.urs.application.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
 import static kr.lul.urs.application.configuration.InjectionConstants.Properties.KEY_GENERATE_DDL;
 import static kr.lul.urs.application.configuration.InjectionConstants.Properties.KEY_SHOW_SQL;
 import static kr.lul.urs.application.configuration.InjectionConstants.Properties.PREFIX_DATASOURCE;
+import static kr.lul.urs.application.configuration.InjectionConstants.Properties.PREFIX_JPA_PROPERTIES;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -60,7 +62,18 @@ public class JpaConfiguration {
     return new String[] { EntityAnchor.PACKAGE_NAME, JpaTimeSupportAnchor.PACKAGE_NAME };
   }
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * JPA 구현체용 설정 정보를 제공한다.
+   *
+   * @return JPA 구현체용 설정.
+   */
+  private Map<String, Object> jpaProperties() {
+    final String prefix = PREFIX_JPA_PROPERTIES + ".";
+    return asList("hibernate.cache.use_second_level_cache",
+        "hibernate.cache.use_query_cache",
+        "hibernate.cache.region.factory_class").stream()
+            .collect(toMap(String::toString, k -> this.env.getProperty(prefix + k)));
+  }
 
   @Bean(name = NAME_DATA_SOURCE)
   @ConfigurationProperties(prefix = PREFIX_DATASOURCE)
@@ -79,14 +92,7 @@ public class JpaConfiguration {
     factory.setDataSource(this.dataSource());
     factory.setJpaVendorAdapter(adapter);
     factory.setPackagesToScan(this.getPackagesToScan());
-    Map<String, String> jpaProperties = new HashMap<>();
-    jpaProperties.put("hibernate.cache.use_second_level_cache",
-        this.env.getProperty("spring.jpa.properties.hibernate.cache.use_second_level_cache"));
-    jpaProperties.put("hibernate.cache.use_query_cache",
-        this.env.getProperty("spring.jpa.properties.hibernate.cache.use_query_cache"));
-    jpaProperties.put("hibernate.cache.region.factory_class",
-        this.env.getProperty("spring.jpa.properties.hibernate.cache.region.factory_class"));
-    factory.setJpaPropertyMap(jpaProperties);
+    factory.setJpaPropertyMap(this.jpaProperties());
 
     return factory;
   }
