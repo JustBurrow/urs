@@ -17,7 +17,7 @@ spring:
       hibernate.cache:
         use_second_level_cache: true
         use_query_cache: false
-        region.factory_class: net.sf.ehcache.hibernate.EhCacheProvider
+        region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
   messages:
     basename: i18n/messages
     encoding: UTF-8

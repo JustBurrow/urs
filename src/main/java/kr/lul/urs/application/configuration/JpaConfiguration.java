@@ -7,13 +7,18 @@ import static kr.lul.urs.application.configuration.InjectionConstants.Properties
 import static kr.lul.urs.application.configuration.InjectionConstants.Properties.KEY_SHOW_SQL;
 import static kr.lul.urs.application.configuration.InjectionConstants.Properties.PREFIX_DATASOURCE;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate4.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -39,9 +44,12 @@ import kr.lul.urs.spring.jpa.time.JpaTimeSupportAnchor;
 @EnableTransactionManagement
 public class JpaConfiguration {
   @Value("${" + KEY_GENERATE_DDL + "}")
-  private boolean generateDdl;
+  private boolean     generateDdl;
   @Value("${" + KEY_SHOW_SQL + "}")
-  private boolean showSql;
+  private boolean     showSql;
+
+  @Autowired
+  private Environment env;
 
   /**
    * Spring Data JPA가 스캔해야 할 패키지의 목록을 제공한다.
@@ -71,6 +79,15 @@ public class JpaConfiguration {
     factory.setDataSource(this.dataSource());
     factory.setJpaVendorAdapter(adapter);
     factory.setPackagesToScan(this.getPackagesToScan());
+    Map<String, String> jpaProperties = new HashMap<>();
+    jpaProperties.put("hibernate.cache.use_second_level_cache",
+        this.env.getProperty("spring.jpa.properties.hibernate.cache.use_second_level_cache"));
+    jpaProperties.put("hibernate.cache.use_query_cache",
+        this.env.getProperty("spring.jpa.properties.hibernate.cache.use_query_cache"));
+    jpaProperties.put("hibernate.cache.region.factory_class",
+        this.env.getProperty("spring.jpa.properties.hibernate.cache.region.factory_class"));
+    factory.setJpaPropertyMap(jpaProperties);
+
     return factory;
   }
 
