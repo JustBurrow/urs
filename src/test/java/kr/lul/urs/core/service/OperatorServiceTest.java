@@ -7,6 +7,7 @@ import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertThat;
 
 import java.time.Instant;
@@ -38,6 +39,7 @@ public class OperatorServiceTest {
 
   @Before
   public void setUp() throws Exception {
+    assertNotNull(this.operatorService);
     this.now = Instant.now();
   }
 
@@ -72,5 +74,7 @@ public class OperatorServiceTest {
     assertEquals(o1.getEmail(), o2.getEmail());
     assertEquals(o1.getCreate(), o2.getCreate());
     assertEquals(o2, o3);
+    assertNotSame(o1, o2);
+    assertNotSame(o1, o3);
   }
 }

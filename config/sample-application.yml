@@ -5,9 +5,15 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
+    properties:
+      hibernate.generateStatistics: true
   thymeleaf:
     cache: false
   messages:
     cache-seconds: 1
 server:
   port: 8080
+logging:
+  level:
+    kr.lul: debug
+    log4j.logger.org.hibernate.stat: trace

@@ -71,7 +71,8 @@ public class JpaConfiguration {
     final String prefix = PREFIX_JPA_PROPERTIES + ".";
     return asList("hibernate.cache.use_second_level_cache",
         "hibernate.cache.use_query_cache",
-        "hibernate.cache.region.factory_class").stream()
+        "hibernate.cache.region.factory_class",
+        "hibernate.generateStatistics").stream()
             .collect(toMap(String::toString, k -> this.env.getProperty(prefix + k)));
   }
 
