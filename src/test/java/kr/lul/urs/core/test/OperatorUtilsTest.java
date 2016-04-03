@@ -30,6 +30,7 @@ import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
+import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -96,5 +97,6 @@ public class OperatorUtilsTest {
     assertThat(operator.getCreate(), after(this.now));
     assertThat(operator.getUpdate(), after(this.now));
     assertEquals(operator.getCreate(), operator.getUpdate());
+    assertNotNull(Timestamper.getTimeProvider());
   }
 }

@@ -17,7 +17,9 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import kr.lul.urs.util.Asserts;
 import kr.lul.urs.util.MapBuilder;
+import kr.lul.urs.util.TimeProvider;
 
 /**
  * 어노테이션 기반의 JPA 2.1 규격의 엔티티에 {@link Timestamp}, {@link Timestamps}를 사용한 엔티티에 타임스탬프를 찍는 {@link EntityListeners}.
@@ -222,6 +224,7 @@ public class Timestamper {
    * 이벤트 종류별로 등록한 이벤트 리스너.
    */
   private Map<Class<? extends Annotation>, InternalHandler> handlerMap;
+  private static TimeProvider                               timeProvider;
 
   public Timestamper() {
     this.handlerMap = MapBuilder.<Class<? extends Annotation>, InternalHandler>hash()
@@ -229,6 +232,13 @@ public class Timestamper {
         .put(PostLoad.class, new InternalHandler(PostLoad.class))
         .put(PreUpdate.class, new InternalHandler(PreUpdate.class))
         .build();
+  }
+
+  /**
+   * @return
+   */
+  protected Instant now() {
+    return null == Timestamper.timeProvider ? Instant.now() : Timestamper.timeProvider.now();
   }
 
   /**
@@ -255,7 +265,7 @@ public class Timestamper {
   @PrePersist
   public void prePersist(Object entity) {
     this.isEntity(entity);
-    Instant now = Instant.now();
+    Instant now = this.now();
     this.handlerMap.get(PrePersist.class)
         .doTimestamp(entity, now);
     this.handlerMap.get(PreUpdate.class)
@@ -271,7 +281,7 @@ public class Timestamper {
   @PostLoad
   public void postLoad(Object entity) {
     this.isEntity(entity);
-    this.handlerMap.get(PostLoad.class).doTimestamp(entity, Instant.now());
+    this.handlerMap.get(PostLoad.class).doTimestamp(entity, this.now());
   }
 
   /**
@@ -283,6 +293,18 @@ public class Timestamper {
   @PreUpdate
   public void preUpdate(Object entity) {
     this.isEntity(entity);
-    this.handlerMap.get(PreUpdate.class).doTimestamp(entity, Instant.now());
+    this.handlerMap.get(PreUpdate.class).doTimestamp(entity, this.now());
+  }
+
+  /**
+   * @return
+   */
+  public static Object getTimeProvider() {
+    return timeProvider;
+  }
+
+  public static void setTimeProvider(TimeProvider timeProvider) {
+    Asserts.notNull(timeProvider);
+    Timestamper.timeProvider = timeProvider;
   }
 }
