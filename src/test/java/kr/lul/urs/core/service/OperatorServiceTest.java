@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.time.Instant;
 
@@ -22,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dto.OperatorDto;
+import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.EMails;
 import kr.lul.urs.util.Strings;
 
@@ -41,6 +43,15 @@ public class OperatorServiceTest {
   public void setUp() throws Exception {
     assertNotNull(this.operatorService);
     this.now = Instant.now();
+  }
+
+  @Test(expected = AssertionException.class)
+  public void testCreateWithNull() throws Exception {
+    // When
+    this.operatorService.create(null);
+
+    // Then
+    fail();
   }
 
   @Test

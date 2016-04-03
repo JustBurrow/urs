@@ -12,13 +12,17 @@ import org.apache.commons.lang3.RandomStringUtils;
  * @author just.burrow@lul.kr
  */
 public abstract class Strings {
-  public static final int DEFAULT_LENGTH = 32;
+  public static final int    DEFAULT_LENGTH = 32;
+
+  public static final String LOWER          = "abcdefghijklmnopqrstuvwxyz";
+  public static final String UPPER          = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  public static final String DIGITS         = "0123456789";
+  public static final String ETCs            = "`-=~!@#$%^&*()_+[]\\{}|;':\",./<>?";
 
   /**
    * 임의의 문자열을 반환한다.
    *
    * @return 기본 길이를 가지는 임의의 문자열.
-   *
    * @see #DEFAULT_LENGTH
    */
   public static String random() {
