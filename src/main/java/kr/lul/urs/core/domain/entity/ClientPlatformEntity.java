@@ -137,7 +137,9 @@ public class ClientPlatformEntity extends AbstractUpdatable implements ClientPla
 
   @Override
   public boolean equals(Object obj) {
-    if (0 < this.id && null != obj && obj instanceof ClientPlatformEntity) {
+    if (this == obj) {
+      return true;
+    } else if (0 < this.id && null != obj && obj instanceof ClientPlatformEntity) {
       return this.id == ((ClientPlatformEntity) obj).id;
     } else {
       return false;
