@@ -1,16 +1,17 @@
 /**
  *
  */
-package kr.lul.urs.core.dao;
+package kr.lul.urs.core.service.internal;
 
 import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static kr.lul.urs.core.test.ClientPlatformUtils.instance;
+import static kr.lul.urs.core.test.ClientPlatformUtils.createCmd;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
-import java.time.Instant;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,58 +24,48 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.domain.ClientPlatform;
-import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
-import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.core.test.OperatorUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 4. 8.
+ * @since 2016. 4. 9.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(ApplicationTestConfig.ROLLBACK)
-public class ClientPlatformDaoTest {
+public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTest {
   @Autowired
-  private ClientPlatformDao       clientPlatformDao;
-
-  @Autowired
-  private OperatorInternalService operatorInternalService;
-
-  private Instant                 now;
+  private ClientPlatformInternalService clientPlatformInternalService;
 
   @Before
   public void setUp() throws Exception {
-    this.now = Instant.now();
+    this.setNow();
+    this.generateRandomOperator();
   }
 
   @Test(expected = AssertionException.class)
-  public void testInsertWithNull() throws Exception {
-    this.clientPlatformDao.insert(null);
+  public void testCreateWithNull() throws Exception {
+    this.clientPlatformInternalService.create(null);
     fail();
   }
 
   @Test
-  public void testInsert() throws Exception {
+  public void testCreate() throws Exception {
     // Given
-    final Operator owner = OperatorUtils.create(this.operatorInternalService);
-    final ClientPlatformEntity cp1 = instance(owner);
+    final CreateClientPlatformCmd cmd = createCmd(this.operator);
 
     // When
-    final ClientPlatform cp2 = this.clientPlatformDao.insert(cp1);
+    ClientPlatform cp = this.clientPlatformInternalService.create(cmd);
 
     // Then
-    assertNotNull(cp2);
-    assertEquals(cp1, cp2);
-    assertEquals(owner, cp2.getOwner());
-    assertEquals(cp1.getCode(), cp2.getCode());
-    assertEquals(cp1.getLabel(), cp2.getLabel());
-    assertEquals(cp1.getDescription(), cp2.getDescription());
-    assertThat(cp2.getCreate(), after(this.now));
-    assertEquals(cp2.getCreate(), cp2.getUpdate());
+    assertNotNull(cp);
+    assertThat(cp.getId(), greaterThan(0));
+    assertEquals(cmd.getOwner(), cp.getOwner().getId());
+    assertNotNull(cp.getCreate());
+    assertThat(cp.getCreate(), allOf(notNullValue(), after(this.now)));
+    assertEquals(cp.getCreate(), cp.getUpdate());
   }
 }

@@ -8,6 +8,7 @@ import static kr.lul.urs.util.Randoms.in;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
+import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.repository.ClientPlatformRepository;
@@ -18,11 +19,25 @@ import kr.lul.urs.core.repository.ClientPlatformRepository;
  */
 public abstract class ClientPlatformUtils {
   /**
-   * 저장하지 않은 임의의 클라이언트 인스턴스를 만든다.
+   * 임의의 인스턴스를 만들 수 있는 커맨들르 만든다.
    *
    * @return
    */
-  public static ClientPlatformEntity random(Operator owner) {
+  public static CreateClientPlatformCmd createCmd(Operator owner) {
+    notNull(owner);
+
+    String code = randomAlphabetic(in(1, 3)).toLowerCase() + randomAlphanumeric(in(0, 10));
+    String label = "Test%" + randomAlphanumeric(in(1, 10));
+    String description = "Random Client Platform for test.";
+    return new CreateClientPlatformCmd(owner.getId(), code, label, description);
+  }
+
+  /**
+   * DB 저장 상태와 무관한 임의의 클라이언트 인스턴스를 만든다.
+   *
+   * @return
+   */
+  public static ClientPlatformEntity instance(Operator owner) {
     notNull(owner);
 
     String code = randomAlphabetic(1) + randomAlphanumeric(in(1, 10));
@@ -32,11 +47,19 @@ public abstract class ClientPlatformUtils {
     return new ClientPlatformEntity(owner, code, label, description);
   }
 
-  public static ClientPlatformEntity create(Operator owner, ClientPlatformRepository clientPlatformRepository) {
+  /**
+   * 임의의 인스턴스를 만들어 DB에 바로 저장한다.
+   * TODO 중복 확인.
+   *
+   * @param owner
+   * @param clientPlatformRepository
+   * @return
+   */
+  public static ClientPlatformEntity saveAndFlush(Operator owner, ClientPlatformRepository clientPlatformRepository) {
     notNull(owner);
     notNull(clientPlatformRepository);
 
-    return clientPlatformRepository.saveAndFlush(random(owner));
+    return clientPlatformRepository.saveAndFlush(instance(owner));
   }
 
   protected ClientPlatformUtils() {

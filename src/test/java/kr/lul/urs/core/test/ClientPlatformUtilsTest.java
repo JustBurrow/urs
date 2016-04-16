@@ -4,14 +4,17 @@
 package kr.lul.urs.core.test;
 
 import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static kr.lul.urs.core.test.ClientPlatformUtils.create;
-import static kr.lul.urs.core.test.ClientPlatformUtils.random;
+import static kr.lul.urs.core.test.ClientPlatformUtils.createCmd;
+import static kr.lul.urs.core.test.ClientPlatformUtils.instance;
+import static kr.lul.urs.core.test.ClientPlatformUtils.saveAndFlush;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.Instant;
@@ -27,11 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.repository.ClientPlatformRepository;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.util.AssertionException;
+import kr.lul.urs.util.Conditions;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -55,24 +60,46 @@ public class ClientPlatformUtilsTest {
   }
 
   @Test(expected = AssertionException.class)
-  public void testRandomWithNull() throws Exception {
-    random(null);
-    fail();
-  }
-
-  @Test(expected = AssertionException.class)
-  public void testCreateWithNullAndNull() throws Exception {
-    create(null, null);
+  public void testCreateCmdWithNull() throws Exception {
+    createCmd(null);
     fail();
   }
 
   @Test
-  public void testCreate() throws Exception {
+  public void testCreateCmd() throws Exception {
     // Given
     final Operator owner = OperatorUtils.create(this.operatorInternalService);
 
     // When
-    final ClientPlatformEntity clientPlatform = create(owner, this.clientPlatformRepository);
+    final CreateClientPlatformCmd cmd = createCmd(owner);
+
+    // Then
+    assertNotNull(cmd);
+    assertEquals(owner.getId(), cmd.getOwner());
+    assertTrue(cmd.getCode(), Conditions.matches(cmd.getCode(), "[a-z][a-zA-Z\\d]*"));
+    assertThat(cmd.getLabel(), not(isEmptyOrNullString()));
+    assertThat(cmd.getDescription(), notNullValue());
+  }
+
+  @Test(expected = AssertionException.class)
+  public void testInstanceWithNull() throws Exception {
+    instance(null);
+    fail();
+  }
+
+  @Test(expected = AssertionException.class)
+  public void testSaveAndFlushWithNullAndNull() throws Exception {
+    saveAndFlush(null, null);
+    fail();
+  }
+
+  @Test
+  public void testSaveAndFlush() throws Exception {
+    // Given
+    final Operator owner = OperatorUtils.create(this.operatorInternalService);
+
+    // When
+    final ClientPlatformEntity clientPlatform = saveAndFlush(owner, this.clientPlatformRepository);
 
     // Then
     assertNotNull(clientPlatform);
