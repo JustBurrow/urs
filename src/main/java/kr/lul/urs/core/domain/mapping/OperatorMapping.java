@@ -28,6 +28,7 @@ public abstract class OperatorMapping {
      */
     public static final String ENTITY                  = "Operator";
 
+    public static final String ID                      = "id";
     /**
      * 관리자 계정과 1:1 대응하는 E메일.
      */

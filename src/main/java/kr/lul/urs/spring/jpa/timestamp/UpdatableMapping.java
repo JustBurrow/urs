@@ -3,7 +3,6 @@
  */
 package kr.lul.urs.spring.jpa.timestamp;
 
-import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -23,13 +22,6 @@ public abstract class UpdatableMapping {
    * @see Timestamps
    */
   public abstract static class UpdatableEntity {
-    /**
-     * 엔티티의 ID.
-     * 복합PK를 사용하는 경우, 필드와 1:1 매핑이 되지 않기 때문에, {@link UpdatableTable}에는 정의하지 않는다.
-     *
-     * @see Id
-     */
-    public static final String ID     = "id";
     /**
      * 데이터 생성 시각의 필드명.
      *
