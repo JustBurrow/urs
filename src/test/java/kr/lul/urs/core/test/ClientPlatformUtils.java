@@ -12,6 +12,7 @@ import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.repository.ClientPlatformRepository;
+import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -60,6 +61,21 @@ public abstract class ClientPlatformUtils {
     notNull(clientPlatformRepository);
 
     return clientPlatformRepository.saveAndFlush(instance(owner));
+  }
+
+  /**
+   * 임의의 DO를 만든다.
+   *
+   * @param owner
+   * @param clientPlatformInternalService
+   * @return
+   */
+  public static ClientPlatformEntity create(Operator owner,
+      ClientPlatformInternalService clientPlatformInternalService) {
+    notNull(owner);
+    notNull(clientPlatformInternalService);
+
+    return (ClientPlatformEntity) clientPlatformInternalService.create(createCmd(owner));
   }
 
   protected ClientPlatformUtils() {
