@@ -2177,6 +2177,27 @@ public abstract class Asserts {
   }
 
   /**
+   * 인스턴스가 다른 인스턴스와 같은지 단정한다.
+   *
+   * @param instance
+   *          단정할 인스턴스.
+   * @param that
+   *          비교할 인스턴스.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void equal(Object instance, Object that) throws AssertionException {
+    try {
+      if (Conditions.equal(instance, that)) {
+        return;
+      }
+      throw new AssertionException(format("instance[%s] is not equal to that[%s].", instance, that));
+    } catch (Exception e) {
+      throw new AssertionException(e);
+    }
+  }
+
+  /**
    * 문자열의 길이가 1 이상임을 단정한다.
    *
    * @param string

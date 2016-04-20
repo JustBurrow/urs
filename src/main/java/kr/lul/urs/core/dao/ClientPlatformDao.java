@@ -24,4 +24,10 @@ public interface ClientPlatformDao {
    * @return 저장이 완료된 데이터.
    */
   public ClientPlatform insert(ClientPlatform clientPlatform);
+
+  /**
+   * @param id
+   * @return
+   */
+  public ClientPlatform select(int id);
 }

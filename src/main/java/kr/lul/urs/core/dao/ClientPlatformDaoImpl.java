@@ -34,4 +34,12 @@ class ClientPlatformDaoImpl implements ClientPlatformDao {
 
     return clientPlatform;
   }
+
+  @Override
+  public ClientPlatform select(int id) {
+    if (0 >= id) {
+      return null;
+    }
+    return this.clientPlatformRepository.findOne(id);
+  }
 }

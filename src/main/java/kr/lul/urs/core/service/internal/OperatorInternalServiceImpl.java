@@ -44,6 +44,9 @@ class OperatorInternalServiceImpl implements OperatorInternalService {
 
   @Override
   public OperatorEntity read(int id) {
+    if (0 >= id) {
+      // TODO throw
+    }
     OperatorEntity operator = (OperatorEntity) this.operatorDao.select(id);
     return operator;
   }

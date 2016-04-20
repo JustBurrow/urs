@@ -7,28 +7,28 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.ResourceFile;
 
 /**
- * {@link ClientPlatform}을 다루는 내부 플랫폼.
- *
  * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 4. 9.
+ * @since 2016. 4. 17.
  */
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER, propagation = Propagation.MANDATORY)
-public interface ClientPlatformInternalService {
+public interface ResourceFileInternalService {
   /**
-   * 새로운 {@link ClientPlatform}을 만든다.
-   *
    * @param cmd
    * @return
    */
-  public ClientPlatform create(CreateClientPlatformCmd cmd);
+  public ResourceFile create(CreateResourceFileCmd cmd);
 
   /**
-   * @param id
+   * 등록된 리소스 파일이 있는지 여부를 반환한다.
+   *
+   * @param clientPlatform
+   * @param name
    * @return
    */
-  public ClientPlatform read(int id);
+  public boolean isExists(ClientPlatform clientPlatform, String name);
 }

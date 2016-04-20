@@ -840,6 +840,31 @@ public abstract class Conditions {
   }
 
   /**
+   * 인스턴스가 다른 인스턴스와 같은지 확인한다.
+   *
+   * @param instance
+   *          확인할 인스턴스.
+   * @param that
+   *          비교할 인스턴스.
+   * @return 같은 인스턴스이면 <code>true</code>.
+   * @throws IllegalArgumentException
+   *           확인할 인스턴스가 <code>null</code>인 경우.
+   */
+  public static boolean equal(Object instance, Object that) throws IllegalArgumentException {
+    if (null == instance) {
+      throw new IllegalArgumentException("instance is null.");
+    }
+
+    if (instance == that) {
+      return true;
+    } else if (null == that) {
+      return false;
+    } else {
+      return instance.equals(that);
+    }
+  }
+
+  /**
    * 문자열이 길이를 가지고 있는지 확인한다.
    *
    * @param string

@@ -37,4 +37,13 @@ class ClientPlatformInternalServiceImpl implements ClientPlatformInternalService
 
     return clientPlatform;
   }
+
+  @Override
+  public ClientPlatform read(int id) {
+    if (0 >= id) {
+      // TODO throw
+    }
+    ClientPlatform clientPlatform = this.clientPlatformDao.select(id);
+    return clientPlatform;
+  }
 }

@@ -3,6 +3,7 @@ package kr.lul.urs.util;
 import static kr.lul.urs.util.Conditions.after;
 import static kr.lul.urs.util.Conditions.assignable;
 import static kr.lul.urs.util.Conditions.before;
+import static kr.lul.urs.util.Conditions.equal;
 import static kr.lul.urs.util.Conditions.ge;
 import static kr.lul.urs.util.Conditions.gt;
 import static kr.lul.urs.util.Conditions.hasLength;
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
 public class ConditionsTest {
@@ -349,6 +351,18 @@ public class ConditionsTest {
     assertTrue(assignable(new Object(), Object.class));
     assertTrue(assignable(new A(), Object.class));
     assertFalse(assignable(new Object(), A.class));
+  }
+
+  @Test
+  public void testEqual() throws Exception {
+    exceptException(IllegalArgumentException.class, () -> equal(null, null));
+
+    final String str = RandomStringUtils.random(Randoms.in(0, 10));
+
+    assertFalse(str, equal(str, null));
+    assertFalse(str, equal(str, new Object()));
+    assertTrue(str, equal(str, str));
+    assertTrue(str, equal(str, new String(str)));
   }
 
   @Test
