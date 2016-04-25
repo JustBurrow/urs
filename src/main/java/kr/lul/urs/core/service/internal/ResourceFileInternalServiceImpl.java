@@ -3,12 +3,14 @@
  */
 package kr.lul.urs.core.service.internal;
 
+import static java.lang.String.format;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.command.CreateResourceFileCmd;
+import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.dao.ResourceFileDao;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
@@ -28,7 +30,7 @@ class ResourceFileInternalServiceImpl extends AbstractPropertyDoInternalService 
   // <I>ResourceFileInternalService
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public ResourceFile create(CreateResourceFileCmd cmd) {
+  public ResourceFile create(CreateResourceFileCmd cmd) throws OwnershipException {
     notNull(cmd);
 
     Operator owner = this.operatorInternalService.read(cmd.getOwner());
@@ -36,11 +38,36 @@ class ResourceFileInternalServiceImpl extends AbstractPropertyDoInternalService 
       // TODO throw
     }
     ClientPlatform clientPlatform = this.clientPlatformInternalService.read(cmd.getClientPlatform());
+    if (!owner.equals(clientPlatform.getOwner())) {
+      throw new OwnershipException(
+          format("requested owner[%s] and client platform owner[%s] are not equal.", cmd.getOwner(),
+              clientPlatform.getOwner().toSimpleString()),
+          cmd.getOwner(), clientPlatform.getOwner().getId());
+    }
 
     ResourceFileEntity rf = new ResourceFileEntity(clientPlatform, cmd.getName());
     rf = (ResourceFileEntity) this.resourceFileDao.insert(rf);
 
     return rf;
+  }
+
+  @Override
+  public ResourceFile read(int id) {
+    return this.resourceFileDao.select(id);
+  }
+
+  @Override
+  public ResourceFile read(ReadResourceFileCmd cmd) throws OwnershipException {
+    notNull(cmd);
+
+    ResourceFile resourceFile = this.resourceFileDao.select(cmd.getId());
+    if (null == resourceFile) {
+      return null;
+    } else if (cmd.getOwner() == resourceFile.getOwner().getId()) {
+      return resourceFile;
+    } else {
+      throw new OwnershipException("owner does not match.", cmd.getOwner(), resourceFile.getOwner().getId());
+    }
   }
 
   @Override

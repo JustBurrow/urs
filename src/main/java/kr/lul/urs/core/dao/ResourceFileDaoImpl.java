@@ -30,6 +30,11 @@ class ResourceFileDaoImpl implements ResourceFileDao {
   }
 
   @Override
+  public ResourceFile select(int id) {
+    return this.resourceFileRepository.findOne(id);
+  }
+
+  @Override
   public boolean isExists(ClientPlatform clientPlatform, String name) {
     notNull(clientPlatform);
     assignable(clientPlatform, ClientPlatformEntity.class);

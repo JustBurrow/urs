@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
+import kr.lul.urs.core.repository.OperatorRepository;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.core.test.ClientPlatformUtils;
@@ -23,6 +24,9 @@ public abstract class AbstractApplicationTest {
   protected OperatorInternalService       operatorInternalService;
   @Autowired
   protected ClientPlatformInternalService clientPlatformInternalService;
+
+  @Autowired
+  protected OperatorRepository            operatorRepository;
 
   protected Instant                       now;
   protected Operator                      operator;

@@ -24,6 +24,12 @@ public interface ResourceFileDao {
   public ResourceFile insert(ResourceFile resourceFile);
 
   /**
+   * @param id
+   * @return
+   */
+  public ResourceFile select(int id);
+
+  /**
    * DB에 데이터가 있는지 여부를 확인한다.
    *
    * @param clientPlatform

@@ -11,10 +11,12 @@ import static kr.lul.urs.util.Strings.UPPER;
 import static kr.lul.urs.util.Strings.from;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.PageRequest;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.OperatorDto;
+import kr.lul.urs.core.repository.OperatorRepository;
 import kr.lul.urs.core.service.OperatorService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.spring.tx.util.Return;
@@ -66,6 +68,27 @@ public abstract class OperatorUtils {
   public static Operator create(OperatorInternalService operatorInternalService) {
     notNull(operatorInternalService);
     return operatorInternalService.create(command());
+  }
+
+  /**
+   * 임의의 운영자를 선택한다. 운영자가 없으면 <code>null</code>.
+   *
+   * @param operatorRepository
+   * @return
+   */
+  public static Operator random(OperatorRepository operatorRepository) {
+    notNull(operatorRepository);
+
+    int count = (int) operatorRepository.count();
+    switch (count) {
+      case 0:
+        return null;
+      case 1:
+        return operatorRepository.findAll().get(0);
+      default:
+        PageRequest spec = new PageRequest(Randoms.notNegative(count), 1);
+        return operatorRepository.findAll(spec).getContent().get(0);
+    }
   }
 
   protected OperatorUtils() {

@@ -6,13 +6,14 @@ package kr.lul.urs.core.domain;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
+import kr.lul.urs.util.ToSimpleString;
 
 /**
  * 프로덕트 관리자.
  *
  * @author Just Burrow just.burrow@lul.kr
  */
-public interface Operator extends Updatable {
+public interface Operator extends Updatable, ToSimpleString {
   /**
    * 관리자 계정 ID.
    *

@@ -9,6 +9,7 @@ import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
+import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
@@ -42,9 +43,10 @@ public abstract class ResourceFileUtils {
    * @param clientPlatform
    * @param resourceFileInternalService
    * @return
+   * @throws OwnershipException
    */
   public static ResourceFileEntity create(ClientPlatform clientPlatform,
-      ResourceFileInternalService resourceFileInternalService) {
+      ResourceFileInternalService resourceFileInternalService) throws OwnershipException {
     notNull(clientPlatform);
     notNull(resourceFileInternalService);
 
