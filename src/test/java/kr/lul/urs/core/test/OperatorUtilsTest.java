@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.time.Instant;
 
@@ -31,6 +32,7 @@ import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
+import kr.lul.urs.util.AssertionException;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -98,5 +100,11 @@ public class OperatorUtilsTest {
     assertThat(operator.getUpdate(), after(this.now));
     assertEquals(operator.getCreate(), operator.getUpdate());
     assertNotNull(Timestamper.getTimeProvider());
+  }
+
+  @Test(expected = AssertionException.class)
+  public void testRandomRepositoryWithNull() throws Exception {
+    OperatorUtils.random(null);
+    fail();
   }
 }
