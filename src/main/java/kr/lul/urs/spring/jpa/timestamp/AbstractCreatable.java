@@ -17,8 +17,8 @@ import javax.persistence.PrePersist;
  */
 @MappedSuperclass
 public abstract class AbstractCreatable implements Creatable {
-  @Column
-  @Timestamp(name = CREATE_UTC, trigger = PrePersist.class)
+  @Column(name = CREATE_UTC, nullable = false, updatable = false)
+  @Timestamp(trigger = PrePersist.class)
   private Instant create;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
