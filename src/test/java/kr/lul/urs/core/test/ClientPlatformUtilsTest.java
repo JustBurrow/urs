@@ -27,13 +27,14 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.AbstractApplicationTest;
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.repository.ClientPlatformRepository;
+import kr.lul.urs.core.service.OperatorService;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Conditions;
@@ -46,7 +47,9 @@ import kr.lul.urs.util.Conditions;
 @SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(ApplicationTestConfig.ROLLBACK)
-public class ClientPlatformUtilsTest extends AbstractApplicationTest {
+public class ClientPlatformUtilsTest extends AbstractInternalTest {
+  @Autowired
+  private OperatorService               operatorService;
   @Autowired
   private ClientPlatformInternalService clientPlatformInternalService;
   @Autowired
@@ -58,14 +61,8 @@ public class ClientPlatformUtilsTest extends AbstractApplicationTest {
     this.setOperatorAsRandom();
   }
 
-  @Test(expected = AssertionException.class)
-  public void testCreateCmdWithNull() throws Exception {
-    createCmd(null);
-    fail();
-  }
-
   @Test
-  public void testCreateCmd() throws Exception {
+  public void testCreateCmdWithOperator() throws Exception {
     // Given
     final Operator owner = OperatorUtils.create(this.operatorInternalService);
 
@@ -78,6 +75,22 @@ public class ClientPlatformUtilsTest extends AbstractApplicationTest {
     assertTrue(cmd.getCode(), Conditions.matches(cmd.getCode(), "[a-z][a-zA-Z\\d]*"));
     assertThat(cmd.getLabel(), not(isEmptyOrNullString()));
     assertThat(cmd.getDescription(), notNullValue());
+  }
+
+  @Test
+  @Rollback(false)
+  public void testCreateCmdWithOperatorDto() throws Exception {
+    // When
+    OperatorDto operator = OperatorUtils.create(this.operatorService).value();
+    CreateClientPlatformCmd cmd = ClientPlatformUtils
+        .createCmd(operator);
+
+    // Then
+    assertNotNull(cmd);
+    assertEquals(operator.getId(), cmd.getOwner());
+    assertThat(cmd.getCode(), not(isEmptyOrNullString()));
+    assertThat(cmd.getLabel(), not(isEmptyOrNullString()));
+    assertThat(cmd.getDescription(), not(isEmptyOrNullString()));
   }
 
   @Test(expected = AssertionException.class)

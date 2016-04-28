@@ -150,7 +150,7 @@ public class ClientPlatformEntity extends AbstractUpdatable implements ClientPla
   public String toString() {
     StringBuilder sb = new StringBuilder(ClientPlatformEntity.class.getSimpleName())
         .append("[id=").append(this.id)
-        .append(", owner=").append(this.owner)
+        .append(", owner=").append(this.owner.toSimpleString())
         .append(", code=").append(this.code)
         .append(", label=").append(this.label)
         .append(", description=");

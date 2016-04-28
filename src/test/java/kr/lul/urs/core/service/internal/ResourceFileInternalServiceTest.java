@@ -20,7 +20,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.AbstractApplicationTest;
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
@@ -28,6 +27,7 @@ import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
+import kr.lul.urs.core.test.AbstractInternalTest;
 import kr.lul.urs.core.test.OperatorUtils;
 import kr.lul.urs.core.test.ResourceFileUtils;
 import kr.lul.urs.util.AssertionException;
@@ -37,7 +37,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(ApplicationTestConfig.ROLLBACK)
-public class ResourceFileInternalServiceTest extends AbstractApplicationTest {
+public class ResourceFileInternalServiceTest extends AbstractInternalTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 

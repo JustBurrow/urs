@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.application;
+package kr.lul.urs.core.test;
 
 import java.time.Instant;
 
@@ -12,14 +12,12 @@ import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.repository.OperatorRepository;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.core.test.ClientPlatformUtils;
-import kr.lul.urs.core.test.OperatorUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 9.
  */
-public abstract class AbstractApplicationTest {
+public abstract class AbstractInternalTest {
   @Autowired
   protected OperatorInternalService       operatorInternalService;
   @Autowired

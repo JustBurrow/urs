@@ -28,11 +28,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.test.TestConfig;
-import kr.lul.urs.application.AbstractApplicationTest;
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.domain.ResourceFileRevision;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
+import kr.lul.urs.core.test.AbstractInternalTest;
 import kr.lul.urs.core.test.ResourceFileUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
@@ -46,7 +46,7 @@ import kr.lul.urs.util.Strings;
 @SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(ApplicationTestConfig.ROLLBACK)
-public class ResourceFileEntityTest extends AbstractApplicationTest {
+public class ResourceFileEntityTest extends AbstractInternalTest {
   public static final String          CLASS_NAME = ResourceFileEntityTest.class.getSimpleName();
 
   @Autowired

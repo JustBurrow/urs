@@ -21,7 +21,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.AbstractApplicationTest;
 import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
@@ -37,7 +36,7 @@ import kr.lul.urs.util.Conditions;
 @SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(ApplicationTestConfig.ROLLBACK)
-public class ResourceFileUtilsTest extends AbstractApplicationTest {
+public class ResourceFileUtilsTest extends AbstractInternalTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 
