@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <springProperty scope="context" name="PATTERN" source="kr.lul.urs.logging.pattern"/>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>${PATTERN}</Pattern>
+    </layout>
+  </appender>
+  <root level="ALL">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>

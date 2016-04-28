@@ -1,3 +1,5 @@
+kr.lul.urs:
+  logging.pattern: "%-4relative [%thread] %-5level %logger{60} - %msg %n"
 spring:
   datasource:
     url: jdbc:mysql://localhost/urs
@@ -24,3 +26,11 @@ spring:
 server:
   address: 127.0.0.1 # Change to test microservice architecture.
   port: 80 # Change for dev & test to pass OS security policy.
+logging:
+  level:
+    sun: fatal
+    java: fatal
+    javax: fatal
+    org.apache: warn
+    org.springframework: warn
+    org.hibernate: warn

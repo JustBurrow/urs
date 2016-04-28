@@ -1,3 +1,5 @@
+kr.lul.urs:
+  logging.pattern: "%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg %n"
 spring:
   datasource:
     username: 'root'
@@ -15,5 +17,6 @@ server:
   port: 8080
 logging:
   level:
+    org.hibernate: warn
+    org.hibernate.SQL: debug
     kr.lul: debug
-    log4j.logger.org.hibernate.stat: trace
