@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,12 +20,21 @@ public abstract class InjectionConstants {
    * @author Just Burrow just.burrow@lul.kr
    */
   public static abstract class Properties {
-    public static final String PREFIX_DATASOURCE     = "spring.datasource";
-    public static final String PREFIX_JPA            = "spring.jpa";
-    public static final String PREFIX_JPA_PROPERTIES = PREFIX_JPA + ".properties";
+    public static final String PREFIX_CORE            = "kr.lul.urs";
+    /**
+     * DAO가 도메인 엔티티를 저장할 때, 어떤 메서드를 사용할지 결정한다.
+     *
+     * @see JpaRepository#save(Object) <code>false</code>일 때.
+     * @see JpaRepository#saveAndFlush(Object) <code>true</code>일 때.
+     */
+    public static final String KEY_DAO_SAVE_AND_FLUSH = PREFIX_CORE + ".dao.saveAndFlush";
 
-    public static final String KEY_SHOW_SQL          = PREFIX_JPA + ".show-sql";
-    public static final String KEY_GENERATE_DDL      = PREFIX_JPA + ".generate-ddl";
+    public static final String PREFIX_DATASOURCE      = "spring.datasource";
+    public static final String PREFIX_JPA             = "spring.jpa";
+    public static final String PREFIX_JPA_PROPERTIES  = PREFIX_JPA + ".properties";
+
+    public static final String KEY_SHOW_SQL           = PREFIX_JPA + ".show-sql";
+    public static final String KEY_GENERATE_DDL       = PREFIX_JPA + ".generate-ddl";
 
     protected Properties() {
       throw new UnsupportedOperationException();

@@ -18,7 +18,7 @@ import kr.lul.urs.core.repository.OperatorRepository;
  * @since 2016. 3. 21.
  */
 @Service
-class OperatorDaoImpl implements OperatorDao {
+class OperatorDaoImpl extends AbstractDao implements OperatorDao {
   @Autowired
   private OperatorRepository operatorRepository;
 
@@ -26,10 +26,16 @@ class OperatorDaoImpl implements OperatorDao {
   // <I>OperatorDao
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public OperatorEntity insert(Operator operator) {
+  public Operator insert(Operator operator) {
     assignable(operator, OperatorEntity.class);
 
-    return this.operatorRepository.save((OperatorEntity) operator);
+    if (this.saveAndFlush) {
+      operator = this.operatorRepository.saveAndFlush((OperatorEntity) operator);
+    } else {
+      operator = this.operatorRepository.save((OperatorEntity) operator);
+    }
+
+    return operator;
   }
 
   @Override

@@ -1,6 +1,6 @@
 kr.lul.urs:
   dao:
-    saveAndFlush: false
+    saveAndFlush: true
   logging.pattern: "%-4relative [%thread] %-5level %logger{60} - %msg %n"
 spring:
   datasource:

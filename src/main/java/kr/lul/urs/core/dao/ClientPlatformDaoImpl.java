@@ -18,7 +18,7 @@ import kr.lul.urs.core.repository.ClientPlatformRepository;
  * @since 2016. 4. 8.
  */
 @Service
-class ClientPlatformDaoImpl implements ClientPlatformDao {
+class ClientPlatformDaoImpl extends AbstractDao implements ClientPlatformDao {
   @Autowired
   private ClientPlatformRepository clientPlatformRepository;
 
@@ -30,7 +30,11 @@ class ClientPlatformDaoImpl implements ClientPlatformDao {
     notNull(clientPlatform);
     assignable(clientPlatform, ClientPlatformEntity.class);
 
-    clientPlatform = this.clientPlatformRepository.save((ClientPlatformEntity) clientPlatform);
+    if (this.saveAndFlush) {
+      clientPlatform = this.clientPlatformRepository.saveAndFlush((ClientPlatformEntity) clientPlatform);
+    } else {
+      clientPlatform = this.clientPlatformRepository.save((ClientPlatformEntity) clientPlatform);
+    }
 
     return clientPlatform;
   }

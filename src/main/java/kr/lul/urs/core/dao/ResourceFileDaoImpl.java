@@ -13,7 +13,7 @@ import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.repository.ResourceFileRepository;
 
 @Service
-class ResourceFileDaoImpl implements ResourceFileDao {
+class ResourceFileDaoImpl extends AbstractDao implements ResourceFileDao {
   @Autowired
   private ResourceFileRepository resourceFileRepository;
 
@@ -25,7 +25,11 @@ class ResourceFileDaoImpl implements ResourceFileDao {
     notNull(resourceFile);
     assignable(resourceFile, ResourceFileEntity.class);
 
-    resourceFile = this.resourceFileRepository.save((ResourceFileEntity) resourceFile);
+    if (this.saveAndFlush) {
+      resourceFile = this.resourceFileRepository.saveAndFlush((ResourceFileEntity) resourceFile);
+    } else {
+      resourceFile = this.resourceFileRepository.save((ResourceFileEntity) resourceFile);
+    }
     return resourceFile;
   }
 
