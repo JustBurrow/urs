@@ -18,7 +18,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.ApplicationTestConfig;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.entity.ParentEntity;
 import kr.lul.urs.core.repository.ParentRepository;
 
@@ -26,9 +26,9 @@ import kr.lul.urs.core.repository.ParentRepository;
  * @author Just Burrow just.burrow@lul.kr
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
+@Rollback(CoreTestConfig.ROLLBACK)
 @Ignore
 public class JpaConfigurationTest {
   // @Autowired

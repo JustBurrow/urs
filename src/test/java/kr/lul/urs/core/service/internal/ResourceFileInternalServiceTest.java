@@ -20,24 +20,24 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
-import kr.lul.urs.core.test.AbstractInternalTest;
-import kr.lul.urs.core.test.OperatorUtils;
 import kr.lul.urs.core.test.ResourceFileUtils;
+import kr.lul.urs.core.test.service.internal.OperatorInternalServiceUtils;
+import kr.lul.urs.core.test.service.internal.ResourceFileInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
-public class ResourceFileInternalServiceTest extends AbstractInternalTest {
+@Rollback(CoreTestConfig.ROLLBACK)
+public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 
@@ -57,10 +57,10 @@ public class ResourceFileInternalServiceTest extends AbstractInternalTest {
   @Test
   public void testCreateWithIllegalOwner() throws Exception {
     // Given
-    final CreateResourceFileCmd cmd = ResourceFileUtils.createCmd(this.clientPlatform);
+    final CreateResourceFileCmd cmd = ResourceFileUtils.createCmd(this.operator.getId(), this.clientPlatform.getId());
     Operator operator;
     do {
-      operator = OperatorUtils.random(this.operatorRepository);
+      operator = OperatorInternalServiceUtils.create(this.operatorInternalService);
     } while (null != operator && cmd.getOwner() == operator.getId());
     cmd.setOwner(null == operator ? Randoms.positive() : operator.getId());
 
@@ -81,7 +81,7 @@ public class ResourceFileInternalServiceTest extends AbstractInternalTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateResourceFileCmd cmd = ResourceFileUtils.createCmd(this.clientPlatform);
+    final CreateResourceFileCmd cmd = ResourceFileUtils.createCmd(this.operator.getId(), this.clientPlatform.getId());
 
     // When
     final ResourceFile resourceFile = this.resourceFileInternalService.create(cmd);
@@ -112,7 +112,8 @@ public class ResourceFileInternalServiceTest extends AbstractInternalTest {
   @Test
   public void testReadWithId() throws Exception {
     // Given
-    final ResourceFileEntity rf1 = ResourceFileUtils.create(this.clientPlatform, this.resourceFileInternalService);
+    final ResourceFileEntity rf1 = ResourceFileInternalServiceUtils.create(this.clientPlatform,
+        this.resourceFileInternalService);
 
     // When
     final ResourceFile rf2 = this.resourceFileInternalService.read(rf1.getId());
@@ -130,10 +131,11 @@ public class ResourceFileInternalServiceTest extends AbstractInternalTest {
   @Test(expected = OwnershipException.class)
   public void testReadWithReadResourceFileCmdThatIllegalOwner() throws Exception {
     // Given
-    final ResourceFileEntity rf1 = ResourceFileUtils.create(this.clientPlatform, this.resourceFileInternalService);
+    final ResourceFileEntity rf1 = ResourceFileInternalServiceUtils.create(this.clientPlatform,
+        this.resourceFileInternalService);
     int illegalOwner;
     do {
-      illegalOwner = OperatorUtils.random(this.operatorRepository).getId();
+      illegalOwner = OperatorInternalServiceUtils.create(this.operatorInternalService).getId();
     } while (rf1.getOwner().getId() == illegalOwner);
     ReadResourceFileCmd cmd = new ReadResourceFileCmd(illegalOwner, rf1.getId());
 
@@ -147,7 +149,8 @@ public class ResourceFileInternalServiceTest extends AbstractInternalTest {
   @Test
   public void testReadWithReadResourceFileCmd() throws Exception {
     // Given
-    final ResourceFileEntity rf1 = ResourceFileUtils.create(this.clientPlatform, this.resourceFileInternalService);
+    final ResourceFileEntity rf1 = ResourceFileInternalServiceUtils.create(this.clientPlatform,
+        this.resourceFileInternalService);
     ReadResourceFileCmd cmd = new ReadResourceFileCmd(this.operator.getId(), rf1.getId());
 
     // When

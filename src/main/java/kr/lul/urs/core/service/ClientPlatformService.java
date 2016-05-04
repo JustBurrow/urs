@@ -31,6 +31,13 @@ public interface ClientPlatformService {
   public Return<ClientPlatformDto> create(CreateClientPlatformCmd cmd);
 
   /**
+   * @param id
+   * @return
+   * @since 2016. 5. 3.
+   */
+  public Return<ClientPlatformDto> read(int id);
+
+  /**
    * @param cmd
    * @return
    * @since 2016. 4. 28.

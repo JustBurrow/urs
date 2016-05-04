@@ -15,8 +15,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.util.EMails;
@@ -27,9 +27,9 @@ import kr.lul.urs.util.Strings;
  * @since 2016. 3. 28.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
+@Rollback(CoreTestConfig.ROLLBACK)
 public class OperatorInternalServiceTest {
   @Autowired
   private OperatorInternalService operatorInternalService;

@@ -3,54 +3,48 @@
  */
 package kr.lul.urs.core.test;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static kr.lul.urs.core.test.ResourceFileUtils.create;
 import static kr.lul.urs.core.test.ResourceFileUtils.createCmd;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.ApplicationTestConfig;
-import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
-import kr.lul.urs.core.domain.entity.ResourceFileEntity;
-import kr.lul.urs.core.service.internal.ResourceFileInternalService;
+import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.service.ClientPlatformService;
+import kr.lul.urs.core.test.service.ClientPlatformServiceUtils;
 import kr.lul.urs.util.Conditions;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 4. 17.
+ * @since 2016. 5. 3.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
-@Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
-public class ResourceFileUtilsTest extends AbstractInternalTest {
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
+public class ResourceFileUtilsTest extends AbstractUtilsTest {
   @Autowired
-  private ResourceFileInternalService resourceFileInternalService;
+  private ClientPlatformService clientPlatformService;
+
+  private ClientPlatformDto     clientPlatform;
 
   @Before
   public void setUp() throws Exception {
-    this.setNow();
-    this.setClientPlatformAsRandom();
+    this.setOperatorAsRandom();
+    this.clientPlatform = ClientPlatformServiceUtils.create(this.operator.getId(), this.clientPlatformService).value();
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testConstructor() {
-    new ResourceFileUtils() {
-    };
-    fail();
+    assertThatThrownBy(() -> new ResourceFileUtils() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
@@ -63,19 +57,5 @@ public class ResourceFileUtilsTest extends AbstractInternalTest {
     assertEquals(this.operator.getId(), cmd.getOwner());
     assertEquals(this.clientPlatform.getId(), cmd.getClientPlatform());
     assertTrue(cmd.getName(), Conditions.matches(cmd.getName(), "(/[a-z][a-zA-Z\\d]*)+"));
-  }
-
-  @Test
-  public void testCreateWithInternalService() throws Exception {
-    // When
-    final ResourceFileEntity rf = create(this.clientPlatform, this.resourceFileInternalService);
-
-    // Then
-    assertNotNull(rf);
-    assertEquals(this.operator, rf.getOwner());
-    assertEquals(this.clientPlatform, rf.getClientPlatform());
-    assertTrue(rf.getName(), Conditions.matches(rf.getName(), "(/[a-z][a-zA-Z\\d]*)+"));
-    assertThat(rf.getCreate(), after(this.now));
-    assertEquals(rf.getCreate(), rf.getUpdate());
   }
 }

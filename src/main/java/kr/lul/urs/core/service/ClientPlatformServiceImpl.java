@@ -56,6 +56,12 @@ class ClientPlatformServiceImpl implements ClientPlatformService {
   }
 
   @Override
+  public Return<ClientPlatformDto> read(int id) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public List<Return<ClientPlatformDto>> list() {
     // TODO Auto-generated method stub
     return null;

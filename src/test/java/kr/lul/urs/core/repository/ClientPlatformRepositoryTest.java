@@ -21,12 +21,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.core.test.OperatorUtils;
+import kr.lul.urs.core.test.service.internal.OperatorInternalServiceUtils;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -34,9 +34,9 @@ import kr.lul.urs.util.Randoms;
  * @since 2016. 4. 5.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
+@Rollback(CoreTestConfig.ROLLBACK)
 public class ClientPlatformRepositoryTest {
   @Autowired
   private ClientPlatformRepository clientPlatformRepository;
@@ -54,7 +54,7 @@ public class ClientPlatformRepositoryTest {
   @Test
   public void testSaveAndFlush() {
     // Given
-    final Operator owner = OperatorUtils.create(this.operatorInternalService);
+    final Operator owner = OperatorInternalServiceUtils.create(this.operatorInternalService);
     final String code = RandomStringUtils.randomAlphabetic(Randoms.in(3, 10));
     final String label = RandomStringUtils.randomAlphanumeric(Randoms.in(1, 10));
     final String description = RandomStringUtils.randomAlphanumeric(Randoms.in(0, 1000));

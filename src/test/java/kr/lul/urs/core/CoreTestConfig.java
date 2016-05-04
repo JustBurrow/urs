@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.application;
+package kr.lul.urs.core;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,6 +15,6 @@ import kr.lul.urs.application.configuration.ApplicationConfiguration;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = { ApplicationConfiguration.class })
-public class ApplicationTestConfig {
+public class CoreTestConfig {
   public static final boolean ROLLBACK = true;
 }

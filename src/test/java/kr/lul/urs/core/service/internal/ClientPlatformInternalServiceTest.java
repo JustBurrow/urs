@@ -22,11 +22,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.application.ApplicationTestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.domain.ClientPlatform;
-import kr.lul.urs.core.test.AbstractInternalTest;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -34,10 +33,10 @@ import kr.lul.urs.util.AssertionException;
  * @since 2016. 4. 9.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
-public class ClientPlatformInternalServiceTest extends AbstractInternalTest {
+@Rollback(CoreTestConfig.ROLLBACK)
+public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTest {
   @Autowired
   private ClientPlatformInternalService clientPlatformInternalService;
 

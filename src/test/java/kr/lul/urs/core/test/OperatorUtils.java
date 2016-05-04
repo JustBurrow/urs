@@ -3,7 +3,6 @@
  */
 package kr.lul.urs.core.test;
 
-import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Strings.DIGITS;
 import static kr.lul.urs.util.Strings.ETCs;
 import static kr.lul.urs.util.Strings.LOWER;
@@ -11,22 +10,13 @@ import static kr.lul.urs.util.Strings.UPPER;
 import static kr.lul.urs.util.Strings.from;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.data.domain.PageRequest;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
-import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.repository.OperatorRepository;
-import kr.lul.urs.core.service.OperatorService;
-import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.spring.tx.util.Return;
 import kr.lul.urs.util.Randoms;
 
 /**
- * 프로덕트 관리자와 관련된 데이터를 만드는 유틸리티.
- *
  * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 4. 3.
+ * @since 2016. 5. 3.
  */
 public abstract class OperatorUtils {
   /**
@@ -50,45 +40,6 @@ public abstract class OperatorUtils {
     String password = RandomStringUtils.random(Randoms.in(6, 10), LOWER + UPPER + DIGITS + ETCs);
 
     return new CreateOperatorCmd(email.toString(), password);
-  }
-
-  /**
-   * @param operatorService
-   * @return
-   */
-  public static Return<OperatorDto> create(OperatorService operatorService) {
-    notNull(operatorService);
-    return operatorService.create(command());
-  }
-
-  /**
-   * @param operatorInternalService
-   * @return
-   */
-  public static Operator create(OperatorInternalService operatorInternalService) {
-    notNull(operatorInternalService);
-    return operatorInternalService.create(command());
-  }
-
-  /**
-   * 임의의 운영자를 선택한다. 운영자가 없으면 <code>null</code>.
-   *
-   * @param operatorRepository
-   * @return
-   */
-  public static Operator random(OperatorRepository operatorRepository) {
-    notNull(operatorRepository);
-
-    int count = (int) operatorRepository.count();
-    switch (count) {
-      case 0:
-        return null;
-      case 1:
-        return operatorRepository.findAll().get(0);
-      default:
-        PageRequest spec = new PageRequest(Randoms.notNegative(count), 1);
-        return operatorRepository.findAll(spec).getContent().get(0);
-    }
   }
 
   protected OperatorUtils() {

@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core.service;
+package kr.lul.urs.core.test.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.AbstractTest;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.test.service.OperatorServiceUtils;
+import kr.lul.urs.core.service.OperatorService;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 4. 28.
+ * @since 2016. 5. 3.
  */
-abstract class AbstractServiceTest extends AbstractTest {
+abstract class AbstractServiceUtilsTest extends AbstractTest {
   @Autowired
   protected OperatorService operatorService;
 
@@ -23,6 +23,7 @@ abstract class AbstractServiceTest extends AbstractTest {
 
   protected void setOperatorAsRandom() {
     this.operator = OperatorServiceUtils.create(this.operatorService).value();
+
     assertThat(this.operator).isNotNull();
     assertThat(this.operator.getId()).isGreaterThan(0);
   }

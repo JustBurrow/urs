@@ -27,13 +27,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.test.TestConfig;
-import kr.lul.urs.application.ApplicationTestConfig;
+import kr.lul.urs.TestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.domain.AbstractDomainTest;
 import kr.lul.urs.core.domain.ResourceFileRevision;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
-import kr.lul.urs.core.test.AbstractInternalTest;
-import kr.lul.urs.core.test.ResourceFileUtils;
+import kr.lul.urs.core.test.service.internal.ResourceFileInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
@@ -43,10 +43,10 @@ import kr.lul.urs.util.Strings;
  * @since 2016. 4. 8.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
-@Rollback(ApplicationTestConfig.ROLLBACK)
-public class ResourceFileEntityTest extends AbstractInternalTest {
+@Rollback(CoreTestConfig.ROLLBACK)
+public class ResourceFileEntityTest extends AbstractDomainTest {
   public static final String          CLASS_NAME = ResourceFileEntityTest.class.getSimpleName();
 
   @Autowired
@@ -98,7 +98,7 @@ public class ResourceFileEntityTest extends AbstractInternalTest {
   @Test
   public void testUpdateForNewInstance() throws Exception {
     // Given
-    final ResourceFileEntity resourceFile = ResourceFileUtils.create(this.clientPlatform,
+    final ResourceFileEntity resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
         this.resourceFileInternalService);
     final Instant create = resourceFile.getCreate();
     final File file = FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH, CLASS_NAME, "testUpdateForNewInstance");

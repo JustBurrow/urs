@@ -1,47 +1,42 @@
 /**
  *
  */
-package kr.lul.urs.core.test;
-
-import java.time.Instant;
+package kr.lul.urs.core.test.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
+import kr.lul.urs.AbstractTest;
+import kr.lul.urs.application.configuration.InjectionConstants.Properties;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.repository.OperatorRepository;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 4. 9.
+ * @since 2016. 5. 3.
  */
-public abstract class AbstractInternalTest {
+abstract class AbstractInternalTestUtilsTest extends AbstractTest {
+  @Value("${" + Properties.KEY_DAO_SAVE_AND_FLUSH + "}")
+  protected boolean                       saveAndFlush;
+
   @Autowired
   protected OperatorInternalService       operatorInternalService;
   @Autowired
   protected ClientPlatformInternalService clientPlatformInternalService;
 
-  @Autowired
-  protected OperatorRepository            operatorRepository;
-
-  protected Instant                       now;
   protected Operator                      operator;
   protected ClientPlatform                clientPlatform;
 
-  protected void setNow() {
-    this.now = Instant.now();
-  }
-
   protected void setOperatorAsRandom() {
-    this.operator = OperatorUtils.create(this.operatorInternalService);
+    this.operator = OperatorInternalServiceUtils.create(this.operatorInternalService);
   }
 
   protected void setClientPlatformAsRandom() {
     if (null == this.operator) {
       this.setOperatorAsRandom();
     }
-    this.clientPlatform = ClientPlatformUtils.create(this.operator, this.clientPlatformInternalService);
+    this.clientPlatform = ClientPlatformInternalServiceUtils.create(this.operator, this.clientPlatformInternalService);
   }
 }

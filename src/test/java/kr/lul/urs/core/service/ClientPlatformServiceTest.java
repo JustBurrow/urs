@@ -7,6 +7,7 @@ import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.application.ApplicationTestConfig;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.test.ClientPlatformUtils;
@@ -28,7 +29,7 @@ import kr.lul.urs.util.AssertionException;
  * @since 2016. 4. 28.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 public class ClientPlatformServiceTest extends AbstractServiceTest {
   @Autowired
   private ClientPlatformService clientPlatformService;
@@ -39,7 +40,7 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
   @Before
   public void setUp() throws Exception {
     this.setNow();
-    this.setOperator();
+    this.setOperatorAsRandom();
   }
 
   @Test(expected = AssertionException.class)
@@ -65,5 +66,15 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
     assertEquals(cmd.getDescription(), dto.getDescription());
     assertThat(dto.getCreate(), after(this.now));
     assertEquals(dto.getCreate(), dto.getUpdate());
+  }
+
+  @Test
+  public void testReadWith0() throws Exception {
+    assertNull(this.clientPlatformService.read(0));
+  }
+
+  @Test
+  public void testReadWithId() throws Exception {
+    // Given
   }
 }

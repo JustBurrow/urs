@@ -16,4 +16,5 @@ public class OperatorDto {
   private int     id;
   private String  email;
   private Instant create;
+  private Instant update;
 }

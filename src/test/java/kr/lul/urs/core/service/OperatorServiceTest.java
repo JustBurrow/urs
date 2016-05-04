@@ -11,16 +11,13 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.time.Instant;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.application.ApplicationTestConfig;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.util.AssertionException;
@@ -32,17 +29,13 @@ import kr.lul.urs.util.Strings;
  * @since 2016. 3. 29.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { ApplicationTestConfig.class })
-public class OperatorServiceTest {
-  @Autowired
-  private OperatorService operatorService;
-
-  private Instant         now;
-
+@SpringApplicationConfiguration(classes = { CoreTestConfig.class })
+public class OperatorServiceTest extends AbstractServiceTest {
   @Before
   public void setUp() throws Exception {
     assertNotNull(this.operatorService);
-    this.now = Instant.now();
+    this.setNow();
+    this.setOperatorAsRandom();
   }
 
   @Test(expected = AssertionException.class)
