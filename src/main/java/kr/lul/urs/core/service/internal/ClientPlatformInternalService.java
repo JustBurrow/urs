@@ -3,11 +3,14 @@
  */
 package kr.lul.urs.core.service.internal;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.domain.ClientPlatform;
 
 /**
@@ -31,4 +34,18 @@ public interface ClientPlatformInternalService {
    * @return
    */
   public ClientPlatform read(int id);
+
+  /**
+   * @param cmd
+   * @return
+   * @throws OwnershipException
+   * @since 2016. 5. 5.
+   */
+  public ClientPlatform read(ReadClientPlatformCmd cmd) throws OwnershipException;
+
+  /**
+   * @return ID로 오름차순 정렬.
+   * @since 2016. 5. 5.
+   */
+  public List<ClientPlatform> list();
 }

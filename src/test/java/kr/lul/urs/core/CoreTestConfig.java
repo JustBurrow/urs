@@ -16,5 +16,8 @@ import kr.lul.urs.application.configuration.ApplicationConfiguration;
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = { ApplicationConfiguration.class })
 public class CoreTestConfig {
-  public static final boolean ROLLBACK = true;
+  public static final boolean ROLLBACK                              = true;
+
+  public static final String  MSG_AUTO_INCREMENT_ID_DOES_NOT_SETTED = "AUTO_INCREMENT id does not setted.";
+  public static final String  MSG_TIMESTAMPER_DOES_NOT_WORK         = "Timestamper does not work : %s";
 }

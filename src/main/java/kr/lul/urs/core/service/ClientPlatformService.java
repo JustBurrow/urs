@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.spring.tx.util.Return;
 
 /**
@@ -40,13 +41,15 @@ public interface ClientPlatformService {
   /**
    * @param cmd
    * @return
+   * @throws OwnershipException
+   *           커맨드 오브젝트의 소유자가 권한이 없을 때.
    * @since 2016. 4. 28.
    */
-  public Return<ClientPlatformDto> read(ReadClientPlatformCmd cmd);
+  public Return<ClientPlatformDto> read(ReadClientPlatformCmd cmd) throws OwnershipException;
 
   /**
    * @return
    * @since 2016. 4. 28.
    */
-  public List<Return<ClientPlatformDto>> list();
+  public Return<List<ClientPlatformDto>> list();
 }

@@ -28,7 +28,7 @@ import kr.lul.urs.util.Conditions;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ResourceFileUtilsTest extends AbstractUtilsTest {
+public class ResourceFileUtilsTest extends AbstractCoreTest {
   @Autowired
   private ClientPlatformService clientPlatformService;
 

@@ -3,13 +3,10 @@
  */
 package kr.lul.urs.core.service;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +18,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import kr.lul.urs.core.ClientPlatformUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.dto.OperatorDto;
+import kr.lul.urs.core.repository.ClientPlatformRepository;
+import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.util.AssertionException;
+import kr.lul.urs.util.Randoms;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -32,7 +34,9 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 public class ClientPlatformServiceTest extends AbstractServiceTest {
   @Autowired
-  private ClientPlatformService clientPlatformService;
+  private ClientPlatformService    clientPlatformService;
+  @Autowired
+  private ClientPlatformRepository clientPlatformRepository;
 
   /**
    * @throws java.lang.Exception
@@ -43,10 +47,9 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
     this.setOperatorAsRandom();
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testCreateWithNull() {
-    this.clientPlatformService.create(null);
-    fail();
+    assertThatThrownBy(() -> this.clientPlatformService.create(null)).isInstanceOf(AssertionException.class);
   }
 
   @Test
@@ -58,23 +61,68 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
     ClientPlatformDto dto = this.clientPlatformService.create(cmd).value();
 
     // Then
-    assertNotNull(dto);
-    assertThat(dto.getId(), greaterThan(0));
-    assertEquals(this.operator.getId(), dto.getOwner());
-    assertEquals(cmd.getCode(), dto.getCode());
-    assertEquals(cmd.getLabel(), dto.getLabel());
-    assertEquals(cmd.getDescription(), dto.getDescription());
-    assertThat(dto.getCreate(), after(this.now));
-    assertEquals(dto.getCreate(), dto.getUpdate());
+    assertThat(dto).isNotNull();
+    assertThat(dto.getId()).isGreaterThan(0);
+    assertThat(dto.getOwner()).isEqualTo(this.operator.getId());
+    assertThat(dto.getCode()).isEqualTo(cmd.getCode());
+    assertThat(dto.getLabel()).isEqualTo(cmd.getLabel());
+    assertThat(dto.getDescription()).isEqualTo(cmd.getDescription());
+    assertThat(dto.getCreate()).isGreaterThanOrEqualTo(this.now);
+    assertThat(dto.getUpdate()).isEqualTo(dto.getCreate());
+  }
+
+  @Test
+  public void testReadWithNegative() throws Exception {
+    assertThat(this.clientPlatformService.read(Randoms.negative())).isNull();
   }
 
   @Test
   public void testReadWith0() throws Exception {
-    assertNull(this.clientPlatformService.read(0));
+    assertThat(this.clientPlatformService.read(0)).isNull();
   }
 
   @Test
   public void testReadWithId() throws Exception {
     // Given
+    final ClientPlatformDto expected = ClientPlatformServiceUtils.create(this.operator, this.clientPlatformService)
+        .value();
+
+    // When
+    ClientPlatformDto actual = this.clientPlatformService.read(expected.getId()).value();
+
+    // Then
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  public void testReadWithNull() throws Exception {
+    assertThatThrownBy(() -> this.clientPlatformService.read(null)).isInstanceOf(AssertionException.class);
+  }
+
+  @Test
+  public void testReadWithIllegalOwnership() throws Exception {
+    // Given
+    OperatorDto op2 = OperatorServiceUtils.create(this.operatorService).value();
+    ReadClientPlatformCmd cmd = ClientPlatformUtils.readCmd(this.clientPlatformRepository);
+    assertThat(cmd.getOwner()).isNotEqualTo(op2.getId());
+    cmd.setOwner(op2.getId());
+
+    // When & Then
+    assertThatThrownBy(() -> this.clientPlatformService.read(cmd)).isInstanceOf(OwnershipException.class);
+  }
+
+  @Test
+  public void testList() throws Exception {
+    // Given
+    final List<ClientPlatformDto> l1 = this.clientPlatformService.list().value();
+    ClientPlatformDto clientPlatform = ClientPlatformServiceUtils.create(this.operator, this.clientPlatformService)
+        .value();
+
+    // When
+    List<ClientPlatformDto> l2 = this.clientPlatformService.list().value();
+
+    // Then
+    assertThat(l1).isNotNull().doesNotContain(clientPlatform);
+    assertThat(l2).contains(clientPlatform).hasSize(l1.size() + 1);
   }
 }

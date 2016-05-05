@@ -3,7 +3,10 @@
  */
 package kr.lul.urs.core.dao;
 
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
+import kr.lul.urs.core.service.internal.ClientPlatformInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -26,17 +32,35 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformDaoTest {
+public class ClientPlatformDaoTest extends AbstractDaoTest {
   @Autowired
-  private ClientPlatformDao clientPlatformDao;
+  private ClientPlatformInternalService clientPlatformInternalService;
+  @Autowired
+  private ClientPlatformDao             clientPlatformDao;
 
   @Before
   public void setUp() throws Exception {
+    this.setOperatorAsRandom();
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testInsertWithNull() throws Exception {
-    this.clientPlatformDao.insert(null);
-    fail();
+    assertThatThrownBy(() -> this.clientPlatformDao.insert(null)).isInstanceOf(AssertionException.class);
+  }
+
+  @Test
+  public void testList() throws Exception {
+    // Given
+    final List<ClientPlatform> l1 = this.clientPlatformDao.list();
+    assertThat(l1).isNotNull().isNotEmpty();
+    final ClientPlatform clientPlatform = ClientPlatformInternalServiceUtils.create(this.operator,
+        this.clientPlatformInternalService);
+
+    // When
+    final List<ClientPlatform> l2 = this.clientPlatformDao.list();
+
+    // Then
+    assertThat(l1).doesNotContain(clientPlatform);
+    assertThat(l2).contains(clientPlatform).hasSize(l1.size() + 1);
   }
 }

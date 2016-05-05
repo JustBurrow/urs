@@ -31,6 +31,11 @@ public abstract class AbstractTest {
 
   protected Instant                      now;
 
+  /**
+   * 호출할 때마다 호출된 시각을 {@link #now}에 저장한다.
+   *
+   * @since 2016. 5. 5.
+   */
   protected void setNow() {
     this.now = Instant.now();
     assertThat(this.now).isNotNull();

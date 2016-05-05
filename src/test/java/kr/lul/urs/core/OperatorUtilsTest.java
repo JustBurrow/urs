@@ -15,7 +15,7 @@ import kr.lul.urs.core.command.CreateOperatorCmd;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class OperatorUtilsTest extends AbstractUtilsTest {
+public class OperatorUtilsTest extends AbstractCoreTest {
   @Before
   public void setUp() throws Exception {
     this.setNow();

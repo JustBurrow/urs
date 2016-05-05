@@ -5,10 +5,13 @@ package kr.lul.urs.core.service.internal;
 
 import static kr.lul.urs.util.Asserts.notNull;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.dao.ClientPlatformDao;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
@@ -41,9 +44,28 @@ class ClientPlatformInternalServiceImpl implements ClientPlatformInternalService
   @Override
   public ClientPlatform read(int id) {
     if (0 >= id) {
-      // TODO throw
+      return null;
     }
     ClientPlatform clientPlatform = this.clientPlatformDao.select(id);
     return clientPlatform;
+  }
+
+  @Override
+  public ClientPlatform read(ReadClientPlatformCmd cmd) throws OwnershipException {
+    notNull(cmd);
+
+    ClientPlatform clientPlatform = this.clientPlatformDao.select(cmd.getId());
+    if (null == clientPlatform) {
+      return null;
+    } else if (cmd.getOwner() != clientPlatform.getOwner().getId()) {
+      throw new OwnershipException("no ownership.", cmd.getOwner(), clientPlatform.getOwner().getId());
+    } else {
+      return clientPlatform;
+    }
+  }
+
+  @Override
+  public List<ClientPlatform> list() {
+    return this.clientPlatformDao.list();
   }
 }

@@ -26,6 +26,11 @@ public class AbstractDomainTest extends AbstractTest {
   protected Operator                      operator;
   protected ClientPlatform                clientPlatform;
 
+  /**
+   * 호출할 때마다 프로덕트 관리자를 만들어서 {@link #operator}에 저장한다.
+   *
+   * @since 2016. 5. 5.
+   */
   protected void setOperatorAsRandom() {
     this.operator = OperatorInternalServiceUtils.create(this.operatorInternalService);
 

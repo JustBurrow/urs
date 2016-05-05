@@ -3,6 +3,8 @@
  */
 package kr.lul.urs.core.dao;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
@@ -30,4 +32,10 @@ public interface ClientPlatformDao {
    * @return
    */
   public ClientPlatform select(int id);
+
+  /**
+   * @return ID 오름차순.
+   * @since 2016. 5. 5.
+   */
+  public List<ClientPlatform> list();
 }

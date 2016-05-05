@@ -16,15 +16,27 @@ import kr.lul.urs.core.service.OperatorServiceUtils;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 5. 3.
  */
-abstract class AbstractUtilsTest extends AbstractTest {
+abstract class AbstractCoreTest extends AbstractTest {
   @Autowired
   protected OperatorService operatorService;
 
   protected OperatorDto     operator;
 
+  /**
+   * 호출할 때마다 프로덕트 관리자를 만들어서 {@link #operator}에 저장한다.
+   *
+   * @since 2016. 5. 5.
+   */
   protected void setOperatorAsRandom() {
+    if (null == this.now) {
+      this.setNow();
+    }
+
     this.operator = OperatorServiceUtils.create(this.operatorService).value();
+
     assertThat(this.operator).isNotNull();
     assertThat(this.operator.getId()).isGreaterThan(0);
+    assertThat(this.operator.getCreate()).isGreaterThanOrEqualTo(this.now);
+    assertThat(this.operator.getUpdate()).isEqualTo(this.operator.getCreate());
   }
 }
