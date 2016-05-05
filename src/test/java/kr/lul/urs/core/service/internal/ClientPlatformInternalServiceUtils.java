@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service.internal;
+package kr.lul.urs.core.service.internal;
 
-import static kr.lul.urs.core.test.ClientPlatformUtils.createCmd;
+import static kr.lul.urs.core.ClientPlatformUtils.createCmd;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import kr.lul.urs.core.domain.Operator;

@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service.internal;
+package kr.lul.urs.core.service.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

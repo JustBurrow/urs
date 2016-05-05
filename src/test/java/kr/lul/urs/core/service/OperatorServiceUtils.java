@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service;
+package kr.lul.urs.core.service;
 
-import static kr.lul.urs.core.test.OperatorUtils.command;
+import static kr.lul.urs.core.OperatorUtils.command;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import kr.lul.urs.core.dto.OperatorDto;

@@ -1,6 +1,6 @@
-package kr.lul.urs.core.test;
+package kr.lul.urs.core;
 
-import static kr.lul.urs.core.test.OperatorUtils.command;
+import static kr.lul.urs.core.OperatorUtils.command;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -11,7 +11,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.lul.urs.AbstractTest;
-import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 
 @RunWith(SpringJUnit4ClassRunner.class)

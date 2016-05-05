@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service.internal;
+package kr.lul.urs.core.service.internal;
 
-import static kr.lul.urs.core.test.service.internal.ClientPlatformInternalServiceUtils.create;
+import static kr.lul.urs.core.service.internal.ClientPlatformInternalServiceUtils.create;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Before;

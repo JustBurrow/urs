@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.test;
+package kr.lul.urs.core;
 
-import static kr.lul.urs.core.test.ClientPlatformUtils.createCmd;
+import static kr.lul.urs.core.ClientPlatformUtils.createCmd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -14,11 +14,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
-import kr.lul.urs.core.test.service.OperatorServiceUtils;
+import kr.lul.urs.core.service.OperatorServiceUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr

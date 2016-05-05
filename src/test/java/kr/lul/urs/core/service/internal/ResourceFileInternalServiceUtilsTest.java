@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service.internal;
+package kr.lul.urs.core.service.internal;
 
-import static kr.lul.urs.core.test.service.internal.ResourceFileInternalServiceUtils.create;
+import static kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

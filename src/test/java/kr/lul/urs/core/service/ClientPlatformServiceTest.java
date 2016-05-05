@@ -18,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.lul.urs.core.ClientPlatformUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
-import kr.lul.urs.core.test.ClientPlatformUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**

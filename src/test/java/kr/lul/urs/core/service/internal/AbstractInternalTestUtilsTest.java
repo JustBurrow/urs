@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service.internal;
+package kr.lul.urs.core.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

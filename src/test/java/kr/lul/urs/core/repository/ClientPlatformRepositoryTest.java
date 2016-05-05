@@ -26,7 +26,7 @@ import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.core.test.service.internal.OperatorInternalServiceUtils;
+import kr.lul.urs.core.service.internal.OperatorInternalServiceUtils;
 import kr.lul.urs.util.Randoms;
 
 /**

@@ -1,15 +1,15 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service;
+package kr.lul.urs.core.service;
 
 import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Asserts.positive;
 
+import kr.lul.urs.core.ClientPlatformUtils;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.ClientPlatformService;
-import kr.lul.urs.core.test.ClientPlatformUtils;
 import kr.lul.urs.spring.tx.util.Return;
 
 /**

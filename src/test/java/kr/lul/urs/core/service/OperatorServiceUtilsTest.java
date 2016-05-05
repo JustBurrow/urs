@@ -1,6 +1,6 @@
-package kr.lul.urs.core.test.service;
+package kr.lul.urs.core.service;
 
-import static kr.lul.urs.core.test.service.OperatorServiceUtils.create;
+import static kr.lul.urs.core.service.OperatorServiceUtils.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

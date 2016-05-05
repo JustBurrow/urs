@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.AbstractTest;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
+import kr.lul.urs.core.service.internal.ClientPlatformInternalServiceUtils;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.core.test.service.internal.ClientPlatformInternalServiceUtils;
-import kr.lul.urs.core.test.service.internal.OperatorInternalServiceUtils;
+import kr.lul.urs.core.service.internal.OperatorInternalServiceUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr

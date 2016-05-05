@@ -22,14 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.ResourceFileUtils;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
-import kr.lul.urs.core.test.ResourceFileUtils;
-import kr.lul.urs.core.test.service.internal.OperatorInternalServiceUtils;
-import kr.lul.urs.core.test.service.internal.ResourceFileInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 

@@ -4,7 +4,7 @@
 package kr.lul.urs.core.service.internal;
 
 import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static kr.lul.urs.core.test.ClientPlatformUtils.createCmd;
+import static kr.lul.urs.core.ClientPlatformUtils.createCmd;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;

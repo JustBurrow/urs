@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.test.service.internal;
+package kr.lul.urs.core.service.internal;
 
-import static kr.lul.urs.core.test.ResourceFileUtils.createCmd;
+import static kr.lul.urs.core.ResourceFileUtils.createCmd;
 import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.notNull;
 

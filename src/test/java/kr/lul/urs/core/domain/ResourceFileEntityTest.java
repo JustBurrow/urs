@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core.domain.entity;
+package kr.lul.urs.core.domain;
 
 import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
 import static org.hamcrest.Matchers.contains;
@@ -30,10 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.TestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.domain.AbstractDomainTest;
 import kr.lul.urs.core.domain.ResourceFileRevision;
+import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
-import kr.lul.urs.core.test.service.internal.ResourceFileInternalServiceUtils;
+import kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
