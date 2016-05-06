@@ -10,7 +10,7 @@ import kr.lul.urs.core.ClientPlatformUtils;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.ClientPlatformService;
-import kr.lul.urs.spring.tx.util.Return;
+import kr.lul.urs.spring.tx.Return;
 
 /**
  * @author Just Burrow just.burrow@lul.kr

@@ -7,4 +7,4 @@
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 3. 21.
  */
-package kr.lul.urs.spring.tx.util;
+package kr.lul.urs.spring.tx;

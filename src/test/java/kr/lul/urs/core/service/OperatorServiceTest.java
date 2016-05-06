@@ -3,13 +3,8 @@
  */
 package kr.lul.urs.core.service;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,18 +28,13 @@ import kr.lul.urs.util.Strings;
 public class OperatorServiceTest extends AbstractServiceTest {
   @Before
   public void setUp() throws Exception {
-    assertNotNull(this.operatorService);
     this.setNow();
     this.setOperatorAsRandom();
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testCreateWithNull() throws Exception {
-    // When
-    this.operatorService.create(null);
-
-    // Then
-    fail();
+    assertThatThrownBy(() -> this.operatorService.create(null)).isInstanceOf(AssertionException.class);
   }
 
   @Test
@@ -57,9 +47,11 @@ public class OperatorServiceTest extends AbstractServiceTest {
     final OperatorDto operator = this.operatorService.create(cmd).value();
 
     // Then
-    assertThat(operator.getId(), greaterThan(0));
-    assertEquals(email, operator.getEmail());
-    assertThat(operator.getCreate(), after(this.now));
+    assertThat(operator).isNotNull();
+    assertThat(operator.getId()).isGreaterThan(0);
+    assertThat(operator.getEmail()).is(IS_EMAIL);
+    assertThat(operator.getCreate()).isGreaterThanOrEqualTo(this.now);
+    assertThat(operator.getUpdate()).isEqualTo(operator.getCreate());
   }
 
   @Test
@@ -73,12 +65,10 @@ public class OperatorServiceTest extends AbstractServiceTest {
     final OperatorDto o3 = this.operatorService.read(o2.getId()).value();
 
     // Then
-    assertNotNull(o2);
-    assertEquals(o1.getId(), o2.getId());
-    assertEquals(o1.getEmail(), o2.getEmail());
-    assertEquals(o1.getCreate(), o2.getCreate());
-    assertEquals(o2, o3);
-    assertNotSame(o1, o2);
-    assertNotSame(o1, o3);
+    assertThat(o2).isNotNull().isNotSameAs(o1).isNotSameAs(o3).isEqualTo(o1).isEqualTo(o3);
+    assertThat(o2.getId()).isEqualTo(o1.getId());
+    assertThat(o2.getEmail()).is(IS_EMAIL);
+    assertThat(o2.getCreate()).isNotNull().isEqualTo(o1.getCreate());
+    assertThat(o2.getUpdate()).isEqualTo(o2.getCreate());
   }
 }

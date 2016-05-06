@@ -20,9 +20,9 @@ import kr.lul.urs.core.domain.mapping.OperatorMapping.Entity;;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 9.
  */
-abstract class AbstractInternalServiceTest extends AbstractTest {
+public abstract class AbstractInternalServiceTest extends AbstractTest {
   @Value("${" + Properties.KEY_DAO_SAVE_AND_FLUSH + "}")
-  boolean                                 saveAndFlush;
+  protected boolean                       saveAndFlush;
 
   @Autowired
   protected OperatorInternalService       operatorInternalService;

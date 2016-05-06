@@ -8,7 +8,7 @@ import static kr.lul.urs.util.Asserts.notNull;
 
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
-import kr.lul.urs.spring.tx.util.Return;
+import kr.lul.urs.spring.tx.Return;
 
 /**
  * @author Just Burrow just.burrow@lul.kr

@@ -14,7 +14,7 @@ import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.service.internal.OwnershipException;
-import kr.lul.urs.spring.tx.util.Return;
+import kr.lul.urs.spring.tx.Return;
 
 /**
  * 어떤 프로덕트가 사용가능한 플랫폼 속성을 다루기 위한 서비스.

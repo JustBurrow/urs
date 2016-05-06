@@ -18,7 +18,7 @@ import kr.lul.urs.application.web.request.CreateOperatorReq;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
-import kr.lul.urs.spring.tx.util.Return;
+import kr.lul.urs.spring.tx.Return;
 
 /**
  * @author Just Burrow just.burrow@lul.kr

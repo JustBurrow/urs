@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.spring.tx.util.Return;
+import kr.lul.urs.spring.tx.Return;
 
 /**
  * 프로덕트 운영자를 다루는 로직.

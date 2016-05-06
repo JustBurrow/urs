@@ -21,7 +21,7 @@ import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 import kr.lul.urs.core.service.internal.OwnershipException;
-import kr.lul.urs.spring.tx.util.Return;
+import kr.lul.urs.spring.tx.Return;
 
 @Service
 class ClientPlatformServiceImpl implements ClientPlatformService {
