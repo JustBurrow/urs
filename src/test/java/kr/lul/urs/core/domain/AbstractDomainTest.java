@@ -6,8 +6,10 @@ package kr.lul.urs.core.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import kr.lul.urs.AbstractTest;
+import kr.lul.urs.application.configuration.InjectionConstants.Properties;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalServiceUtils;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
@@ -18,6 +20,9 @@ import kr.lul.urs.core.service.internal.OperatorInternalServiceUtils;
  * @since 2016. 5. 3.
  */
 public class AbstractDomainTest extends AbstractTest {
+  @Value("${" + Properties.KEY_DAO_SAVE_AND_FLUSH + "}")
+  protected boolean                       saveAndFlush;
+
   @Autowired
   protected OperatorInternalService       operatorInternalService;
   @Autowired

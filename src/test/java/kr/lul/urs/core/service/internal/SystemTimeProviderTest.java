@@ -3,7 +3,7 @@
  */
 package kr.lul.urs.core.service.internal;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +22,6 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 public class SystemTimeProviderTest {
   @Test
   public void testSetApplicationContext() {
-    assertNotNull(Timestamper.getTimeProvider());
+    assertThat(Timestamper.getTimeProvider()).isNotNull();
   }
 }

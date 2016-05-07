@@ -1,13 +1,6 @@
 package kr.lul.urs.spring.jpa.timestamp;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 
@@ -65,33 +58,28 @@ public class TimestamperCaseGroupMappedSuperclassTest {
   public void testWithInheritFieldEntity() throws Exception {
     // Given
     final InheritFieldEntity entity = new InheritFieldEntity();
-    assertNull(entity.getCreate());
-    assertNull(entity.getUpdate());
+    assertThat(entity.getCreate()).isNull();
+    assertThat(entity.getUpdate()).isNull();
 
     // When & Then
     this.listener.postLoad(entity);
-    assertNull(entity.getCreate());
-    assertNull(entity.getUpdate());
+    assertThat(entity.getCreate()).isNull();
+    assertThat(entity.getUpdate()).isNull();
 
     this.listener.prePersist(entity);
     final Instant create = entity.getCreate();
     final Instant update = entity.getUpdate();
-    assertEquals(create, update);
-    assertThat(create, after(this.now));
-    assertThat(update, after(this.now));
+    assertThat(create).isEqualTo(update).isGreaterThanOrEqualTo(this.now);
 
     this.listener.postLoad(entity);
-    assertEquals(create, entity.getCreate());
-    assertEquals(update, entity.getUpdate());
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(entity.getUpdate()).isEqualTo(update);
 
     Thread.sleep(Randoms.in(500L, 1000L));
 
     this.listener.preUpdate(entity);
-    final Instant update2 = entity.getUpdate();
-    assertNotNull(update2);
-    assertEquals(create, entity.getCreate());
-    assertThat(update2, after(update));
-    assertEquals(update2, entity.getUpdate());
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(entity.getUpdate()).isGreaterThan(update);
   }
 
   @Test
@@ -105,8 +93,7 @@ public class TimestamperCaseGroupMappedSuperclassTest {
     this.listener.prePersist(operator);
 
     // Then
-    assertThat(operator.getCreate(), allOf(notNullValue(), after(this.now)));
-    assertThat(operator.getUpdate(), allOf(notNullValue(), equalTo(operator.getCreate())));
+    assertThat(operator.getCreate()).isNotNull().isEqualTo(operator.getUpdate()).isGreaterThanOrEqualTo(this.now);
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,77 +127,79 @@ public class TimestamperCaseGroupMappedSuperclassTest {
   public void testWithInheritCreateUpdateEntity() throws Exception {
     // Given
     final InheritCreateUpdateEntity entity = new InheritCreateUpdateEntity();
-    assertNull(entity.getCreate());
-    assertNull(entity.getUpdate());
+    assertThat(entity.getCreate()).isNull();
+    assertThat(entity.getUpdate()).isNull();
 
     // When & Then
     this.listener.postLoad(entity);
-    assertNull(entity.getCreate());
-    assertNull(entity.getUpdate());
+    assertThat(entity.getCreate()).isNull();
+    assertThat(entity.getUpdate()).isNull();
 
     this.listener.prePersist(entity);
     final Instant create = entity.getCreate();
     final Instant update = entity.getUpdate();
-    assertThat(create, after(this.now));
-    assertEquals(create, update);
+    assertThat(create).isEqualTo(update).isGreaterThanOrEqualTo(this.now);
 
     this.listener.postLoad(entity);
-    assertEquals(create, entity.getCreate());
-    assertEquals(update, entity.getUpdate());
-
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(entity.getUpdate()).isEqualTo(update);
     Thread.sleep(Randoms.in(500L, 1000L));
 
     this.listener.preUpdate(entity);
     final Instant update2 = entity.getUpdate();
-    assertEquals(create, entity.getCreate());
-    assertThat(update2, after(update));
-    Thread.sleep(10L);
-    assertEquals(create, entity.getCreate());
-    assertEquals(update2, entity.getUpdate());
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(update2).isGreaterThan(update);
+
+    for (int i = Randoms.in(5, 10); i > 0; i--) {
+      Thread.sleep(10L);
+      assertThat(entity.getCreate()).isEqualTo(create);
+      assertThat(entity.getUpdate()).isEqualTo(update2);
+    }
   }
 
   @Test
   public void testWithComplexEntity() throws Exception {
     // Given
     final ComplexEntity entity = new ComplexEntity();
-    assertNull(entity.getCreate());
-    assertNull(entity.getRead());
-    assertNull(entity.getUpdate());
+    assertThat(entity.getCreate()).isNull();
+    assertThat(entity.getRead()).isNull();
+    assertThat(entity.getUpdate()).isNull();
 
     // When & Then
     this.listener.postLoad(entity);
     final Instant read = entity.getRead();
-    assertNull(entity.getCreate());
-    assertThat(read, after(this.now));
-    assertNull(entity.getUpdate());
+    assertThat(entity.getCreate()).isNull();
+    assertThat(read).isGreaterThanOrEqualTo(this.now);
+    assertThat(entity.getUpdate()).isNull();
 
     this.listener.prePersist(entity);
     final Instant create = entity.getCreate();
     Instant update = entity.getUpdate();
-    assertEquals(create, update);
-    assertEquals(read, entity.getRead());
-    assertThat(create, after(this.now));
+
+    assertThat(create).isEqualTo(update).isGreaterThanOrEqualTo(this.now);
+    assertThat(entity.getRead()).isEqualTo(read);
 
     Thread.sleep(Randoms.in(500L, 1000L));
 
     this.listener.postLoad(entity);
     final Instant read2 = entity.getRead();
-    assertEquals(create, entity.getCreate());
-    assertThat(read2, after(read));
-    assertEquals(update, entity.getUpdate());
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(read2).isGreaterThanOrEqualTo(read);
+    assertThat(entity.getUpdate()).isEqualTo(update);
 
     Thread.sleep(Randoms.in(500L, 1000L));
 
     this.listener.preUpdate(entity);
     final Instant update2 = entity.getUpdate();
-    assertEquals(create, entity.getCreate());
-    assertEquals(read2, entity.getRead());
-    assertThat(update2, after(update));
+
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(entity.getRead()).isEqualTo(read2);
+    assertThat(update2).isGreaterThan(update);
 
     Thread.sleep(10L);
 
-    assertEquals(create, entity.getCreate());
-    assertEquals(read2, entity.getRead());
-    assertEquals(update2, entity.getUpdate());
+    assertThat(entity.getCreate()).isEqualTo(create);
+    assertThat(entity.getRead()).isEqualTo(read2);
+    assertThat(entity.getUpdate()).isEqualTo(update2);
   }
 }

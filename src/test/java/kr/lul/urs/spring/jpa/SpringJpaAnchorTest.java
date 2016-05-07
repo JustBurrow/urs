@@ -1,14 +1,13 @@
 package kr.lul.urs.spring.jpa;
 
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
 public class SpringJpaAnchorTest {
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testConstructor() {
-    new SpringJpaAnchor() {
-    };
-    fail();
+    assertThatThrownBy(() -> new SpringJpaAnchor() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 }

@@ -1,6 +1,6 @@
 package kr.lul.urs.spring.jpa.timestamp;
 
-import static kr.lul.urs.util.Tests.exceptException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.Instant;
 
@@ -12,10 +12,6 @@ import javax.persistence.PreUpdate;
 import org.junit.Before;
 import org.junit.Test;
 
-import kr.lul.urs.spring.jpa.timestamp.IllegalJpaSupportConfigurationException;
-import kr.lul.urs.spring.jpa.timestamp.Timestamp;
-import kr.lul.urs.spring.jpa.timestamp.Timestamper;
-import kr.lul.urs.spring.jpa.timestamp.Timestamps;
 import lombok.Data;
 
 public class TimestamperTest {
@@ -61,28 +57,29 @@ public class TimestamperTest {
 
   @Test
   public void testWithNull() throws Exception {
-    exceptException(IllegalArgumentException.class, () -> this.listener.prePersist(null));
-    exceptException(IllegalArgumentException.class, () -> this.listener.preUpdate(null));
-    exceptException(IllegalArgumentException.class, () -> this.listener.postLoad(null));
+    assertThatThrownBy(() -> this.listener.prePersist(null)).isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> this.listener.preUpdate(null)).isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> this.listener.postLoad(null)).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   public void testWithTimestampsDefaultName() throws Exception {
-    exceptException(IllegalJpaSupportConfigurationException.class,
-        () -> this.listener.prePersist(new TimestampsAsDefaultName()));
-    exceptException(IllegalJpaSupportConfigurationException.class,
-        () -> this.listener.postLoad(new TimestampsAsDefaultName()));
-    exceptException(IllegalJpaSupportConfigurationException.class,
-        () -> this.listener.preUpdate(new TimestampsAsDefaultName()));
+    assertThatThrownBy(() -> this.listener.prePersist(new TimestampsAsDefaultName()))
+        .isInstanceOf(IllegalJpaSupportConfigurationException.class);
+    assertThatThrownBy(() -> this.listener.postLoad(new TimestampsAsDefaultName()))
+        .isInstanceOf(IllegalJpaSupportConfigurationException.class);
+    assertThatThrownBy(() -> this.listener.preUpdate(new TimestampsAsDefaultName()))
+        .isInstanceOf(IllegalJpaSupportConfigurationException.class);
+
   }
 
   @Test
   public void testWithTimestampDefaultName() throws Exception {
-    exceptException(IllegalJpaSupportConfigurationException.class,
-        () -> this.listener.prePersist(new TimestampPrePersistAsDefaultName()));
-    exceptException(IllegalJpaSupportConfigurationException.class,
-        () -> this.listener.postLoad(new TimestampPostLoadAsDefaultName()));
-    exceptException(IllegalJpaSupportConfigurationException.class,
-        () -> this.listener.preUpdate(new TimestampPreUpdateAsDefaultName()));
+    assertThatThrownBy(() -> this.listener.prePersist(new TimestampPrePersistAsDefaultName()))
+        .isInstanceOf(IllegalJpaSupportConfigurationException.class);
+    assertThatThrownBy(() -> this.listener.postLoad(new TimestampPostLoadAsDefaultName()))
+        .isInstanceOf(IllegalJpaSupportConfigurationException.class);
+    assertThatThrownBy(() -> this.listener.preUpdate(new TimestampPreUpdateAsDefaultName()))
+        .isInstanceOf(IllegalJpaSupportConfigurationException.class);
   }
 }

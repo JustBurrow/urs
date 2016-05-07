@@ -3,18 +3,10 @@
  */
 package kr.lul.urs.core.domain;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.empty;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.File;
-import java.time.Instant;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -30,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.TestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.domain.ResourceFileRevision;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
 import kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils;
@@ -56,19 +47,16 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
   public void setUp() throws Exception {
     this.setNow();
     this.setClientPlatformAsRandom();
-    assertEquals(this.clientPlatform.getOwner(), this.operator);
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testConstructorWithNullAndNull() throws Exception {
-    new ResourceFileEntity(null, null);
-    fail();
+    assertThatThrownBy(() -> new ResourceFileEntity(null, null)).isInstanceOf(AssertionException.class);
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testConstructorWithNullAndEmpty() throws Exception {
-    new ResourceFileEntity(null, "");
-    fail();
+    assertThatThrownBy(() -> new ResourceFileEntity(null, "")).isInstanceOf(AssertionException.class);
   }
 
   @Test
@@ -84,15 +72,15 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
     final ResourceFileEntity rf = new ResourceFileEntity(this.clientPlatform, name.toString());
 
     // Then
-    assertNotNull(rf);
-    assertEquals(this.operator, rf.getOwner());
-    assertEquals(this.clientPlatform, rf.getClientPlatform());
-    assertEquals(name.toString(), rf.getName());
-    assertNull(rf.getCurrentRevision());
-    assertEquals(0, rf.getCurrentRevisionNumber());
-    assertThat(rf.getHistory(), empty());
-    assertNull(rf.getCreate());
-    assertNull(rf.getUpdate());
+    assertThat(rf).isNotNull();
+    assertThat(rf.getOwner()).isEqualTo(this.operator);
+    assertThat(rf.getClientPlatform()).isEqualTo(this.clientPlatform);
+    assertThat(rf.getName()).isEqualTo(name.toString());
+    assertThat(rf.getCurrentRevision()).isNull();
+    assertThat(rf.getCurrentRevisionNumber()).isEqualTo(0);
+    assertThat(rf.getHistory()).isEmpty();
+    assertThat(rf.getCreate()).isNull();
+    assertThat(rf.getUpdate()).isNull();
   }
 
   @Test
@@ -100,30 +88,31 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
     // Given
     final ResourceFileEntity resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
         this.resourceFileInternalService);
-    final Instant create = resourceFile.getCreate();
     final File file = FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH, CLASS_NAME, "testUpdateForNewInstance");
-    assertTrue(file.toString(), file.exists());
+    assertThat(file.exists()).is(IS_TRUE);
 
     // When
     final ResourceFileRevision resourceFileRevision = resourceFile.update(file);
 
     // Then
-    assertNotNull(resourceFileRevision);
-    assertEquals(resourceFile, resourceFileRevision.getResourceFile());
-    assertEquals(this.operator, resourceFileRevision.getOwner());
-    assertEquals(resourceFileRevision, resourceFile.getCurrentRevision());
-    assertEquals(this.clientPlatform, resourceFileRevision.getClientPlatform());
-    assertEquals(resourceFile.getName(), resourceFileRevision.getName());
-    assertEquals(1, resourceFileRevision.getRevision());
-    // assertTrue(resourceFileRevision.getSha1(), Conditions.matches(resourceFileRevision.getSha1(),
-    // "[a-fA-F\\d]{40}"));
-    // assertThat(resourceFileRevision.getCreate(), after(create));
-    assertNull(resourceFileRevision.getCreate()); // 트랜잭션이 종료되지 않아 타임스탬퍼가 작동하기 전이다.
+    assertThat(resourceFileRevision).isNotNull();
+    assertThat(resourceFileRevision.getResourceFile()).isEqualTo(resourceFile);
+    assertThat(resourceFileRevision.getOwner()).isEqualTo(this.operator);
+    assertThat(resourceFileRevision.getName()).isEqualTo(resourceFile.getName());
+    assertThat(resourceFileRevision.getRevision()).isEqualTo(1);
+    // TODO SHA1 해시 검증.
+    assertThat(resourceFileRevision.getCreate()).isNull();
 
-    assertEquals(1, resourceFile.getCurrentRevisionNumber());
-    assertEquals(1, resourceFile.getHistory().size());
-    assertThat(resourceFile.getHistory(), contains(resourceFileRevision));
-    assertEquals(create, resourceFile.getCreate());
-    assertThat(resourceFile.getUpdate(), after(this.now));
+    assertThat(resourceFile.getCurrentRevision()).isEqualTo(resourceFileRevision);
+    assertThat(resourceFile.getCurrentRevisionNumber()).isEqualTo(1);
+    assertThat(resourceFile.getHistory()).hasSize(1).contains(resourceFileRevision);
+
+    if (this.saveAndFlush) {
+      assertThat(resourceFile.getCreate()).isGreaterThanOrEqualTo(this.now);
+      assertThat(resourceFile.getUpdate()).isEqualTo(resourceFile.getCreate());
+    } else {
+      assertThat(resourceFile.getCreate()).isNull();
+      assertThat(resourceFile.getUpdate()).isNull();
+    }
   }
 }

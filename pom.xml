@@ -74,11 +74,6 @@
         <version>0.9.9-RC1</version>
       </dependency>
       <dependency>
-        <groupId>com.spencerwi</groupId>
-        <artifactId>hamcrest-jdk8-time</artifactId>
-        <version>0.7.1</version>
-      </dependency>
-      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>3.3.0</version>
@@ -156,11 +151,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.spencerwi</groupId>
-      <artifactId>hamcrest-jdk8-time</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

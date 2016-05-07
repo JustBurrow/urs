@@ -3,13 +3,7 @@
  */
 package kr.lul.urs.core.repository;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import java.time.Instant;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -23,10 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
-import kr.lul.urs.core.service.internal.OperatorInternalService;
-import kr.lul.urs.core.service.internal.OperatorInternalServiceUtils;
+import kr.lul.urs.core.service.internal.AbstractInternalServiceTest;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -37,41 +29,36 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformRepositoryTest {
+public class ClientPlatformRepositoryTest extends AbstractInternalServiceTest {
   @Autowired
   private ClientPlatformRepository clientPlatformRepository;
 
-  @Autowired
-  private OperatorInternalService  operatorInternalService;
-
-  private Instant                  now;
-
   @Before
   public void setUp() throws Exception {
-    this.now = Instant.now();
+    this.setNow();
+    this.setOperatorAsRandom();
   }
 
   @Test
   public void testSaveAndFlush() {
     // Given
-    final Operator owner = OperatorInternalServiceUtils.create(this.operatorInternalService);
     final String code = RandomStringUtils.randomAlphabetic(Randoms.in(3, 10));
     final String label = RandomStringUtils.randomAlphanumeric(Randoms.in(1, 10));
     final String description = RandomStringUtils.randomAlphanumeric(Randoms.in(0, 1000));
-    final ClientPlatformEntity cp1 = new ClientPlatformEntity(owner, code, label);
+    final ClientPlatformEntity cp1 = new ClientPlatformEntity(this.operator, code, label);
     cp1.setDescription(description);
 
     // When
     final ClientPlatformEntity cp2 = this.clientPlatformRepository.saveAndFlush(cp1);
 
     // Then
-    assertNotNull(cp2);
-    assertThat(cp2.getId(), greaterThan(0));
-    assertEquals(owner, cp2.getOwner());
-    assertEquals(code, cp2.getCode());
-    assertEquals(label, cp2.getLabel());
-    assertEquals(description, cp2.getDescription());
-    assertThat(cp2.getCreate(), after(this.now));
-    assertEquals(cp2.getCreate(), cp2.getUpdate());
+    assertThat(cp2).isNotNull().isEqualTo(cp1);
+    assertThat(cp2.getId()).isGreaterThan(0);
+    assertThat(cp2.getOwner()).isEqualTo(this.operator);
+    assertThat(cp2.getCode()).isEqualTo(code);
+    assertThat(cp2.getLabel()).isEqualTo(label);
+    assertThat(cp2.getDescription()).isEqualTo(description);
+    assertThat(cp2.getCreate()).isGreaterThanOrEqualTo(this.now);
+    assertThat(cp2.getUpdate()).isEqualTo(cp2.getCreate());
   }
 }

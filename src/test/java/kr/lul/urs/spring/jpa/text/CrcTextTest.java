@@ -3,9 +3,8 @@
  */
 package kr.lul.urs.spring.jpa.text;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
@@ -17,11 +16,9 @@ import kr.lul.urs.util.Strings;
  * @since 2016. 4. 4.
  */
 public class CrcTextTest {
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testConstructorWithNull() {
-    new CrcText(null);
-
-    fail();
+    assertThatThrownBy(() -> new CrcText(null)).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -33,11 +30,10 @@ public class CrcTextTest {
     final CrcText ct = new CrcText(text);
 
     // Then
-    assertNotNull(text);
-    assertEquals(text, ct.getText());
-    assertEquals(text, ct.toString());
-    assertEquals(text.hashCode(), ct.hashCode());
-    assertEquals(ct, new CrcText(text));
-    assertEquals(ct.getCrc(), new CrcText(text).getCrc());
+    assertThat(ct).isNotNull();
+    assertThat(text).isEqualTo(ct.getText()).isEqualTo(ct.toString());
+    assertThat(ct.toString()).isEqualTo(text);
+    assertThat(new CrcText(text)).isEqualTo(ct).isNotSameAs(ct);
+    assertThat(new CrcText(text).getCrc()).isEqualTo(ct.getCrc());
   }
 }

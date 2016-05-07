@@ -37,7 +37,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformReturnFactoryImplTest extends AbstractInternalServiceTest {
+public class ClientPlatformReturnFactoryTest extends AbstractInternalServiceTest {
   @Autowired
   private ClientPlatformReturnFactory clientPlatformReturnFactory;
 

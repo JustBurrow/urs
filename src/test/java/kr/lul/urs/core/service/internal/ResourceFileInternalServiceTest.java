@@ -1,14 +1,8 @@
 package kr.lul.urs.core.service.internal;
 
-import static com.spencerwi.hamcrestJDK8Time.matchers.IsAfter.after;
 import static java.lang.String.format;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -43,13 +37,11 @@ public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest
   public void setUp() throws Exception {
     this.setNow();
     this.setClientPlatformAsRandom();
-    assertEquals(this.clientPlatform.getOwner(), this.operator);
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testCreateWithNull() throws Exception {
-    this.resourceFileInternalService.create(null);
-    fail();
+    assertThatThrownBy(() -> this.resourceFileInternalService.create(null)).isInstanceOf(AssertionException.class);
   }
 
   @Test
@@ -67,13 +59,13 @@ public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest
         .catchThrowable(() -> this.resourceFileInternalService.create(cmd));
 
     // Then
-    Assertions.assertThat(e)
+    assertThat(e)
         .isInstanceOf(OwnershipException.class)
         .hasMessageContaining("not equal")
         .hasMessageContaining("[" + cmd.getOwner() + "]")
         .hasMessageMatching(format(".+\\[\\(%d, [^@]+@.+\\)\\].+", this.operator.getId()));
-    assertEquals(e.toString(), operator.getId(), e.getExpected());
-    assertEquals(e.toString(), this.clientPlatform.getOwner().getId(), e.getActual());
+    assertThat(e.getExpected()).isEqualTo(operator.getId());
+    assertThat(e.getActual()).isEqualTo(this.clientPlatform.getOwner().getId());
   }
 
   @Test
@@ -85,26 +77,25 @@ public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest
     final ResourceFile resourceFile = this.resourceFileInternalService.create(cmd);
 
     // Then
-    assertNotNull(resourceFile);
-    assertThat(resourceFile.getId(), greaterThan(0));
-    assertEquals(this.operator, resourceFile.getOwner());
-    assertEquals(this.clientPlatform, resourceFile.getClientPlatform());
-    assertEquals(cmd.getName(), resourceFile.getName());
-    assertThat(resourceFile.getCreate(), after(this.now));
-    assertEquals(resourceFile.getCreate(), resourceFile.getUpdate());
-
-    assertThat(resourceFile.getHistory(), empty());
-    assertEquals(resourceFile.getCurrentRevisionNumber(), 0);
-    assertNull(resourceFile.getCurrentRevision());
+    assertThat(resourceFile).isNotNull();
+    assertThat(resourceFile.getOwner()).isEqualTo(this.operator);
+    assertThat(resourceFile.getClientPlatform()).isEqualTo(this.clientPlatform);
+    assertThat(resourceFile.getName()).isEqualTo(cmd.getName());
+    assertThat(resourceFile.getHistory()).isEmpty();
+    assertThat(resourceFile.getCurrentRevisionNumber()).isEqualTo(0);
+    assertThat(resourceFile.getCurrentRevision()).isNull();
+    if (this.saveAndFlush) {
+      assertThat(resourceFile.getId()).isGreaterThan(0);
+      assertThat(resourceFile.getCreate()).isGreaterThanOrEqualTo(this.now).isEqualTo(resourceFile.getUpdate());
+    } else {
+      assertThat(resourceFile.getId()).isEqualTo(0);
+      assertThat(resourceFile.getCreate()).isEqualTo(resourceFile.getUpdate()).isNull();
+    }
   }
 
   @Test
   public void testReadWith0() throws Exception {
-    // When
-    ResourceFile resourceFile = this.resourceFileInternalService.read(0);
-
-    // Then
-    assertNull(resourceFile);
+    assertThat(this.resourceFileInternalService.read(0)).isNull();
   }
 
   @Test
@@ -117,16 +108,15 @@ public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest
     final ResourceFile rf2 = this.resourceFileInternalService.read(rf1.getId());
 
     // Then
-    assertEquals(rf1, rf2);
+    assertThat(rf2).isEqualTo(rf1);
   }
 
-  @Test(expected = AssertionException.class)
+  @Test
   public void testReadWithNullCmd() throws Exception {
-    this.resourceFileInternalService.read(null);
-    fail();
+    assertThatThrownBy(() -> this.resourceFileInternalService.read(null)).isInstanceOf(AssertionException.class);
   }
 
-  @Test(expected = OwnershipException.class)
+  @Test
   public void testReadWithReadResourceFileCmdThatIllegalOwner() throws Exception {
     // Given
     final ResourceFileEntity rf1 = ResourceFileInternalServiceUtils.create(this.clientPlatform,
@@ -137,11 +127,8 @@ public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest
     } while (rf1.getOwner().getId() == illegalOwner);
     ReadResourceFileCmd cmd = new ReadResourceFileCmd(illegalOwner, rf1.getId());
 
-    // When
-    this.resourceFileInternalService.read(cmd);
-
-    // Then
-    fail();
+    // When & Then
+    assertThatThrownBy(() -> this.resourceFileInternalService.read(cmd)).isInstanceOf(OwnershipException.class);
   }
 
   @Test
@@ -155,6 +142,6 @@ public class ResourceFileInternalServiceTest extends AbstractInternalServiceTest
     final ResourceFile rf2 = this.resourceFileInternalService.read(cmd);
 
     // Then
-    assertEquals(rf1, rf2);
+    assertThat(rf2).isEqualTo(rf1);
   }
 }

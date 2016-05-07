@@ -3,9 +3,7 @@
  */
 package kr.lul.urs.spring.jpa.time;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 
@@ -30,7 +28,7 @@ public class InstantLongConverterTest {
 
   @Test
   public void testConvertToDatabaseColumnWithNull() {
-    assertNull(this.converter.convertToDatabaseColumn(null));
+    assertThat(this.converter.convertToDatabaseColumn(null)).isNull();
   }
 
   @Test
@@ -39,13 +37,12 @@ public class InstantLongConverterTest {
     Long actual = this.converter.convertToDatabaseColumn(this.now);
 
     // Then
-    assertNotNull(actual);
-    assertEquals(this.currentUtc, (long) actual);
+    assertThat(actual).isNotNull().isEqualTo(this.currentUtc);
   }
 
   @Test
   public void testConvertToEntityAttributeWithNull() throws Exception {
-    assertNull(this.converter.convertToEntityAttribute(null));
+    assertThat(this.converter.convertToEntityAttribute(null)).isNull();
   }
 
   @Test
@@ -54,7 +51,6 @@ public class InstantLongConverterTest {
     Instant actual = this.converter.convertToEntityAttribute(this.currentUtc);
 
     // Then
-    assertNotNull(actual);
-    assertEquals(this.now, actual);
+    assertThat(actual).isNotNull().isEqualTo(this.now);
   }
 }

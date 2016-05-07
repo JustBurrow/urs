@@ -3,13 +3,11 @@
  */
 package kr.lul.urs.core.service.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,9 +28,11 @@ import kr.lul.urs.util.Strings;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class OperatorInternalServiceTest {
-  @Autowired
-  private OperatorInternalService operatorInternalService;
+public class OperatorInternalServiceTest extends AbstractInternalServiceTest {
+  @Before
+  public void setUp() throws Exception {
+    this.setNow();
+  }
 
   @Test
   public void testCreate() throws Exception {
@@ -41,17 +41,20 @@ public class OperatorInternalServiceTest {
     final String password = Strings.random(40, 60);
     final CreateOperatorCmd cmd = new CreateOperatorCmd(email, password);
 
-    assertEquals(email, cmd.getEmail());
-    assertEquals(password, cmd.getPassword());
-
     // When
     final Operator operator = this.operatorInternalService.create(cmd);
 
     // Then
-    assertNotNull(operator);
-    assertEquals(email, operator.getEmail());
-    assertNotEquals(password, operator.getPassword());
-    assertNotNull(operator.getCreate());
-    assertEquals(operator.getCreate(), operator.getUpdate());
+    assertThat(operator).isNotNull();
+    assertThat(operator.getEmail()).isEqualTo(email);
+    assertThat(operator.getPassword()).isNotEqualTo(password);
+
+    if (this.saveAndFlush) {
+      assertThat(operator.getCreate()).isGreaterThanOrEqualTo(this.now);
+      assertThat(operator.getUpdate()).isEqualTo(operator.getCreate());
+    } else {
+      assertThat(operator.getCreate()).isNull();
+      assertThat(operator.getUpdate()).isNull();
+    }
   }
 }

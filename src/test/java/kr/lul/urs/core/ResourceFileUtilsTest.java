@@ -4,10 +4,8 @@
 package kr.lul.urs.core;
 
 import static kr.lul.urs.core.ResourceFileUtils.createCmd;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +18,6 @@ import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.service.ClientPlatformService;
 import kr.lul.urs.core.service.ClientPlatformServiceUtils;
-import kr.lul.urs.util.Conditions;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -52,9 +49,9 @@ public class ResourceFileUtilsTest extends AbstractCoreTest {
     final CreateResourceFileCmd cmd = createCmd(this.clientPlatform);
 
     // Then
-    assertNotNull(cmd);
-    assertEquals(this.operator.getId(), cmd.getOwner());
-    assertEquals(this.clientPlatform.getId(), cmd.getClientPlatform());
-    assertTrue(cmd.getName(), Conditions.matches(cmd.getName(), "(/[a-z][a-zA-Z\\d]*)+"));
+    assertThat(cmd).isNotNull();
+    assertThat(cmd.getOwner()).isEqualTo(this.operator.getId());
+    assertThat(cmd.getClientPlatform()).isEqualTo(this.clientPlatform.getId());
+    assertThat(cmd.getName()).matches("(/[a-z][a-zA-Z\\d]*)+");
   }
 }

@@ -3,7 +3,7 @@
  */
 package kr.lul.urs.spring.jpa.timestamp;
 
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
@@ -12,24 +12,21 @@ import org.junit.Test;
  * @since 2016. 4. 16.
  */
 public class CreatablMappingTest {
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testConstructor() {
-    new CreatablMapping() {
-    };
-    fail();
+    assertThatThrownBy(() -> new CreatablMapping() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testCreatableEntityConstructor() throws Exception {
-    new CreatablMapping.CreatableEntity() {
-    };
-    fail();
+    assertThatThrownBy(() -> new CreatablMapping.CreatableEntity() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testCreatableTableConstructor() throws Exception {
-    new CreatablMapping.CreatableTable() {
-    };
-    fail();
+    assertThatThrownBy(() -> new CreatablMapping.CreatableTable() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 }
