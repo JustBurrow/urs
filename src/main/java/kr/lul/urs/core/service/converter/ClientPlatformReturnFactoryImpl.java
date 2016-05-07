@@ -1,6 +1,3 @@
-/**
- *
- */
 package kr.lul.urs.core.service.converter;
 
 import static kr.lul.urs.util.Asserts.notNull;
@@ -15,49 +12,44 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.reflect.TypeToken;
 
-import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.domain.entity.OperatorEntity;
-import kr.lul.urs.core.dto.OperatorDto;
+import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.spring.tx.Return;
 
-/**
- * @author Just Burrow just.burrow@lul.kr
- * @since 2016. 5. 6.
- */
 @Service
-class OperatorReturnFactoryImpl extends AbstractReturnFactory implements OperatorReturnFactory {
+class ClientPlatformReturnFactoryImpl extends AbstractReturnFactory implements ClientPlatformReturnFactory {
   private Type listType;
 
   @PostConstruct
   private void postConstruct() throws Exception {
-    this.initializeMapper(new PropertyMap<OperatorEntity, OperatorDto>() {
+    this.initializeMapper(new PropertyMap<ClientPlatformEntity, ClientPlatformDto>() {
       @Override
       protected void configure() {
-        if (!OperatorReturnFactoryImpl.this.saveAndFlush) {
+        this.map().setOwner(this.source.getOwner().getId());
+        if (!ClientPlatformReturnFactoryImpl.this.saveAndFlush) {
           this.skip().setCreate(null);
           this.skip().setUpdate(null);
         }
       }
     });
-    this.listType = new TypeToken<List<OperatorDto>>() {
-      private static final long serialVersionUID = 8664992560639196797L;
+    this.listType = new TypeToken<List<ClientPlatformDto>>() {
+      private static final long serialVersionUID = -1143891363443103897L;
     }.getType();
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // <I>OperatorReturnFactory
+  // <I>ClientPlatformReturnFactory
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public Return<OperatorDto> converter(final Operator domain) {
-    notNull(domain);
-
-    return () -> this.mapper.map(domain, OperatorDto.class);
+  public Return<ClientPlatformDto> converter(final ClientPlatform clientPlatform) {
+    notNull(clientPlatform);
+    return () -> this.mapper.map(clientPlatform, ClientPlatformDto.class);
   }
 
   @Override
-  public Return<List<OperatorDto>> converter(final List<Operator> list) {
+  public Return<List<ClientPlatformDto>> converter(final List<ClientPlatform> list) {
     notNull(list);
-
     return () -> this.mapper.map(list, this.listType);
   }
 }
