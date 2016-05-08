@@ -1,14 +1,7 @@
 package kr.lul.urs.util;
 
-import static kr.lul.urs.util.Tests.exceptException;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -29,12 +22,13 @@ public class MapBuilderTest {
 
   @Test
   public void testHashmap() throws Exception {
-    MapBuilder<String, BigDecimal> builder = MapBuilder.<String, BigDecimal>hash();
+    MapBuilder<String, BigDecimal> builder = MapBuilder.<String, BigDecimal> hash();
     Map<String, BigDecimal> map = builder.build();
 
-    assertNotNull(builder);
-    assertTrue(map.isEmpty());
-    assertThat(map, allOf(notNullValue(), instanceOf(HashMap.class)));
+    assertThat(builder).isNotNull();
+    assertThat(map).isNotNull()
+        .isInstanceOf(HashMap.class)
+        .isEmpty();
   }
 
   @Test
@@ -44,27 +38,28 @@ public class MapBuilderTest {
     BigDecimal value = BigDecimal.valueOf(Long.MAX_VALUE).add(BigDecimal.valueOf(Long.MAX_VALUE));
 
     // When
-    MapBuilder<String, BigDecimal> builder = MapBuilder.<String, BigDecimal>hash(key, value);
+    MapBuilder<String, BigDecimal> builder = MapBuilder.<String, BigDecimal> hash(key, value);
     Map<String, BigDecimal> map = builder.build();
 
     // Then
-    assertNotNull(builder);
-    assertThat(map, allOf(notNullValue(), instanceOf(HashMap.class), hasEntry(key, value)));
-    assertEquals(1, map.size());
-
-    exceptException(IllegalStateException.class, () -> builder.put(RandomStringUtils.random(10), BigDecimal.TEN));
+    assertThat(builder).isNotNull();
+    assertThat(map).isNotNull()
+        .isInstanceOf(HashMap.class)
+        .containsEntry(key, value)
+        .hasSize(1);
+    assertThatThrownBy(() -> builder.put(RandomStringUtils.random(10), BigDecimal.TEN))
+        .isInstanceOf(IllegalStateException.class);
   }
 
   @Test
   public void testLinkedhashmap() throws Exception {
     // When
-    MapBuilder<Key, Value> builder = MapBuilder.<Key, Value>linkedhash();
+    MapBuilder<Key, Value> builder = MapBuilder.<Key, Value> linkedhash();
     Map<Key, Value> map = builder.build();
 
     // Then
-    assertNotNull(builder);
-    assertTrue(map.isEmpty());
-    assertThat(map, allOf(notNullValue(), instanceOf(LinkedHashMap.class)));
+    assertThat(builder).isNotNull();
+    assertThat(map).isNotNull().isInstanceOf(LinkedHashMap.class).isEmpty();
   }
 
   @Test
@@ -76,24 +71,27 @@ public class MapBuilderTest {
     Value v2 = new Value();
 
     // When
-    MapBuilder<Key, Value> builder = MapBuilder.<Key, Value>linkedhash(k1, v1).put(k2, v2);
+    MapBuilder<Key, Value> builder = MapBuilder.<Key, Value> linkedhash(k1, v1).put(k2, v2);
     Map<Key, Value> map = builder.build();
 
     // Then
-    assertNotNull(builder);
-    assertThat(map, allOf(notNullValue(), instanceOf(LinkedHashMap.class), hasEntry(k1, v1), hasEntry(k2, v2)));
-    assertEquals(2, map.size());
+    assertThat(builder).isNotNull();
+    assertThat(map).isNotNull()
+        .isInstanceOf(LinkedHashMap.class)
+        .containsEntry(k1, v1)
+        .containsEntry(k2, v2)
+        .hasSize(2);
 
     Iterator<Entry<Key, Value>> iterator = map.entrySet().iterator();
-    Entry<Key, Value> entry = iterator.next();
-    assertEquals(k1, entry.getKey());
-    assertEquals(v1, entry.getValue());
+    assertThat(iterator.next())
+        .hasFieldOrPropertyWithValue("key", k1)
+        .hasFieldOrPropertyWithValue("value", v1);
+    assertThat(iterator.next())
+        .hasFieldOrPropertyWithValue("key", k2)
+        .hasFieldOrPropertyWithValue("value", v2);
+    assertThat(iterator.hasNext()).isEqualTo(false);
 
-    entry = iterator.next();
-    assertEquals(k2, entry.getKey());
-    assertEquals(v2, entry.getValue());
-
-    exceptException(IllegalStateException.class, () -> builder.put(new Key(), new Value()));
-    exceptException(IllegalStateException.class, () -> builder.build());
+    assertThatThrownBy(() -> builder.put(new Key(), new Value())).isInstanceOf(IllegalStateException.class);
+    assertThatThrownBy(() -> builder.build()).isInstanceOf(IllegalStateException.class);
   }
 }

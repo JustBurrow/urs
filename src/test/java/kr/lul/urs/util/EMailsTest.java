@@ -3,10 +3,8 @@
  */
 package kr.lul.urs.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,11 +27,10 @@ public class EMailsTest {
     this.validator = new EmailValidator();
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testNew() {
-    new EMails() {
-    };
-    fail();
+    assertThatThrownBy(() -> new EMails() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
@@ -43,9 +40,9 @@ public class EMailsTest {
     for (int i = 0; i < COUNT; i++) {
       String email = EMails.random();
 
-      assertNotNull(email);
-      assertTrue(this.validator.isValid(email, null));
-      assertFalse(emails.contains(email));
+      assertThat(email).isNotNull();
+      assertThat(this.validator.isValid(email, null)).isEqualTo(true);
+      assertThat(emails).doesNotContain(email);
 
       emails.add(email);
     }

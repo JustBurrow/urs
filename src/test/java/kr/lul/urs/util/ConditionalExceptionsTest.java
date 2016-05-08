@@ -24,7 +24,7 @@ import static kr.lul.urs.util.ConditionalExceptions.positive;
 import static kr.lul.urs.util.ConditionalExceptions.shorter;
 import static kr.lul.urs.util.ConditionalExceptions.zero;
 import static kr.lul.urs.util.Tests.exceptException;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.Instant;
 import java.util.Random;
@@ -83,11 +83,10 @@ public class ConditionalExceptionsTest {
     this.testException = new TestException(this.r.nextInt(), Integer.toString(this.r.nextInt()));
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void test() {
-    new ConditionalExceptions() {
-    };
-    fail();
+    assertThatThrownBy(() -> new ConditionalExceptions() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
