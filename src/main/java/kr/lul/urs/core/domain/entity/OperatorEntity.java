@@ -23,9 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.mapping.OperatorMapping.Table.INDEX;
 import kr.lul.urs.spring.jpa.timestamp.AbstractUpdatable;
@@ -38,7 +35,6 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 @Table(name = TABLE,
     uniqueConstraints = { @UniqueConstraint(name = INDEX.UQ_OPERATORS_EMAIL, columnNames = { EMAIL }) })
 @EntityListeners({ Timestamper.class })
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class OperatorEntity extends AbstractUpdatable implements Operator {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

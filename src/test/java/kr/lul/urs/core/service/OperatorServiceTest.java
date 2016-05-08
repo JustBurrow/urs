@@ -62,6 +62,10 @@ public class OperatorServiceTest extends AbstractServiceTest {
 
     // When
     final OperatorDto o2 = this.operatorService.read(o1.getId()).value();
+    /*
+     * JPA/Hibernate의 2nd Lv. Cache 작동 여부를 확인하기 위한 추가 코드.
+     * 단위테스트에서 코드로는 확인할 수 없으며, Hibernate와 MySQL 제너럴 로그로 확인할 수 있다.
+     */
     final OperatorDto o3 = this.operatorService.read(o2.getId()).value();
 
     // Then
