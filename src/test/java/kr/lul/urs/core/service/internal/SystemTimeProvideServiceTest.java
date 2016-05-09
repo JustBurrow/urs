@@ -19,7 +19,7 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamper;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class SystemTimeProviderTest {
+public class SystemTimeProvideServiceTest {
   @Test
   public void testSetApplicationContext() {
     assertThat(Timestamper.getTimeProvider()).isNotNull();

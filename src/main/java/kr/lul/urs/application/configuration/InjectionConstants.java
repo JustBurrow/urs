@@ -62,6 +62,8 @@ public abstract class InjectionConstants {
      */
     public static final String NAME_TRANSACTION_MANAGER    = "transactionManager";
 
+    public static final String NAME_DEBUGGING_SUPPORT      = "debuggingSupport";
+
     protected Beans() {
       throw new UnsupportedOperationException();
     }
