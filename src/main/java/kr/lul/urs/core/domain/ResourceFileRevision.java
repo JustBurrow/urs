@@ -3,10 +3,11 @@
  */
 package kr.lul.urs.core.domain;
 
-import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
+import kr.lul.urs.util.InputStreamSupplier;
 
 /**
  * 클라이언트가 다운로드할 파일의 바이너리 정보를 관리하는 단위.
@@ -78,7 +79,9 @@ public interface ResourceFileRevision extends Creatable {
   public String getSha1();
 
   /**
+   * 현재 리비전의 바이너리를 읽을 수 있는 인풋스트림 제공자를 반환한다.
+   *
    * @return
    */
-  public File getFile();
+  public InputStreamSupplier<InputStream> getBinary();
 }

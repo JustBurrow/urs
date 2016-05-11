@@ -140,7 +140,7 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
   }
 
   @Override
-  public ResourceFileRevision update(final File file) {
+  public ResourceFileRevision update(final File file) throws IOException {
     notNull(file);
 
     InputStreamSupplier<InputStream> input = new AbstractInputStreamSupplier<InputStream>() {

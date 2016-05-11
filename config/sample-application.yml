@@ -1,4 +1,5 @@
 kr.lul.urs:
+  resource.file.storage.dir: ~/resourceFileStorage
   logging.pattern: "%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg %n"
 spring:
   datasource:

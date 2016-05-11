@@ -7,13 +7,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.File;
+import java.io.FileInputStream;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.TestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.application.configuration.InjectionConstants.Properties;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
@@ -39,6 +43,9 @@ import kr.lul.urs.util.Strings;
 @Rollback(CoreTestConfig.ROLLBACK)
 public class ResourceFileEntityTest extends AbstractDomainTest {
   public static final String          CLASS_NAME = ResourceFileEntityTest.class.getSimpleName();
+
+  @Value("${" + Properties.KEY_RESOUCE_FILE_STORAGE_DIR + "}")
+  private File                        storage;
 
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
@@ -89,7 +96,7 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
     final ResourceFileEntity resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
         this.resourceFileInternalService);
     final File file = FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH, CLASS_NAME, "testUpdateForNewInstance");
-    assertThat(file.exists()).is(IS_TRUE);
+    assertThat(file).exists();
 
     // When
     final ResourceFileRevision resourceFileRevision = resourceFile.update(file);
@@ -99,9 +106,11 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
     assertThat(resourceFileRevision.getResourceFile()).isEqualTo(resourceFile);
     assertThat(resourceFileRevision.getOwner()).isEqualTo(this.operator);
     assertThat(resourceFileRevision.getName()).isEqualTo(resourceFile.getName());
+    assertThat(resourceFileRevision.getSha1()).isEqualTo(DigestUtils.sha1Hex(new FileInputStream(file)));
     assertThat(resourceFileRevision.getRevision()).isEqualTo(1);
-    // TODO SHA1 해시 검증.
     assertThat(resourceFileRevision.getCreate()).isNull();
+    assertThat(FileUtils.getFile(this.storage, resourceFileRevision.getName())).isFile()
+        .exists();
 
     assertThat(resourceFile.getCurrentRevision()).isEqualTo(resourceFileRevision);
     assertThat(resourceFile.getCurrentRevisionNumber()).isEqualTo(1);

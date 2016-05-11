@@ -11,6 +11,34 @@ import java.time.Instant;
  * @see Conditions
  */
 public abstract class Asserts {
+  public static void isTrue(boolean b) throws AssertionException {
+    if (b) {
+      return;
+    }
+    throw new AssertionException("boolean is not true.");
+  }
+
+  public static void isTrue(boolean b, String message) throws AssertionException {
+    if (b) {
+      return;
+    }
+    throw new AssertionException(message);
+  }
+
+  public static void isFalse(boolean b) throws AssertionException {
+    if (!b) {
+      return;
+    }
+    throw new AssertionException("boolean is not false.");
+  }
+
+  public static void isFalse(boolean b, String message) throws AssertionException {
+    if (!b) {
+      return;
+    }
+    throw new AssertionException(message);
+  }
+
   /**
    * 숫자가 0보다 작음을 단정한다.
    *
