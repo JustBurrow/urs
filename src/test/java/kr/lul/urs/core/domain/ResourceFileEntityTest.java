@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +55,11 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
   public void setUp() throws Exception {
     this.setNow();
     this.setClientPlatformAsRandom();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    FileUtils.cleanDirectory(this.storage);
   }
 
   @Test
@@ -102,26 +108,25 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
     final ResourceFileRevision resourceFileRevision = resourceFile.update(file);
 
     // Then
+    assertThat(resourceFile.getCurrentRevision()).isEqualTo(resourceFileRevision);
+    assertThat(resourceFile.getCurrentRevisionNumber()).isEqualTo(1);
+    assertThat(resourceFile.getHistory()).hasSize(1)
+        .contains(resourceFileRevision);
+
     assertThat(resourceFileRevision).isNotNull();
     assertThat(resourceFileRevision.getResourceFile()).isEqualTo(resourceFile);
     assertThat(resourceFileRevision.getOwner()).isEqualTo(this.operator);
     assertThat(resourceFileRevision.getName()).isEqualTo(resourceFile.getName());
-    assertThat(resourceFileRevision.getSha1()).isEqualTo(DigestUtils.sha1Hex(new FileInputStream(file)));
     assertThat(resourceFileRevision.getRevision()).isEqualTo(1);
+    assertThat(resourceFileRevision.getSha1()).isEqualTo(DigestUtils.sha1Hex(new FileInputStream(file)));
     assertThat(resourceFileRevision.getCreate()).isNull();
-    assertThat(FileUtils.getFile(this.storage, resourceFileRevision.getName())).isFile()
+
+    assertThat(FileUtils.getFile(this.storage, resourceFileRevision.getName()))
+        .isDirectory()
         .exists();
-
-    assertThat(resourceFile.getCurrentRevision()).isEqualTo(resourceFileRevision);
-    assertThat(resourceFile.getCurrentRevisionNumber()).isEqualTo(1);
-    assertThat(resourceFile.getHistory()).hasSize(1).contains(resourceFileRevision);
-
-    if (this.saveAndFlush) {
-      assertThat(resourceFile.getCreate()).isGreaterThanOrEqualTo(this.now);
-      assertThat(resourceFile.getUpdate()).isEqualTo(resourceFile.getCreate());
-    } else {
-      assertThat(resourceFile.getCreate()).isNull();
-      assertThat(resourceFile.getUpdate()).isNull();
-    }
+    assertThat(FileUtils.getFile(this.storage, resourceFileRevision.getName(),
+        Integer.toString(resourceFileRevision.getRevision())))
+            .exists()
+            .isFile();
   }
 }

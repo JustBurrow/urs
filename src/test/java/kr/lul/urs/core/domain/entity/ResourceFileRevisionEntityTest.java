@@ -6,16 +6,12 @@ package kr.lul.urs.core.domain.entity;
 import static java.lang.String.format;
 import static kr.lul.urs.TestConfig.log;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,9 +29,6 @@ import kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping;
 import kr.lul.urs.core.service.internal.AbstractInternalServiceTest;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
 import kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils;
-import kr.lul.urs.util.AbstractInputStreamSupplier;
-import kr.lul.urs.util.InputStreamSupplier;
-import kr.lul.urs.util.Randoms;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -69,15 +62,12 @@ public class ResourceFileRevisionEntityTest extends AbstractInternalServiceTest 
     // Given
     ResourceFile resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
         this.resourceFileInternalService);
-    InputStreamSupplier<InputStream> file = new AbstractInputStreamSupplier<InputStream>() {
-      @Override
-      protected InputStream doOpen() throws IOException {
-        return new FileInputStream(ResourceFileRevisionEntityTest.this.f1);
-      }
-    };
+    FileInputStream input = new FileInputStream(this.f1);
+    String sha1 = DigestUtils.sha1Hex(input);
+    input.close();
 
     // When
-    ResourceFileRevisionEntity rev = new ResourceFileRevisionEntity(resourceFile, 1, file);
+    ResourceFileRevisionEntity rev = new ResourceFileRevisionEntity(resourceFile, 1, sha1);
     if (log.isDebugEnabled()) {
       log.debug(format("file=%s, rFR.sha1=%s", this.f1, rev.getSha1()));
     }
@@ -92,23 +82,5 @@ public class ResourceFileRevisionEntityTest extends AbstractInternalServiceTest 
     assertThat(rev.getRevision()).isEqualTo(1);
     assertThat(rev.getName()).isEqualTo(resourceFile.getName());
     assertThat(rev.getSha1()).isEqualTo(DigestUtils.sha1Hex(new FileInputStream(this.f1)));
-  }
-
-  @Test
-  public void testConstructThrowsIOException() throws Exception {
-    // Given
-    final String message = RandomStringUtils.random(Randoms.in(10, 20));
-    ResourceFileEntity resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
-        this.resourceFileInternalService);
-    InputStreamSupplier<InputStream> file = new AbstractInputStreamSupplier<InputStream>() {
-      @Override
-      protected InputStream doOpen() throws IOException {
-        throw new IOException(message);
-      }
-    };
-
-    // When & Then
-    assertThatThrownBy(() -> new ResourceFileRevisionEntity(resourceFile, 1, file)).isInstanceOf(IOException.class)
-        .hasMessage(message);
   }
 }

@@ -4,11 +4,18 @@
 package kr.lul.urs.core.service.internal;
 
 import static java.lang.String.format;
+import static kr.lul.urs.util.Asserts.isTrue;
 import static kr.lul.urs.util.Asserts.notNull;
 
+import java.io.File;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import kr.lul.urs.application.configuration.InjectionConstants.Properties;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.dao.ResourceFileDao;
@@ -23,8 +30,18 @@ import kr.lul.urs.core.domain.entity.ResourceFileEntity;
  */
 @Service
 class ResourceFileInternalServiceImpl extends AbstractPropertyDoInternalService implements ResourceFileInternalService {
+  @Value("${" + Properties.KEY_RESOUCE_FILE_STORAGE_DIR + "}")
+  private File            storage;
+
   @Autowired
   private ResourceFileDao resourceFileDao;
+
+  @PostConstruct
+  private void postConstruct() {
+    isTrue(this.storage.exists());
+    isTrue(this.storage.isDirectory());
+    isTrue(this.storage.canWrite());
+  }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // <I>ResourceFileInternalService

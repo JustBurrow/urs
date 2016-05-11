@@ -10,10 +10,10 @@ import static kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping.Table.R
 import static kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping.Table.SHA1;
 import static kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping.Table.TABLE;
 import static kr.lul.urs.util.Asserts.assignable;
+import static kr.lul.urs.util.Asserts.hasLength;
 import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Asserts.positive;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.persistence.Column;
@@ -27,8 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-
-import org.apache.commons.codec.digest.DigestUtils;
 
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
@@ -148,20 +146,15 @@ public class ResourceFileRevisionEntity extends AbstractCreatable implements Res
    * @param resourceFile
    * @param revision
    *          생성할 {@link ResourceFileRevision}의 리비전. 1-based.
-   * @param binary
-   *          리소스 파일의 바이너리 인풋 스트림. 해시 계산 등에 사용한다.
-   * @throws IOException
-   *           파일의 SHA1 해시 계산 중 에러.
+   * @param sha1
+   *          현재 리비전의 SHA1 해시의 HEX값.
    */
-  ResourceFileRevisionEntity(ResourceFile resourceFile, int revision, InputStreamSupplier<InputStream> binary)
-      throws IOException {
-    notNull(binary);
+  ResourceFileRevisionEntity(ResourceFile resourceFile, int revision, String sha1) {
+    hasLength(sha1);
     this.id = new ResourceFileRevisionId(resourceFile, revision);
     this.resourceFile = resourceFile;
     this.revision = revision;
-
-    this.sha1 = DigestUtils.sha1Hex(binary.open());
-    binary.close();
+    this.sha1 = sha1;
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

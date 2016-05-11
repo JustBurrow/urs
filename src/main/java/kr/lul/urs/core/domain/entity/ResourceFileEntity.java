@@ -19,7 +19,7 @@ import static kr.lul.urs.util.Asserts.notNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +39,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
+
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
@@ -50,8 +53,7 @@ import kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.INDEX;
 import kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping;
 import kr.lul.urs.spring.jpa.timestamp.AbstractUpdatable;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
-import kr.lul.urs.util.AbstractInputStreamSupplier;
-import kr.lul.urs.util.InputStreamSupplier;
+import kr.lul.urs.util.OutputStreamFactory;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -63,6 +65,20 @@ import kr.lul.urs.util.InputStreamSupplier;
     uniqueConstraints = {
         @UniqueConstraint(name = INDEX.UQ_RESOURCE_FILE, columnNames = { CLIENT_PLATFORM, NAME }) })
 public class ResourceFileEntity extends AbstractUpdatable implements ResourceFile {
+  private static OutputStreamFactory<OutputStream, ResourceFileRevision> OUTPUT_STREAM_FACTORY;
+
+  /**
+   * @param factory
+   * @since 2016. 5. 11.
+   */
+  public static void setOutputStreamFactory(OutputStreamFactory<OutputStream, ResourceFileRevision> factory) {
+    notNull(factory);
+    if (null != OUTPUT_STREAM_FACTORY) {
+      return;
+    }
+    OUTPUT_STREAM_FACTORY = factory;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = ID, nullable = false, insertable = false, updatable = false)
@@ -143,15 +159,18 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
   public ResourceFileRevision update(final File file) throws IOException {
     notNull(file);
 
-    InputStreamSupplier<InputStream> input = new AbstractInputStreamSupplier<InputStream>() {
-      @Override
-      protected InputStream doOpen() throws IOException {
-        return new FileInputStream(file);
-      }
-    };
-    ResourceFileRevisionEntity revision = new ResourceFileRevisionEntity(this, this.currentRevision + 1, input);
+    FileInputStream input = new FileInputStream(file);
+    String sha1 = DigestUtils.sha1Hex(input);
+    input.close();
+    ResourceFileRevisionEntity revision = new ResourceFileRevisionEntity(this, this.currentRevision + 1, sha1);
+    input.close();
     this.history.add(revision);
     this.currentRevision = revision.getRevision();
+
+    input = new FileInputStream(file);
+    OutputStream output = OUTPUT_STREAM_FACTORY.getOutputStream(revision);
+    IOUtils.copy(input, output);
+    input.close();
 
     return revision;
   }
