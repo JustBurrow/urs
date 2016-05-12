@@ -59,8 +59,7 @@ public class OperatorReturnFactoryTest extends AbstractInternalServiceTest {
       assertThat(dto).isNotNull();
       assertThat(dto.getId()).isEqualTo(this.operator.getId());
       assertThat(dto.getEmail()).isEqualTo(this.operator.getEmail());
-      assertThat(dto.getCreate()).isEqualTo(this.operator.getCreate());
-      assertThat(dto.getUpdate()).isEqualTo(this.operator.getUpdate());
+      this.assertTimestamp(dto);
     }
   }
 
@@ -104,6 +103,8 @@ public class OperatorReturnFactoryTest extends AbstractInternalServiceTest {
       assertThat(op.getId()).isEqualTo(dto.getId());
       assertThat(op.getEmail()).isEqualTo(dto.getEmail());
       if (this.saveAndFlush) {
+        this.assertTimestamp(op);
+        this.assertTimestamp(dto);
         assertThat(op.getCreate()).isEqualTo(dto.getCreate());
         assertThat(op.getUpdate()).isEqualTo(dto.getUpdate());
       }

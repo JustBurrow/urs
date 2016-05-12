@@ -50,8 +50,7 @@ public class OperatorServiceTest extends AbstractServiceTest {
     assertThat(operator).isNotNull();
     assertThat(operator.getId()).isGreaterThan(0);
     assertThat(operator.getEmail()).is(IS_EMAIL);
-    assertThat(operator.getCreate()).isGreaterThanOrEqualTo(this.now);
-    assertThat(operator.getUpdate()).isEqualTo(operator.getCreate());
+    this.assertTimestamp(operator);
   }
 
   @Test
@@ -69,10 +68,13 @@ public class OperatorServiceTest extends AbstractServiceTest {
     final OperatorDto o3 = this.operatorService.read(o2.getId()).value();
 
     // Then
-    assertThat(o2).isNotNull().isNotSameAs(o1).isNotSameAs(o3).isEqualTo(o1).isEqualTo(o3);
+    assertThat(o2).isNotNull()
+        .isNotSameAs(o1)
+        .isNotSameAs(o3)
+        .isEqualTo(o1)
+        .isEqualTo(o3);
     assertThat(o2.getId()).isEqualTo(o1.getId());
     assertThat(o2.getEmail()).is(IS_EMAIL);
-    assertThat(o2.getCreate()).isNotNull().isEqualTo(o1.getCreate());
-    assertThat(o2.getUpdate()).isEqualTo(o2.getCreate());
+    this.assertTimestamp(o2);
   }
 }

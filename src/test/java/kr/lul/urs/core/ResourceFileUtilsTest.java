@@ -34,7 +34,9 @@ public class ResourceFileUtilsTest extends AbstractCoreTest {
   @Before
   public void setUp() throws Exception {
     this.setOperatorAsRandom();
+
     this.clientPlatform = ClientPlatformServiceUtils.create(this.operator.getId(), this.clientPlatformService).value();
+    this.assertTimestamp(this.clientPlatform);
   }
 
   @Test

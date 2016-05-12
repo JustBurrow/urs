@@ -5,6 +5,7 @@ package kr.lul.urs.core.dto;
 
 import java.time.Instant;
 
+import kr.lul.urs.spring.jpa.timestamp.Updatable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ClientPlatformDto extends OwnershipDto {
+public class ClientPlatformDto extends OwnershipDto implements Updatable {
   private int     id;
   private String  code;
   private String  label;

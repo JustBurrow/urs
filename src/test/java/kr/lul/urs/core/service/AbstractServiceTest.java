@@ -29,11 +29,12 @@ abstract class AbstractServiceTest extends AbstractTest {
     if (null == this.now) {
       this.setNow();
     }
+
     this.operator = OperatorServiceUtils.create(this.operatorService).value();
+
     assertThat(this.operator).isNotNull();
     assertThat(this.operator.getId()).isGreaterThan(0);
     assertThat(this.operator.getEmail()).is(IS_EMAIL);
-    assertThat(this.operator.getCreate()).isGreaterThan(this.now);
-    assertThat(this.operator.getUpdate()).isEqualTo(this.operator.getCreate());
+    this.assertTimestamp(this.operator);
   }
 }

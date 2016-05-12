@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.AbstractTest;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.service.OperatorService;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -26,5 +25,6 @@ abstract class AbstractServiceUtilsTest extends AbstractTest {
 
     assertThat(this.operator).isNotNull();
     assertThat(this.operator.getId()).isGreaterThan(0);
+    this.assertTimestamp(this.operator);
   }
 }

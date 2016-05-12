@@ -67,8 +67,7 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
     assertThat(dto.getCode()).isEqualTo(cmd.getCode());
     assertThat(dto.getLabel()).isEqualTo(cmd.getLabel());
     assertThat(dto.getDescription()).isEqualTo(cmd.getDescription());
-    assertThat(dto.getCreate()).isGreaterThanOrEqualTo(this.now);
-    assertThat(dto.getUpdate()).isEqualTo(dto.getCreate());
+    this.assertTimestamp(dto);
   }
 
   @Test
@@ -91,7 +90,8 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
     ClientPlatformDto actual = this.clientPlatformService.read(expected.getId()).value();
 
     // Then
-    assertThat(actual).isEqualTo(expected);
+    assertThat(actual).isEqualTo(expected)
+        .isNotSameAs(expected);
   }
 
   @Test
@@ -117,12 +117,14 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
     final List<ClientPlatformDto> l1 = this.clientPlatformService.list().value();
     ClientPlatformDto clientPlatform = ClientPlatformServiceUtils.create(this.operator, this.clientPlatformService)
         .value();
+    assertThat(l1).isNotNull()
+    .doesNotContain(clientPlatform);
 
     // When
     List<ClientPlatformDto> l2 = this.clientPlatformService.list().value();
 
     // Then
-    assertThat(l1).isNotNull().doesNotContain(clientPlatform);
-    assertThat(l2).contains(clientPlatform).hasSize(l1.size() + 1);
+    assertThat(l2).contains(clientPlatform)
+        .hasSize(l1.size() + 1);
   }
 }

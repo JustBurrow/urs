@@ -36,7 +36,6 @@ abstract class AbstractCoreTest extends AbstractTest {
 
     assertThat(this.operator).isNotNull();
     assertThat(this.operator.getId()).isGreaterThan(0);
-    assertThat(this.operator.getCreate()).isGreaterThanOrEqualTo(this.now);
-    assertThat(this.operator.getUpdate()).isEqualTo(this.operator.getCreate());
+    this.assertTimestamp(this.operator);
   }
 }

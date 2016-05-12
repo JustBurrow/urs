@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.service.OperatorService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
@@ -41,7 +40,6 @@ public class OperatorServiceUtilsTest extends AbstractServiceUtilsTest {
     assertThat(operator).isNotNull();
     assertThat(operator.getId()).isGreaterThan(0);
     assertThat(operator.getEmail()).isNotNull().is(IS_EMAIL);
-    assertThat(operator.getCreate()).isNotNull().isGreaterThanOrEqualTo(this.now);
-    assertThat(operator.getUpdate()).isEqualTo(operator.getCreate());
+    this.assertTimestamp(operator);
   }
 }

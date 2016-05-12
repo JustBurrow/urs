@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.dto.ClientPlatformDto;
-import kr.lul.urs.core.service.ClientPlatformService;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -63,7 +62,6 @@ public class ClientPlatformServiceUtilsTest extends AbstractServiceUtilsTest {
     assertThat(clientPlatform.getCode()).isNotNull().isNotEmpty();
     assertThat(clientPlatform.getLabel()).isNotNull().isNotEmpty();
     assertThat(clientPlatform.getDescription()).isNotNull();
-    assertThat(clientPlatform.getCreate()).isNotNull().isGreaterThanOrEqualTo(this.now);
-    assertThat(clientPlatform.getUpdate()).isEqualTo(clientPlatform.getCreate());
+    this.assertTimestamp(clientPlatform);
   }
 }

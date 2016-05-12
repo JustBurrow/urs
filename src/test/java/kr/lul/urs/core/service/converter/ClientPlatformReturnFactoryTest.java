@@ -72,6 +72,8 @@ public class ClientPlatformReturnFactoryTest extends AbstractInternalServiceTest
     assertThat(dto.getLabel()).isEqualTo(clientPlatform.getLabel());
     assertThat(dto.getDescription()).isEqualTo(clientPlatform.getDescription());
     if (this.saveAndFlush) {
+      this.assertTimestamp(clientPlatform);
+      this.assertTimestamp(dto);
       assertThat(dto.getCreate()).isEqualTo(clientPlatform.getCreate());
       assertThat(dto.getUpdate()).isEqualTo(clientPlatform.getUpdate());
     }
@@ -101,21 +103,20 @@ public class ClientPlatformReturnFactoryTest extends AbstractInternalServiceTest
     List<ClientPlatformDto> l2 = rv.value();
     assertThat(l2).isNotNull().hasSize(l1.size());
     for (int i = 0; i < l2.size(); i++) {
-      ClientPlatform e = l1.get(i);
-      ClientPlatformDto a = l2.get(i);
+      ClientPlatform expected = l1.get(i);
+      ClientPlatformDto actual = l2.get(i);
 
-      assertThat(a).isNotNull();
-      assertThat(a.getId()).isEqualTo(e.getId());
-      assertThat(a.getOwner()).isEqualTo(this.operator.getId());
-      assertThat(a.getCode()).isEqualTo(e.getCode());
-      assertThat(a.getLabel()).isEqualTo(e.getLabel());
-      assertThat(a.getDescription()).isEqualTo(e.getDescription());
+      assertThat(actual).isNotNull();
+      assertThat(actual.getId()).isEqualTo(expected.getId());
+      assertThat(actual.getOwner()).isEqualTo(this.operator.getId());
+      assertThat(actual.getCode()).isEqualTo(expected.getCode());
+      assertThat(actual.getLabel()).isEqualTo(expected.getLabel());
+      assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
       if (this.saveAndFlush) {
-        assertThat(a.getCreate()).isEqualTo(e.getCreate());
-        assertThat(a.getUpdate()).isEqualTo(e.getUpdate());
+        this.assertTimestamp(actual);
       } else {
-        assertThat(a.getCreate()).isNull();
-        assertThat(a.getUpdate()).isNull();
+        assertThat(actual.getCreate()).isNull();
+        assertThat(actual.getUpdate()).isNull();
       }
     }
   }
