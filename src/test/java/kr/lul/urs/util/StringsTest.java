@@ -15,7 +15,9 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-public class StringsTest {
+import kr.lul.urs.AbstractTest;
+
+public class StringsTest extends AbstractTest {
   public static final int COUNT = Integer.MAX_VALUE / 4096;
 
   @Test(expected = UnsupportedOperationException.class)

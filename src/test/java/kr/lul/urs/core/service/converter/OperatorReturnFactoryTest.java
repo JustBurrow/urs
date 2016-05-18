@@ -16,11 +16,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.OperatorDomainUtils;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.service.internal.AbstractInternalServiceTest;
-import kr.lul.urs.core.service.internal.OperatorInternalServiceUtils;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
@@ -29,7 +29,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class OperatorReturnFactoryTest extends AbstractInternalServiceTest {
+public class OperatorReturnFactoryTest extends AbstractDomainEntityTest {
   @Autowired
   private OperatorReturnFactory operatorReturnFactory;
 
@@ -84,7 +84,7 @@ public class OperatorReturnFactoryTest extends AbstractInternalServiceTest {
     // Given
     final List<Operator> l1 = new ArrayList<>();
     for (int i = Randoms.in(10, 100); i > 0; i--) {
-      l1.add(OperatorInternalServiceUtils.create(this.operatorInternalService));
+      l1.add(OperatorDomainUtils.create(this.operatorInternalService));
     }
 
     // When

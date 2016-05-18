@@ -9,7 +9,9 @@ import java.time.Instant;
 
 import org.junit.Test;
 
-public class UtcMillisToInstantConverterTest {
+import kr.lul.urs.AbstractTest;
+
+public class UtcMillisToInstantConverterTest extends AbstractTest {
   @Test
   public void testConvertWithNull() throws Exception {
     assertNull(INSTANCE.convert(null));

@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.lul.urs.core.AbstractApiTest;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.dto.OperatorDto;
@@ -25,10 +26,9 @@ import kr.lul.urs.util.Strings;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class OperatorServiceTest extends AbstractServiceTest {
+public class OperatorServiceTest extends AbstractApiTest {
   @Before
   public void setUp() throws Exception {
-    this.setNow();
     this.setOperatorAsRandom();
   }
 

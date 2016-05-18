@@ -33,7 +33,9 @@ import java.time.Instant;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
-public class ConditionsTest {
+import kr.lul.urs.AbstractTest;
+
+public class ConditionsTest extends AbstractTest {
   @Test(expected = UnsupportedOperationException.class)
   public void test() throws Exception {
     new Conditions() {

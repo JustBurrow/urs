@@ -26,10 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.TestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.application.configuration.InjectionConstants.Properties;
+import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.ResourceFileDomainUtils;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
-import kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
@@ -42,7 +43,7 @@ import kr.lul.urs.util.Strings;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileEntityTest extends AbstractDomainTest {
+public class ResourceFileEntityTest extends AbstractDomainEntityTest {
   public static final String          CLASS_NAME = ResourceFileEntityTest.class.getSimpleName();
 
   @Value("${" + Properties.KEY_RESOUCE_FILE_STORAGE_DIR + "}")
@@ -53,7 +54,6 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
 
   @Before
   public void setUp() throws Exception {
-    this.setNow();
     this.setClientPlatformAsRandom();
   }
 
@@ -99,7 +99,7 @@ public class ResourceFileEntityTest extends AbstractDomainTest {
   @Test
   public void testUpdateForNewInstance() throws Exception {
     // Given
-    final ResourceFileEntity resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
+    final ResourceFileEntity resourceFile = ResourceFileDomainUtils.create(this.clientPlatform,
         this.resourceFileInternalService);
     final File file = FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH, CLASS_NAME, "testUpdateForNewInstance");
     assertThat(file).exists();

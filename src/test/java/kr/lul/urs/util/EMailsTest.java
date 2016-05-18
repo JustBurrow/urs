@@ -13,11 +13,13 @@ import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.junit.Before;
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
+
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 3. 28.
  */
-public class EMailsTest {
+public class EMailsTest extends AbstractTest {
   public static final int COUNT = 1000;
 
   private EmailValidator  validator;

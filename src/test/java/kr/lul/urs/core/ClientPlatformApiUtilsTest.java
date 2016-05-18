@@ -3,8 +3,7 @@
  */
 package kr.lul.urs.core;
 
-import static kr.lul.urs.core.ClientPlatformUtils.createCmd;
-import static kr.lul.urs.core.ClientPlatformUtils.readCmd;
+import static kr.lul.urs.core.ClientPlatformApiUtils.readCmd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -25,8 +24,6 @@ import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.repository.ClientPlatformRepository;
 import kr.lul.urs.core.service.ClientPlatformService;
-import kr.lul.urs.core.service.ClientPlatformServiceUtils;
-import kr.lul.urs.core.service.OperatorServiceUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -35,7 +32,7 @@ import kr.lul.urs.util.AssertionException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ClientPlatformUtilsTest extends AbstractCoreTest {
+public class ClientPlatformApiUtilsTest extends AbstractApiTest {
   @Autowired
   private ClientPlatformService    clientPlatformService;
   @Autowired
@@ -49,72 +46,20 @@ public class ClientPlatformUtilsTest extends AbstractCoreTest {
 
   @Test
   public void testCostructor() {
-    assertThatThrownBy(() -> new ClientPlatformUtils() {
+    assertThatThrownBy(() -> new ClientPlatformApiUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
-  public void testCreateCmdWithOperator() throws Exception {
-    // Given
-    final OperatorDto owner = OperatorServiceUtils.create(this.operatorService).value();
-
-    // When
-    final CreateClientPlatformCmd cmd = createCmd(owner);
-
-    // Then
-    assertThat(cmd).isNotNull();
-    assertThat(cmd.getOwner()).isEqualTo(owner.getId());
-    assertThat(cmd.getCode()).isNotNull().matches("[a-z][a-zA-Z\\d]*");
-    assertThat(cmd.getLabel()).isNotNull().isNotEmpty();
-    assertThat(cmd.getDescription()).isNotNull();
-  }
-
-  @Test
-  public void testCreateCmdWithOperatorDto() throws Exception {
-    // Given
-    OperatorDto owner = OperatorServiceUtils.create(this.operatorService).value();
-
-    // When
-    CreateClientPlatformCmd cmd = createCmd(owner);
-
-    // Then
-    assertThat(cmd).isNotNull();
-    assertThat(cmd.getOwner()).isEqualTo(owner.getId());
-    assertThat(cmd.getCode()).isNotNull().matches("[a-z][a-zA-Z\\d]*");
-    assertThat(cmd.getLabel()).isNotNull().isNotEmpty();
-    assertThat(cmd.getDescription()).isNotNull();
-  }
-
-  @Test
-  public void testReadCmdWithOwnerIdAndClientPlatformId() throws Exception {
-    // Given
-    List<ClientPlatformEntity> list = this.clientPlatformRepository.findAll();
-    if (list.isEmpty()) {
-      ClientPlatformServiceUtils.create(this.operator, this.clientPlatformService);
-      list = this.clientPlatformRepository.findAll();
-    }
-    assertThat(list).isNotEmpty();
-    Collections.shuffle(list);
-    final ClientPlatform expected = list.get(0);
-
-    // When
-    final ReadClientPlatformCmd cmd = readCmd(expected.getId(), expected.getOwner().getId());
-
-    // Then
-    assertThat(cmd).isNotNull();
-    assertThat(cmd.getId()).isEqualTo(expected.getId());
-    assertThat(cmd.getOwner()).isEqualTo(expected.getOwner().getId());
-  }
-
-  @Test
   public void testReadCmdWithNullService() throws Exception {
-    assertThatThrownBy(() -> readCmd((ClientPlatformService) null)).isInstanceOf(AssertionException.class);
+    assertThatThrownBy(() -> ClientPlatformApiUtils.readCmd((ClientPlatformService) null))
+        .isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testReadCmdWithService() throws Exception {
     // When
-    ReadClientPlatformCmd cmd = readCmd(this.clientPlatformService);
+    ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(this.clientPlatformService);
 
     // Then
     assertThat(cmd).isNotNull();
@@ -137,5 +82,58 @@ public class ClientPlatformUtilsTest extends AbstractCoreTest {
     assertThat(cmd).isNotNull();
     assertThat(cmd.getId()).isGreaterThan(0);
     assertThat(cmd.getOwner()).isGreaterThan(0);
+  }
+
+  @Test
+  public void testCreateCmdWithOperator() throws Exception {
+    // Given
+    final OperatorDto owner = OperatorApiUtils.create(this.operatorService);
+
+    // When
+    final CreateClientPlatformCmd cmd = ClientPlatformApiUtils.createCmd(owner);
+
+    // Then
+    assertThat(cmd).isNotNull();
+    assertThat(cmd.getOwner()).isEqualTo(owner.getId());
+    assertThat(cmd.getCode()).isNotNull().matches("[a-z][a-zA-Z\\d]*");
+    assertThat(cmd.getLabel()).isNotNull().isNotEmpty();
+    assertThat(cmd.getDescription()).isNotNull();
+  }
+
+  @Test
+  public void testCreateCmdWithOperatorDto() throws Exception {
+    // Given
+    OperatorDto owner = OperatorApiUtils.create(this.operatorService);
+
+    // When
+    CreateClientPlatformCmd cmd = ClientPlatformApiUtils.createCmd(owner);
+
+    // Then
+    assertThat(cmd).isNotNull();
+    assertThat(cmd.getOwner()).isEqualTo(owner.getId());
+    assertThat(cmd.getCode()).isNotNull().matches("[a-z][a-zA-Z\\d]*");
+    assertThat(cmd.getLabel()).isNotNull().isNotEmpty();
+    assertThat(cmd.getDescription()).isNotNull();
+  }
+
+  @Test
+  public void testReadCmdWithOwnerIdAndClientPlatformId() throws Exception {
+    // Given
+    List<ClientPlatformEntity> list = this.clientPlatformRepository.findAll();
+    if (list.isEmpty()) {
+      ClientPlatformApiUtils.create(this.operator, this.clientPlatformService);
+      list = this.clientPlatformRepository.findAll();
+    }
+    assertThat(list).isNotEmpty();
+    Collections.shuffle(list);
+    final ClientPlatform expected = list.get(0);
+
+    // When
+    final ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(expected.getId(), expected.getOwner().getId());
+
+    // Then
+    assertThat(cmd).isNotNull();
+    assertThat(cmd.getId()).isEqualTo(expected.getId());
+    assertThat(cmd.getOwner()).isEqualTo(expected.getOwner().getId());
   }
 }

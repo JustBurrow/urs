@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.core.ClientPlatformUtils;
+import kr.lul.urs.core.AbstractApiTest;
+import kr.lul.urs.core.ClientPlatformApiUtils;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.OperatorApiUtils;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
@@ -32,9 +34,7 @@ import kr.lul.urs.util.Randoms;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ClientPlatformServiceTest extends AbstractServiceTest {
-  @Autowired
-  private ClientPlatformService    clientPlatformService;
+public class ClientPlatformServiceTest extends AbstractApiTest {
   @Autowired
   private ClientPlatformRepository clientPlatformRepository;
 
@@ -43,7 +43,6 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
    */
   @Before
   public void setUp() throws Exception {
-    this.setNow();
     this.setOperatorAsRandom();
   }
 
@@ -55,7 +54,7 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    CreateClientPlatformCmd cmd = ClientPlatformUtils.createCmd(this.operator);
+    CreateClientPlatformCmd cmd = ClientPlatformApiUtils.createCmd(this.operator);
 
     // When
     ClientPlatformDto dto = this.clientPlatformService.create(cmd).value();
@@ -83,8 +82,7 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
   @Test
   public void testReadWithId() throws Exception {
     // Given
-    final ClientPlatformDto expected = ClientPlatformServiceUtils.create(this.operator, this.clientPlatformService)
-        .value();
+    final ClientPlatformDto expected = ClientPlatformApiUtils.create(this.operator, this.clientPlatformService);
 
     // When
     ClientPlatformDto actual = this.clientPlatformService.read(expected.getId()).value();
@@ -102,8 +100,8 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
   @Test
   public void testReadWithIllegalOwnership() throws Exception {
     // Given
-    OperatorDto op2 = OperatorServiceUtils.create(this.operatorService).value();
-    ReadClientPlatformCmd cmd = ClientPlatformUtils.readCmd(this.clientPlatformRepository);
+    OperatorDto op2 = OperatorApiUtils.create(this.operatorService);
+    ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(this.clientPlatformRepository);
     assertThat(cmd.getOwner()).isNotEqualTo(op2.getId());
     cmd.setOwner(op2.getId());
 
@@ -115,10 +113,9 @@ public class ClientPlatformServiceTest extends AbstractServiceTest {
   public void testList() throws Exception {
     // Given
     final List<ClientPlatformDto> l1 = this.clientPlatformService.list().value();
-    ClientPlatformDto clientPlatform = ClientPlatformServiceUtils.create(this.operator, this.clientPlatformService)
-        .value();
+    ClientPlatformDto clientPlatform = ClientPlatformApiUtils.create(this.operator, this.clientPlatformService);
     assertThat(l1).isNotNull()
-    .doesNotContain(clientPlatform);
+        .doesNotContain(clientPlatform);
 
     // When
     List<ClientPlatformDto> l2 = this.clientPlatformService.list().value();

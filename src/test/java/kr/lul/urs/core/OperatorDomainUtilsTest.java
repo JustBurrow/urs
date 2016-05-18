@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core.service.internal;
+package kr.lul.urs.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
@@ -29,7 +28,7 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class OperatorInternalServiceUtilsTest extends AbstractInternalTestUtilsTest {
+public class OperatorDomainUtilsTest extends AbstractDomainEntityTest {
   @Autowired
   private OperatorInternalService operatorInternalService;
 
@@ -41,14 +40,14 @@ public class OperatorInternalServiceUtilsTest extends AbstractInternalTestUtilsT
 
   @Test
   public void testConstructor() throws Exception {
-    assertThatThrownBy(() -> new OperatorInternalServiceUtils() {
+    assertThatThrownBy(() -> new OperatorDomainUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
   public void testCreateWithInternalService() throws Exception {
     // When
-    final Operator operator = OperatorInternalServiceUtils.create(this.operatorInternalService);
+    final Operator operator = OperatorDomainUtils.create(this.operatorInternalService);
 
     // Then
     assertThat(operator).isNotNull();

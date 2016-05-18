@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.service.internal;
+package kr.lul.urs.core;
 
-import static kr.lul.urs.core.OperatorUtils.command;
+import static kr.lul.urs.core.OperatorApiUtils.command;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import kr.lul.urs.core.domain.Operator;
@@ -15,7 +15,7 @@ import kr.lul.urs.core.service.internal.OperatorInternalService;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 3.
  */
-public abstract class OperatorInternalServiceUtils {
+public abstract class OperatorDomainUtils {
   /**
    * @param operatorInternalService
    * @return
@@ -25,7 +25,7 @@ public abstract class OperatorInternalServiceUtils {
     return operatorInternalService.create(command());
   }
 
-  protected OperatorInternalServiceUtils() {
+  protected OperatorDomainUtils() {
     throw new UnsupportedOperationException();
   }
 }

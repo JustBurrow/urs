@@ -23,12 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.TestConfig;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.ResourceFileDomainUtils;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping;
-import kr.lul.urs.core.service.internal.AbstractInternalServiceTest;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
-import kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -38,7 +38,7 @@ import kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileRevisionEntityTest extends AbstractInternalServiceTest {
+public class ResourceFileRevisionEntityTest extends AbstractDomainEntityTest {
   public static final File            TEST_FILE_DIR = FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH,
       ResourceFileRevisionEntityTest.class.getSimpleName());
 
@@ -52,6 +52,7 @@ public class ResourceFileRevisionEntityTest extends AbstractInternalServiceTest 
   @Before
   public void setUp() throws Exception {
     this.setClientPlatformAsRandom();
+
     assertThat(this.f1).exists().isFile();
     assertThat(this.f1copy).exists().isFile();
     assertThat(this.f2).exists().isFile();
@@ -60,7 +61,7 @@ public class ResourceFileRevisionEntityTest extends AbstractInternalServiceTest 
   @Test
   public void testConstruct() throws Exception {
     // Given
-    ResourceFile resourceFile = ResourceFileInternalServiceUtils.create(this.clientPlatform,
+    ResourceFile resourceFile = ResourceFileDomainUtils.create(this.clientPlatform,
         this.resourceFileInternalService);
     FileInputStream input = new FileInputStream(this.f1);
     String sha1 = DigestUtils.sha1Hex(input);

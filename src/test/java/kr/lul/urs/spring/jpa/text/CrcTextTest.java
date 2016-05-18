@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
 
@@ -15,7 +16,7 @@ import kr.lul.urs.util.Strings;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 4.
  */
-public class CrcTextTest {
+public class CrcTextTest extends AbstractTest {
   @Test
   public void testConstructorWithNull() {
     assertThatThrownBy(() -> new CrcText(null)).isInstanceOf(IllegalArgumentException.class);

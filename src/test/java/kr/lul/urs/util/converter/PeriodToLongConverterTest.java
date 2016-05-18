@@ -9,10 +9,10 @@ import java.time.Period;
 
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import kr.lul.urs.util.config.UtilConstants;
 
-public class PeriodToLongConverterTest {
-
+public class PeriodToLongConverterTest extends AbstractTest {
   @Test
   public void testConvertWithNull() throws Exception {
     assertNull(INSTANCE.convert(null));

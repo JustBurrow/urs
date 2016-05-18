@@ -19,12 +19,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.AbstractDomainEntityTest;
+import kr.lul.urs.core.ClientPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 import kr.lul.urs.core.dto.ClientPlatformDto;
-import kr.lul.urs.core.service.internal.AbstractInternalServiceTest;
-import kr.lul.urs.core.service.internal.ClientPlatformInternalServiceUtils;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
@@ -37,7 +37,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformReturnFactoryTest extends AbstractInternalServiceTest {
+public class ClientPlatformReturnFactoryTest extends AbstractDomainEntityTest {
   @Autowired
   private ClientPlatformReturnFactory clientPlatformReturnFactory;
 
@@ -55,7 +55,7 @@ public class ClientPlatformReturnFactoryTest extends AbstractInternalServiceTest
   @Test
   public void testConverterClientPlatform() throws Exception {
     // Given
-    final ClientPlatformEntity clientPlatform = ClientPlatformInternalServiceUtils.create(this.operator,
+    final ClientPlatformEntity clientPlatform = ClientPlatformDomainUtils.create(this.operator,
         this.clientPlatformInternalService);
 
     // When
@@ -90,7 +90,7 @@ public class ClientPlatformReturnFactoryTest extends AbstractInternalServiceTest
     // Given
     final List<ClientPlatform> l1 = new ArrayList<>();
     for (int i = Randoms.in(10, 50); i > 0; i--) {
-      l1.add(ClientPlatformInternalServiceUtils.create(this.operator, this.clientPlatformInternalService));
+      l1.add(ClientPlatformDomainUtils.create(this.operator, this.clientPlatformInternalService));
     }
     assertThat(l1).isNotEmpty();
 

@@ -8,8 +8,9 @@ import static org.junit.Assert.fail;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
-public class TestsTest {
+import kr.lul.urs.AbstractTest;
 
+public class TestsTest extends AbstractTest {
   @Test(expected = UnsupportedOperationException.class)
   public void test() {
     new Tests() {
@@ -74,7 +75,7 @@ public class TestsTest {
   public void testExpectExceptionWithExceptionAndTestAndNull() throws Exception {
     exceptException(Exception.class, () -> {
       throw new Exception();
-    } , null);
+    }, null);
   }
 
   @Test(expected = AssertionError.class)
@@ -82,7 +83,7 @@ public class TestsTest {
     final String message = new Object().toString();
     exceptException(UnsupportedOperationException.class, () -> {
       throw new UnsupportedOperationException(message);
-    } , e -> new Object().toString());
+    }, e -> new Object().toString());
   }
 
   @Test

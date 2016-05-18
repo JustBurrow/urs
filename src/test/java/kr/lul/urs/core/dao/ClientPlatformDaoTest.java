@@ -18,10 +18,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.AbstractDomainEntityTest;
+import kr.lul.urs.core.ClientPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
-import kr.lul.urs.core.service.internal.ClientPlatformInternalServiceUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -32,7 +33,7 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformDaoTest extends AbstractDaoTest {
+public class ClientPlatformDaoTest extends AbstractDomainEntityTest {
   @Autowired
   private ClientPlatformInternalService clientPlatformInternalService;
   @Autowired
@@ -53,7 +54,7 @@ public class ClientPlatformDaoTest extends AbstractDaoTest {
     // Given
     final List<ClientPlatform> l1 = this.clientPlatformDao.list();
     assertThat(l1).isNotNull().isNotEmpty();
-    final ClientPlatform clientPlatform = ClientPlatformInternalServiceUtils.create(this.operator,
+    final ClientPlatform clientPlatform = ClientPlatformDomainUtils.create(this.operator,
         this.clientPlatformInternalService);
 
     // When

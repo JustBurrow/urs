@@ -1,6 +1,6 @@
 package kr.lul.urs.core;
 
-import static kr.lul.urs.core.OperatorUtils.command;
+import static kr.lul.urs.core.OperatorApiUtils.command;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -15,7 +15,7 @@ import kr.lul.urs.core.command.CreateOperatorCmd;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class OperatorUtilsTest extends AbstractCoreTest {
+public class OperatorApiUtilsTest extends AbstractApiTest {
   @Before
   public void setUp() throws Exception {
     this.setNow();
@@ -23,7 +23,7 @@ public class OperatorUtilsTest extends AbstractCoreTest {
 
   @Test
   public void testConstruct() {
-    assertThatThrownBy(() -> new OperatorUtils() {
+    assertThatThrownBy(() -> new OperatorApiUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 

@@ -13,7 +13,9 @@ import java.time.Period;
 
 import org.junit.Test;
 
-public class LongToPeriodConverterTest {
+import kr.lul.urs.AbstractTest;
+
+public class LongToPeriodConverterTest extends AbstractTest {
   @Test
   public void testConvertWithNull() throws Exception {
     assertNull(INSTANCE.convert(null));

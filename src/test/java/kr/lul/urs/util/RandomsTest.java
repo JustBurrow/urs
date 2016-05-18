@@ -35,7 +35,9 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RandomsTest {
+import kr.lul.urs.AbstractTest;
+
+public class RandomsTest extends AbstractTest {
   private static final int COUNT = Integer.MAX_VALUE >> 11;
   private Random           rand;
 

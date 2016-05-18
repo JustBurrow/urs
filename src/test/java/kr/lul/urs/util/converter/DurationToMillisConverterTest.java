@@ -10,9 +10,10 @@ import java.time.Instant;
 
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import kr.lul.urs.util.config.UtilConstants;
 
-public class DurationToMillisConverterTest {
+public class DurationToMillisConverterTest extends AbstractTest {
   @Test
   public void testConvertWithNull() throws Exception {
     assertNull(INSTANCE.convert(null));

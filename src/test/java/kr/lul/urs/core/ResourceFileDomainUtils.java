@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.service.internal;
+package kr.lul.urs.core;
 
-import static kr.lul.urs.core.ResourceFileUtils.createCmd;
+import static kr.lul.urs.core.ResourceFileApiUtils.createCmd;
 import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.notNull;
 
@@ -19,7 +19,7 @@ import kr.lul.urs.core.service.internal.ResourceFileInternalService;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 17.
  */
-public abstract class ResourceFileInternalServiceUtils {
+public abstract class ResourceFileDomainUtils {
   /**
    * 클라이언트의 {@link ResourceFile}을 임의로 만들어 반환한다.
    *
@@ -44,7 +44,7 @@ public abstract class ResourceFileInternalServiceUtils {
     return (ResourceFileEntity) resourceFile;
   }
 
-  protected ResourceFileInternalServiceUtils() {
+  protected ResourceFileDomainUtils() {
     throw new UnsupportedOperationException();
   }
 }

@@ -15,7 +15,7 @@ import kr.lul.urs.util.Strings;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 5. 3.
  */
-public abstract class ResourceFileUtils {
+public abstract class ResourceFileApiUtils {
   public static CreateResourceFileCmd createCmd(ClientPlatformDto clientPlatform) {
     return createCmd(clientPlatform.getOwner(), clientPlatform.getId());
   }
@@ -38,7 +38,7 @@ public abstract class ResourceFileUtils {
     return new CreateResourceFileCmd(owner, clientPlatform, name.toString());
   }
 
-  protected ResourceFileUtils() {
+  protected ResourceFileApiUtils() {
     throw new UnsupportedOperationException();
   }
 }

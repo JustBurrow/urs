@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
-public class SpringJpaAnchorTest {
+import kr.lul.urs.AbstractTest;
+
+public class SpringJpaAnchorTest extends AbstractTest {
   @Test
   public void testConstructor() {
     assertThatThrownBy(() -> new SpringJpaAnchor() {

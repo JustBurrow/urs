@@ -32,11 +32,12 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import kr.lul.urs.util.ConditionalExceptions.Pitcher;
 import kr.lul.urs.util.Tests.ExceptionValidator;
 import kr.lul.urs.util.config.UtilConstants;
 
-public class ConditionalExceptionsTest {
+public class ConditionalExceptionsTest extends AbstractTest {
   public static class TestException extends Exception {
     private static final long serialVersionUID = UtilConstants.SERIAL_VERSION_UID;
 

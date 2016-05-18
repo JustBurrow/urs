@@ -3,7 +3,7 @@
  */
 package kr.lul.urs.core;
 
-import static kr.lul.urs.core.ResourceFileUtils.createCmd;
+import static kr.lul.urs.core.ResourceFileApiUtils.createCmd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.service.ClientPlatformService;
-import kr.lul.urs.core.service.ClientPlatformServiceUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -25,7 +24,7 @@ import kr.lul.urs.core.service.ClientPlatformServiceUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ResourceFileUtilsTest extends AbstractCoreTest {
+public class ResourceFileApiUtilsTest extends AbstractApiTest {
   @Autowired
   private ClientPlatformService clientPlatformService;
 
@@ -35,13 +34,13 @@ public class ResourceFileUtilsTest extends AbstractCoreTest {
   public void setUp() throws Exception {
     this.setOperatorAsRandom();
 
-    this.clientPlatform = ClientPlatformServiceUtils.create(this.operator.getId(), this.clientPlatformService).value();
+    this.clientPlatform = ClientPlatformApiUtils.create(this.operator.getId(), this.clientPlatformService);
     this.assertTimestamp(this.clientPlatform);
   }
 
   @Test
   public void testConstructor() {
-    assertThatThrownBy(() -> new ResourceFileUtils() {
+    assertThatThrownBy(() -> new ResourceFileApiUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 

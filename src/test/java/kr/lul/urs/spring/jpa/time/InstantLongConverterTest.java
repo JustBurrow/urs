@@ -10,11 +10,13 @@ import java.time.Instant;
 import org.junit.Before;
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
+
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 3. 21.
  */
-public class InstantLongConverterTest {
+public class InstantLongConverterTest extends AbstractTest {
   private Instant              now;
   private long                 currentUtc;
   private InstantLongConverter converter;

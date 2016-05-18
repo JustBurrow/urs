@@ -12,9 +12,10 @@ import javax.persistence.PreUpdate;
 import org.junit.Before;
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import lombok.Data;
 
-public class TimestamperTest {
+public class TimestamperTest extends AbstractTest {
   @Entity
   @Timestamps({ @Timestamp(trigger = PrePersist.class), @Timestamp(trigger = PreUpdate.class),
       @Timestamp(trigger = PostLoad.class) })

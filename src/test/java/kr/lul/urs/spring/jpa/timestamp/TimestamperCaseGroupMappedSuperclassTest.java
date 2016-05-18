@@ -14,12 +14,13 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import kr.lul.urs.core.domain.entity.OperatorEntity;
 import kr.lul.urs.util.Randoms;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-public class TimestamperCaseGroupMappedSuperclassTest {
+public class TimestamperCaseGroupMappedSuperclassTest extends AbstractTest {
   private Timestamper listener;
   private Instant     now;
 

@@ -13,7 +13,9 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
-public class MapBuilderTest {
+import kr.lul.urs.AbstractTest;
+
+public class MapBuilderTest extends AbstractTest {
   class Key {
   }
 

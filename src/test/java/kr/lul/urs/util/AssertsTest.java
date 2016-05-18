@@ -31,7 +31,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AssertsTest {
+import kr.lul.urs.AbstractTest;
+
+public class AssertsTest extends AbstractTest {
   private String message;
 
   @Before

@@ -1,16 +1,13 @@
 package kr.lul.urs.util.config;
 
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
-import kr.lul.urs.util.config.UtilConstants;
-
 public class UtilConstantsTest {
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void test() {
-    new UtilConstants() {
-    };
-    fail();
+    assertThatThrownBy(() -> new UtilConstants() {
+    }).isInstanceOf(UnsupportedOperationException.class);
   }
 }

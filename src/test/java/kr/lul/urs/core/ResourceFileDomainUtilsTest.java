@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core.service.internal;
+package kr.lul.urs.core;
 
-import static kr.lul.urs.core.service.internal.ResourceFileInternalServiceUtils.create;
+import static kr.lul.urs.core.ResourceFileDomainUtils.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
@@ -34,19 +33,18 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileInternalServiceUtilsTest extends AbstractInternalTestUtilsTest {
+public class ResourceFileDomainUtilsTest extends AbstractDomainEntityTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 
   @Before
   public void setUp() throws Exception {
-    this.setNow();
     this.setClientPlatformAsRandom();
   }
 
   @Test
   public void testConstructor() {
-    assertThatThrownBy(() -> new ResourceFileInternalServiceUtils() {
+    assertThatThrownBy(() -> new ResourceFileDomainUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 

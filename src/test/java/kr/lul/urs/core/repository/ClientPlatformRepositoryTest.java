@@ -16,9 +16,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
+import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
-import kr.lul.urs.core.service.internal.AbstractInternalServiceTest;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -29,7 +29,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformRepositoryTest extends AbstractInternalServiceTest {
+public class ClientPlatformRepositoryTest extends AbstractDomainEntityTest {
   @Autowired
   private ClientPlatformRepository clientPlatformRepository;
 

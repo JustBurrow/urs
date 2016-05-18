@@ -7,11 +7,13 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
+
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 18.
  */
-public class ResourceFileRevisionMappingTest {
+public class ResourceFileRevisionMappingTest extends AbstractTest {
   @Test(expected = UnsupportedOperationException.class)
   public void testConstructor() throws Exception {
     new ResourceFileRevisionMapping() {

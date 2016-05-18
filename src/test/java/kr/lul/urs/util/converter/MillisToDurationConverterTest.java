@@ -7,11 +7,12 @@ import static org.junit.Assert.assertNull;
 
 import java.time.Duration;
 
+import org.aspectj.bridge.AbortException;
 import org.junit.Test;
 
 import kr.lul.urs.util.config.UtilConstants;
 
-public class MillisToDurationConverterTest {
+public class MillisToDurationConverterTest extends AbortException {
   @Test
   public void testConvertWithNull() throws Exception {
     assertNull(INSTANCE.convert(null));

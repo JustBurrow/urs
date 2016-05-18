@@ -3,7 +3,6 @@
  */
 package kr.lul.urs.core.service.internal;
 
-import static kr.lul.urs.core.ClientPlatformUtils.createCmd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,7 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.ClientPlatformUtils;
+import kr.lul.urs.core.AbstractDomainEntityTest;
+import kr.lul.urs.core.ClientPlatformDomainUtils;
+import kr.lul.urs.core.ClientPlatformApiUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.command.ReadClientPlatformCmd;
@@ -35,14 +36,12 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTest {
+public class ClientPlatformInternalServiceTest extends AbstractDomainEntityTest {
   @Autowired
   private ClientPlatformInternalService clientPlatformInternalService;
 
   @Before
   public void setUp() throws Exception {
-    this.setNow();
-    this.setOperatorAsRandom();
     this.setClientPlatformAsRandom();
   }
 
@@ -54,7 +53,7 @@ public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTe
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateClientPlatformCmd cmd = createCmd(this.operator);
+    final CreateClientPlatformCmd cmd = ClientPlatformDomainUtils.createCmd(this.operator);
 
     // When
     ClientPlatform cp = this.clientPlatformInternalService.create(cmd);
@@ -90,7 +89,7 @@ public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTe
   @Test
   public void testReadWithIllegalOwnerCmd() throws Exception {
     // Given
-    ReadClientPlatformCmd cmd = ClientPlatformUtils.readCmd(this.clientPlatform.getId(), this.operator.getId());
+    ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(this.clientPlatform.getId(), this.operator.getId());
     do {
       cmd.setOwner(Randoms.positive());
     } while (this.operator.getId() == cmd.getOwner());
@@ -104,7 +103,7 @@ public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTe
   public void testReadWithCmd() throws Exception {
     // When
     ClientPlatform actual = this.clientPlatformInternalService
-        .read(ClientPlatformUtils.readCmd(this.clientPlatform.getId(), this.operator.getId()));
+        .read(ClientPlatformApiUtils.readCmd(this.clientPlatform.getId(), this.operator.getId()));
 
     // Then
     assertThat(actual).isNotNull().isEqualTo(this.clientPlatform);
@@ -114,7 +113,7 @@ public class ClientPlatformInternalServiceTest extends AbstractInternalServiceTe
   public void testList() throws Exception {
     // Given
     final List<ClientPlatform> l1 = this.clientPlatformInternalService.list();
-    ClientPlatform clientPlatform = ClientPlatformInternalServiceUtils.create(this.operator,
+    ClientPlatform clientPlatform = ClientPlatformDomainUtils.create(this.operator,
         this.clientPlatformInternalService);
 
     // When

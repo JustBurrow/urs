@@ -12,10 +12,11 @@ import javax.persistence.PreUpdate;
 import org.junit.Before;
 import org.junit.Test;
 
+import kr.lul.urs.AbstractTest;
 import kr.lul.urs.util.Randoms;
 import lombok.Data;
 
-public class TimestamperCaseGroupEntityTest {
+public class TimestamperCaseGroupEntityTest extends AbstractTest {
   @Data
   class NonEntity {
     @Timestamp(trigger = PrePersist.class)
