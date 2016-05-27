@@ -4,10 +4,14 @@
 package kr.lul.urs.core;
 
 import static kr.lul.urs.util.Asserts.notNull;
+import static kr.lul.urs.util.Asserts.positive;
 
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.dto.ResourceFileDto;
+import kr.lul.urs.core.service.ResourceFileService;
+import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
 
@@ -36,6 +40,24 @@ public abstract class ResourceFileApiUtils {
     } while (1 > Randoms.notNegative(10));
 
     return new CreateResourceFileCmd(owner, clientPlatform, name.toString());
+  }
+
+  /**
+   * @param clientPlatform
+   *          생성할 리소스 파일의 플랫폼. 소유자 정보도 여기에서 얻는다.
+   * @param resourceFileService
+   * @return
+   * @throws OwnershipException
+   * @since 2016. 5. 20.
+   */
+  public static ResourceFileDto create(ClientPlatformDto clientPlatform, ResourceFileService resourceFileService)
+      throws OwnershipException {
+    notNull(clientPlatform);
+    positive(clientPlatform.getId(), "id");
+    positive(clientPlatform.getOwner(), "owner");
+    notNull(resourceFileService);
+
+    return resourceFileService.create(createCmd(clientPlatform)).value();
   }
 
   protected ResourceFileApiUtils() {

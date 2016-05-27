@@ -5,14 +5,18 @@ package kr.lul.urs;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.time.Instant;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Condition;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
+import kr.lul.urs.util.Asserts;
 
 /**
  * 애플리케이션에 독립적은 테스트 도구를 제공한다.
@@ -104,5 +108,19 @@ public abstract class AbstractTest {
     assertThat(updatable).isNotNull();
     assertThat(updatable.getCreate()).isGreaterThanOrEqualTo(this.now);
     assertThat(updatable.getUpdate()).isGreaterThanOrEqualTo(updatable.getCreate());
+  }
+
+  /**
+   * 테스트용 파일을 반환한다. 각 테스트 클래스마다 전용 디렉토리를 가지며, 그 안에서 파일을 찾는다.
+   *
+   * @param filename
+   * @return
+   * @since 2016. 5. 24.
+   */
+  public static File getTestFile(String filename) {
+    Asserts.hasLength(filename, "filename is null or empty.");
+
+    return FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH,
+        ClassUtils.getShortClassName(new Exception().getStackTrace()[1].getClassName()), filename);
   }
 }

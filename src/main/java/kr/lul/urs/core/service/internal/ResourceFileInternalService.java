@@ -3,6 +3,8 @@
  */
 package kr.lul.urs.core.service.internal;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +52,15 @@ public interface ResourceFileInternalService {
    *
    * @param clientPlatform
    * @param name
-   * @return
+   * @return 없으면 <code>null</code>.
    */
   public boolean isExists(ClientPlatform clientPlatform, String name);
+
+  /**
+   * 등록된 리스스 파일을 ID 순서로 반환한다.
+   *
+   * @return 없으면 빈 {@link List}.
+   * @since 2016. 5. 23.
+   */
+  public List<ResourceFile> list();
 }

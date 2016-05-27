@@ -46,6 +46,7 @@ import kr.lul.urs.core.domain.ClientPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.ResourceFileRevision;
+import kr.lul.urs.core.domain.ResourceFileUpdateException;
 import kr.lul.urs.core.domain.mapping.ClientPlatformMapping;
 import kr.lul.urs.core.domain.mapping.OperatorMapping;
 import kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.FK;
@@ -156,23 +157,27 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
   }
 
   @Override
-  public ResourceFileRevision update(final File file) throws IOException {
+  public ResourceFileRevision update(final File file) throws ResourceFileUpdateException {
     notNull(file);
 
-    FileInputStream input = new FileInputStream(file);
-    String sha1 = DigestUtils.sha1Hex(input);
-    input.close();
-    ResourceFileRevisionEntity revision = new ResourceFileRevisionEntity(this, this.currentRevision + 1, sha1);
-    input.close();
-    this.history.add(revision);
-    this.currentRevision = revision.getRevision();
+    try {
+      FileInputStream input = new FileInputStream(file);
+      String sha1 = DigestUtils.sha1Hex(input);
+      input.close();
+      ResourceFileRevisionEntity revision = new ResourceFileRevisionEntity(this, this.currentRevision + 1, sha1);
+      input.close();
+      this.history.add(revision);
+      this.currentRevision = revision.getRevision();
 
-    input = new FileInputStream(file);
-    OutputStream output = OUTPUT_STREAM_FACTORY.getOutputStream(revision);
-    IOUtils.copy(input, output);
-    input.close();
+      input = new FileInputStream(file);
+      OutputStream output = OUTPUT_STREAM_FACTORY.getOutputStream(revision);
+      IOUtils.copy(input, output);
+      input.close();
 
-    return revision;
+      return revision;
+    } catch (IOException e) {
+      throw new ResourceFileUpdateException(this.id, this.currentRevision, file, e);
+    }
   }
 
   @Override

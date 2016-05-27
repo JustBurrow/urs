@@ -4,7 +4,6 @@
 package kr.lul.urs.core.domain;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
@@ -57,10 +56,10 @@ public interface ResourceFile extends Updatable {
    * @param file
    *          최신 바이너리를 가진 파일.
    * @return 갱신한 바이너리의 정보를 가진 리비전.
-   * @throws IOException
+   * @throws ResourceFileUpdateException
    *           리비전 업데이트 중 에러.
    */
-  public ResourceFileRevision update(File file) throws IOException;
+  public ResourceFileRevision update(File file) throws ResourceFileUpdateException;
 
   /**
    * @return 최신 리비전. 1 부터 시작.

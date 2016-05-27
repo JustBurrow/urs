@@ -3,6 +3,8 @@
  */
 package kr.lul.urs.core.dao;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
@@ -37,4 +39,12 @@ public interface ResourceFileDao {
    * @return 데이터가 있으면 <code>true</code>.
    */
   public boolean isExists(ClientPlatform clientPlatform, String name);
+
+  /**
+   * 오름차순으로 정렬한 전체 목록.
+   *
+   * @return 없으면 빈 {@link List}.
+   * @since 2016. 5. 23.
+   */
+  public List<ResourceFile> list();
 }

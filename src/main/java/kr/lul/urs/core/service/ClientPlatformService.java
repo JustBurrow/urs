@@ -33,14 +33,16 @@ public interface ClientPlatformService {
 
   /**
    * @param id
-   * @return
+   *          ID
+   * @return 없으면 <code>null</code>.
    * @since 2016. 5. 3.
    */
   public Return<ClientPlatformDto> read(int id);
 
   /**
    * @param cmd
-   * @return
+   *          ID와 요청자 정보.
+   * @return 없으면 <code>null</code>.
    * @throws OwnershipException
    *           커맨드 오브젝트의 소유자가 권한이 없을 때.
    * @since 2016. 4. 28.
@@ -48,7 +50,7 @@ public interface ClientPlatformService {
   public Return<ClientPlatformDto> read(ReadClientPlatformCmd cmd) throws OwnershipException;
 
   /**
-   * @return
+   * @return 없으면 빈 리스트.
    * @since 2016. 4. 28.
    */
   public Return<List<ClientPlatformDto>> list();

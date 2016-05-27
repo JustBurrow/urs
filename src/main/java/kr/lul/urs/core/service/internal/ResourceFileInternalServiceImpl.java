@@ -8,6 +8,7 @@ import static kr.lul.urs.util.Asserts.isTrue;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import java.io.File;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -52,7 +53,7 @@ class ResourceFileInternalServiceImpl extends AbstractPropertyDoInternalService 
 
     Operator owner = this.operatorInternalService.read(cmd.getOwner());
     if (null == owner) {
-      // TODO throw
+      throw new OwnershipException(format("owner[%d] does not exist.", cmd.getOwner()), cmd.getOwner(), 0);
     }
     ClientPlatform clientPlatform = this.clientPlatformInternalService.read(cmd.getClientPlatform());
     if (!owner.equals(clientPlatform.getOwner())) {
@@ -90,5 +91,16 @@ class ResourceFileInternalServiceImpl extends AbstractPropertyDoInternalService 
   @Override
   public boolean isExists(ClientPlatform clientPlatform, String name) {
     return this.resourceFileDao.isExists(clientPlatform, name);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.service.internal.ResourceFileInternalService#list()
+   * @since 2016. 5. 23.
+   */
+  @Override
+  public List<ResourceFile> list() {
+    List<ResourceFile> list = this.resourceFileDao.list();
+    return list;
   }
 }
