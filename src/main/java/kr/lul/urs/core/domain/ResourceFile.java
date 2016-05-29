@@ -76,14 +76,15 @@ public interface ResourceFile extends Updatable {
   /**
    * 지정한 리비전부터 현재 리비전까지의 오름차순으로 정렬한 히스토리를 반환한다.
    *
-   * @param from
+   * @param fromRevision
    *          시작 리비전.
    * @return 오름차순으로 정렬한 히스토리.
    */
-  public List<ResourceFileRevision> getHistory(int from);
+  public List<ResourceFileRevision> getHistory(int fromRevision);
 
   /**
    * 지정한 리비전부터 현재 리비전까지의 오름차순으로 정렬한 히스토리를 반환한다.
+   * 갯수가 최신 리비전을 초과한다면 최신 리비전 까지 반환한다.
    *
    * @param from
    *          시작 리비전.

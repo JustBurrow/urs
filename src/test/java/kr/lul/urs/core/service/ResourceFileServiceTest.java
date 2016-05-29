@@ -152,6 +152,8 @@ public class ResourceFileServiceTest extends AbstractApiTest {
     cmd.setOwner(before.getOwner());
     cmd.setInput(file);
 
+    Thread.sleep(Randoms.in(10L, 100L));
+
     // When
     ResourceFileDto after = this.resourceFileService.update(cmd).value();
 

@@ -36,7 +36,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -101,13 +103,15 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
   @Column(name = NAME, nullable = false, updatable = false)
   private String                     name;
   @Column(name = CURRENT_REVISION, nullable = false)
-  private int                        currentRevision;
-
+  private int                        revision;
   @OneToMany(targetEntity = ResourceFileRevisionEntity.class,
       cascade = { PERSIST, MERGE },
       mappedBy = ResourceFileRevisionMapping.Entity.RESOURCE_FILE)
   @OrderBy(ResourceFileRevisionMapping.Entity.REVISION + " ASC")
   private List<ResourceFileRevision> history;
+
+  @Transient
+  private ResourceFileRevision       currentRevision;
 
   public ResourceFileEntity() {
     this.history = new ArrayList<>();
@@ -122,6 +126,13 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
     this.owner = clientPlatform.getOwner();
     this.clientPlatform = clientPlatform;
     this.name = name;
+  }
+
+  @PostLoad
+  private void postLoad() {
+    if (0 < this.revision) {
+      this.currentRevision = this.history.get(this.revision - 1);
+    }
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,11 +160,7 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
 
   @Override
   public ResourceFileRevision getCurrentRevision() {
-    if (0 == this.currentRevision) {
-      return null;
-    } else {
-      return this.history.get(this.currentRevision - 1);
-    }
+    return this.currentRevision;
   }
 
   @Override
@@ -164,10 +171,12 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
       FileInputStream input = new FileInputStream(file);
       String sha1 = DigestUtils.sha1Hex(input);
       input.close();
-      ResourceFileRevisionEntity revision = new ResourceFileRevisionEntity(this, this.currentRevision + 1, sha1);
+      ResourceFileRevisionEntity revision = new ResourceFileRevisionEntity(this, this.revision + 1, sha1);
+
       input.close();
       this.history.add(revision);
-      this.currentRevision = revision.getRevision();
+      this.revision = revision.getRevision();
+      this.currentRevision = revision;
 
       input = new FileInputStream(file);
       OutputStream output = OUTPUT_STREAM_FACTORY.getOutputStream(revision);
@@ -176,13 +185,13 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
 
       return revision;
     } catch (IOException e) {
-      throw new ResourceFileUpdateException(this.id, this.currentRevision, file, e);
+      throw new ResourceFileUpdateException(this.id, this.currentRevision.getRevision(), file, e);
     }
   }
 
   @Override
   public int getCurrentRevisionNumber() {
-    return this.currentRevision;
+    return this.revision;
   }
 
   @Override
@@ -191,15 +200,13 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
   }
 
   @Override
-  public List<ResourceFileRevision> getHistory(int from) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<ResourceFileRevision> getHistory(int fromRevision) {
+    return Collections.unmodifiableList(this.history.subList(fromRevision - 1, this.history.size()));
   }
 
   @Override
   public List<ResourceFileRevision> getHistory(int from, int limit) {
-    // TODO Auto-generated method stub
-    return null;
+    return Collections.unmodifiableList(this.history.subList(from, Math.min(from + limit, this.history.size())));
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

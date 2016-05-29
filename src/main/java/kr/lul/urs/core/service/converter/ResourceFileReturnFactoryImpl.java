@@ -8,6 +8,8 @@ import static kr.lul.urs.util.Asserts.notNull;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -40,9 +42,8 @@ class ResourceFileReturnFactoryImpl extends AbstractReturnFactory implements Res
         this.map().setClientPlatform(this.source.getClientPlatform().getId());
         this.map().setName(this.source.getName());
 
-        ResourceFileRevision revision = this.source.getCurrentRevision();
-        this.map().setCurrentRevision(revision.getRevision());
-        this.map().setCurrentSha1(revision.getSha1());
+        this.skip().setCurrentRevision(0);
+        this.skip().setCurrentSha1(null);
 
         if (!ResourceFileReturnFactoryImpl.this.saveAndFlush) {
           this.skip().setCreate(null);
@@ -64,10 +65,21 @@ class ResourceFileReturnFactoryImpl extends AbstractReturnFactory implements Res
    * @since 2016. 5. 20.
    */
   @Override
-  public Return<ResourceFileDto> converter(ResourceFile domain) {
+  public Return<ResourceFileDto> converter(final ResourceFile domain) {
     notNull(domain);
 
-    return () -> this.mapper.map(domain, ResourceFileDto.class);
+    final ResourceFileRevision revision = domain.getCurrentRevision();
+    return () -> {
+      ResourceFileDto dto = this.mapper.map(domain, ResourceFileDto.class);
+      if (null == revision) {
+        dto.setCurrentRevision(0);
+        dto.setCurrentSha1(null);
+      } else {
+        dto.setCurrentRevision(revision.getRevision());
+        dto.setCurrentSha1(revision.getSha1());
+      }
+      return dto;
+    };
   }
 
   /*
@@ -79,8 +91,28 @@ class ResourceFileReturnFactoryImpl extends AbstractReturnFactory implements Res
   public Return<List<ResourceFileDto>> converter(List<ResourceFile> list) {
     notNull(list);
 
-    return list.isEmpty()
-        ? () -> new ArrayList<>()
-        : () -> this.mapper.map(list, this.listType);
+    if (list.isEmpty()) {
+      return () -> new ArrayList<>();
+    }
+
+    final Map<Integer, ResourceFileRevision> revMap = list.stream()
+        .map(rf -> rf.getCurrentRevision())
+        .filter(rf -> null != rf)
+        .collect(Collectors.toMap(rev -> rev.getId().resourceFile(), rev -> rev));
+
+    return () -> {
+      List<ResourceFileDto> dtos = this.mapper.map(list, this.listType);
+      dtos.forEach(dto -> {
+        ResourceFileRevision revision = revMap.get(dto.getResourceFile());
+        if (null == revision) {
+          dto.setCurrentRevision(0);
+          dto.setCurrentSha1(null);
+        } else {
+          dto.setCurrentRevision(revision.getRevision());
+          dto.setCurrentSha1(revision.getSha1());
+        }
+      });
+      return dtos;
+    };
   }
 }
