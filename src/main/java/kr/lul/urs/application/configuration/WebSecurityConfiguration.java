@@ -38,11 +38,23 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf();
-    http.formLogin().loginPage("/auth/login").defaultSuccessUrl("/dashboard")
-        .usernameParameter("email").passwordParameter("password");
-    http.logout().logoutUrl("/auth/logout").logoutSuccessUrl("/");
-    http.authorizeRequests().antMatchers("/").permitAll();
-    http.authorizeRequests().antMatchers("/operators/new", "/auth/login").anonymous();
+    http.formLogin()
+        .loginPage("/auth/login")
+        .defaultSuccessUrl("/dashboard")
+        .usernameParameter("email")
+        .passwordParameter("password");
+    http.logout()
+        .logoutUrl("/auth/logout")
+        .logoutSuccessUrl("/");
+    http.authorizeRequests()
+        .antMatchers("/")
+        .permitAll();
+    http.authorizeRequests()
+        .antMatchers("/operators/new", "/auth/login")
+        .anonymous();
+    http.authorizeRequests()
+        .antMatchers("/**")
+        .authenticated();
   }
 
   @Override

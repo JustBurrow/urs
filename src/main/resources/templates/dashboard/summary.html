@@ -5,6 +5,9 @@
 <title th:text="#{dashboard.summary.title}">Dashobard</title>
 </head>
 <body>
+  <div th:if="${user} != null">
+    <span th:text="${user.username}">user email</span>
+  </div>
   <h1 th:text="#{dashboard.summary.title}">Dashboard</h1>
 </body>
 </html>

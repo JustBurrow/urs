@@ -55,19 +55,21 @@ public abstract class InjectionConstants {
     /**
      * @see DataSource
      */
-    public static final String NAME_DATA_SOURCE            = "dataSource";
+    public static final String NAME_DATA_SOURCE                = "dataSource";
 
     /**
      * @see EntityManagerFactory
      */
-    public static final String NAME_ENTITY_MANAGER_FACTORY = "entityManagerFactory";
+    public static final String NAME_ENTITY_MANAGER_FACTORY     = "entityManagerFactory";
 
     /**
      * @see TransactionManager
      */
-    public static final String NAME_TRANSACTION_MANAGER    = "transactionManager";
+    public static final String NAME_TRANSACTION_MANAGER        = "transactionManager";
 
-    public static final String NAME_DEBUGGING_SUPPORT      = "debuggingSupport";
+    public static final String NAME_DEBUGGING_SUPPORT          = "debuggingSupport";
+
+    public static final String NAME_GLOBAL_HANDLER_INTERCEPTOR = "globalHandlerInterceptor";
 
     protected Beans() {
       throw new UnsupportedOperationException();
