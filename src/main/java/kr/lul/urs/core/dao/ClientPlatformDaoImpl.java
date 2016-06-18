@@ -7,6 +7,7 @@ import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.domain.entity.OperatorEntity;
 import kr.lul.urs.core.domain.mapping.ClientPlatformMapping;
 import kr.lul.urs.core.repository.ClientPlatformRepository;
 
@@ -58,5 +61,21 @@ class ClientPlatformDaoImpl extends AbstractDao implements ClientPlatformDao {
     List<ClientPlatformEntity> list = this.clientPlatformRepository
         .findAll(new Sort(Direction.ASC, ClientPlatformMapping.Entity.ID));
     return new ArrayList<>(list);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.dao.ClientPlatformDao#list(kr.lul.urs.core.domain.Operator)
+   * @since 2016. 6. 9.
+   */
+  @Override
+  public List<ClientPlatform> list(Operator owner) {
+    notNull(owner, "owner");
+    assignable(owner, OperatorEntity.class, "owner");
+
+    List<ClientPlatformEntity> platforms = this.clientPlatformRepository
+        .findAllByOwnerOrderByIdAsc((OperatorEntity) owner);
+
+    return Collections.unmodifiableList(platforms);
   }
 }

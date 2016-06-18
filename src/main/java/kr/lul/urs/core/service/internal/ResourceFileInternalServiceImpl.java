@@ -30,7 +30,7 @@ import kr.lul.urs.core.domain.entity.ResourceFileEntity;
  * @since 2016. 4. 17.
  */
 @Service
-class ResourceFileInternalServiceImpl extends AbstractPropertyDoInternalService implements ResourceFileInternalService {
+class ResourceFileInternalServiceImpl extends AbstractInternalService implements ResourceFileInternalService {
   @Value("${" + Properties.KEY_RESOUCE_FILE_STORAGE_DIR + "}")
   private File            storage;
 

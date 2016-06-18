@@ -12,6 +12,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import java.util.Collections;
 import java.util.List;
 
+import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
 import kr.lul.urs.core.command.ReadClientPlatformCmd;
 import kr.lul.urs.core.domain.ClientPlatform;
@@ -26,6 +27,20 @@ import kr.lul.urs.core.service.ClientPlatformService;
  * @since 2016. 5. 3.
  */
 public abstract class ClientPlatformApiUtils {
+  /**
+   * @return
+   * @since 2016. 6. 7.
+   */
+  public static CreateAgentPlatformReq createReq() {
+    String code = randomAlphabetic(in(1, 3)).toLowerCase() + randomAlphanumeric(in(0, 10));
+    String label = "Test%" + randomAlphanumeric(in(1, 10));
+    String description = "Random Agent Platform for test.";
+
+    CreateAgentPlatformReq req = new CreateAgentPlatformReq(code, label, description);
+
+    return req;
+  }
+
   /**
    * 임의의 클라이언트 플랫폼을 만들 수 있는 커맨드를 만든다.
    *

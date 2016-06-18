@@ -11,7 +11,9 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.OperatorCmd;
 import kr.lul.urs.core.command.ReadClientPlatformCmd;
+import kr.lul.urs.core.command.UpdateAgentPlatformCmd;
 import kr.lul.urs.core.dto.ClientPlatformDto;
 import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.spring.tx.Return;
@@ -54,4 +56,23 @@ public interface ClientPlatformService {
    * @since 2016. 4. 28.
    */
   public Return<List<ClientPlatformDto>> list();
+
+  /**
+   * 관리자의 플랫폼 목록.
+   *
+   * @param cmd
+   * @return
+   * @since 2016. 6. 8.
+   */
+  public Return<List<ClientPlatformDto>> list(OperatorCmd cmd);
+
+  /**
+   * 에이전트 플랫폼의 정보를 수정한다.
+   *
+   * @param cmd
+   * @return
+   * @throws OwnershipException
+   * @since 2016. 6. 13.
+   */
+  public Return<ClientPlatformDto> update(UpdateAgentPlatformCmd cmd) throws OwnershipException;
 }

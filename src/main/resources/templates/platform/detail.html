@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+  agent platform detail
+  <span th:text="${platform.id}">id</span>.
+  <dl>
+    <dt>ID</dt>
+    <dd th:text="${platform.id}">id</dd>
+    <dt>Code</dt>
+    <dd th:text="${platform.code}">code</dd>
+    <dt>Label</dt>
+    <dd th:text="${platform.label}">label</dd>
+    <dt>Description</dt>
+    <dd th:text="${platform.description}">description</dd>
+    <dt th:if="null != ${platform.create}">Create</dt>
+    <dd th:if="null != ${platform.create}" th:text="${platform.create}">create timestamp</dd>
+    <dt th:if="null != ${platform.update}">Create</dt>
+    <dd th:if="null != ${platform.update}" th:text="${platform.update}">last update timestamp</dd>
+  </dl>
+</body>
+</html>

@@ -17,7 +17,7 @@ public abstract class Strings {
   public static final String LOWER          = "abcdefghijklmnopqrstuvwxyz";
   public static final String UPPER          = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   public static final String DIGITS         = "0123456789";
-  public static final String ETCs            = "`-=~!@#$%^&*()_+[]\\{}|;':\",./<>?";
+  public static final String ETCs           = "`-=~!@#$%^&*()_+[]\\{}|;':\",./<>?";
 
   /**
    * 임의의 문자열을 반환한다.

@@ -4,14 +4,20 @@
 package kr.lul.urs.core.service.internal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import kr.lul.urs.application.configuration.InjectionConstants.Properties;
 
 /**
- * 여러 DO에서 속성값으로 사용하는 DO와 관련이 있는 컴포넌트 정보와 유틸리티 메서드를 제공한다.
+ * 일반적인 도메인 엔티티를 다루는 유틸리티를 제공한다.
  *
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 18.
  */
-class AbstractPropertyDoInternalService {
+class AbstractInternalService {
+  @Value("${" + Properties.KEY_DAO_SAVE_AND_FLUSH + "}")
+  protected boolean                       saveAndFlush;
+
   @Autowired
   protected OperatorInternalService       operatorInternalService;
   @Autowired

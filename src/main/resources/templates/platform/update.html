@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+  agent platform <span th:text="${platform.id}">id</span> update.
+  <form action="detail.html" method="post" th:action="@{/platform/__${platform.id}__}" th:method="patch"
+    th:object="${req}">
+    <div>
+      <label for="label">Label</label><input th:field="*{label}" />
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea rows="5" cols="20" th:field="*{description}"></textarea>
+    </div>
+    <button>Submit</button>
+  </form>
+</body>
+</html>

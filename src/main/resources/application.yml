@@ -37,3 +37,4 @@ logging:
     org.apache: warn
     org.springframework: warn
     org.hibernate: warn
+    org.thymeleaf: warn

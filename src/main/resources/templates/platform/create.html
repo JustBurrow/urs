@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+  agent platform create
+  <form action="detail.html" method="post" th:action="@{.}" th:object="${createReq}">
+    <div>
+      <label for="code">Code</label><input th:field="*{code}" />
+    </div>
+    <div>
+      <label for="label">Label</label><input th:field="*{label}" />
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea rows="5" cols="20" th:field="*{description}"></textarea>
+    </div>
+    <button type="submit">submit</button>
+  </form>
+</body>
+</html>

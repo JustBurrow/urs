@@ -7,8 +7,6 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +27,7 @@ class OperatorDetailsServiceImpl implements OperatorDetailsService {
   // <I>OperatorDetailsService
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public OperatorDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Operator operator;
     try {
       operator = this.operatorRepository.findByEmail(username);
@@ -40,10 +38,13 @@ class OperatorDetailsServiceImpl implements OperatorDetailsService {
       throw new UsernameNotFoundException(String.format("operator does not exist for [%s].", username), e);
     }
 
-    User user = new User(operator.getEmail(), operator.getPassword(),
-        operator.isEnabled(), operator.isNonExpired(),
-        operator.isCredentialsNonExpired(), operator.isNonLocked(),
+    return new OperatorDetails(operator.getId(),
+        operator.getEmail(),
+        operator.getPassword(),
+        operator.isEnabled(),
+        operator.isNonExpired(),
+        operator.isCredentialsNonExpired(),
+        operator.isNonLocked(),
         Arrays.asList(new SimpleGrantedAuthority("ROLE_OPERATOR")));
-    return user;
   }
 }

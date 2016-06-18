@@ -6,7 +6,6 @@ spring:
     username: 'root'
     password: ''
   jpa:
-    show-sql: true
     generate-ddl: true
     properties:
       hibernate.generateStatistics: true

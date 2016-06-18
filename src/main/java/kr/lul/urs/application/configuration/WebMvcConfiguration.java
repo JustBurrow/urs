@@ -5,9 +5,13 @@ package kr.lul.urs.application.configuration;
 
 import static kr.lul.urs.util.Asserts.notNull;
 
+import javax.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -27,6 +31,11 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
   @Autowired
   @Qualifier(Beans.NAME_GLOBAL_HANDLER_INTERCEPTOR)
   private HandlerInterceptor globalHandlerInterceptor;
+
+  @Bean
+  public Filter hiddenHttpMethodFilter() {
+    return new HiddenHttpMethodFilter();
+  }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // <A>WebMvcConfigurerAdapter

@@ -3,20 +3,19 @@
  */
 package kr.lul.urs.application.web.security;
 
+import static kr.lul.urs.spring.security.UserDetailsContext.getCurrentUserDetails;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.util.Conditions;
 
 /**
  * @since 2016. 5. 31.
@@ -24,6 +23,8 @@ import kr.lul.urs.util.Conditions;
  */
 @Component(Beans.NAME_GLOBAL_HANDLER_INTERCEPTOR)
 public class GlobalHandlerInterceptor extends HandlerInterceptorAdapter {
+  private static final Logger log = LoggerFactory.getLogger(GlobalHandlerInterceptor.class);
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // <A>HandlerInterceptorAdapter
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,12 +42,13 @@ public class GlobalHandlerInterceptor extends HandlerInterceptorAdapter {
     notNull(response, "response");
     notNull(handler, "handler");
 
-    Authentication authentication = SecurityContextHolder.getContext()
-        .getAuthentication();
-    if (null != authentication && Conditions.assignable(authentication.getPrincipal(), User.class)) {
-      mav.addObject("user", authentication.getPrincipal());
-    } else {
-      mav.addObject("user", null);
+    if (log.isDebugEnabled()) {
+      log.debug(String.format("request:%s response:%s handler:%s mav:%s", request, response, handler, mav));
+    }
+
+    OperatorDetails operator = getCurrentUserDetails(OperatorDetails.class);
+    if (null != operator) {
+      mav.addObject("user", operator);
     }
   }
 }
