@@ -12,6 +12,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ReadClientPlatformCmd extends OwnershipCmd {
+public class ReadAgentPlatformCmd extends OwnershipCmd {
   private int id;
 }

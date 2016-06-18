@@ -46,7 +46,7 @@ public class ResourceFileRevisionEntityTest extends AbstractDomainEntityTest {
 
   @Before
   public void setUp() throws Exception {
-    this.setClientPlatformAsRandom();
+    this.setAgentPlatformAsRandom();
 
     assertThat(this.f1).exists().isFile();
     assertThat(this.f1copy).exists().isFile();
@@ -56,8 +56,7 @@ public class ResourceFileRevisionEntityTest extends AbstractDomainEntityTest {
   @Test
   public void testConstruct() throws Exception {
     // Given
-    ResourceFile resourceFile = ResourceFileDomainUtils.create(this.clientPlatform,
-        this.resourceFileInternalService);
+    ResourceFile resourceFile = ResourceFileDomainUtils.create(this.platform, this.resourceFileInternalService);
     FileInputStream input = new FileInputStream(this.f1);
     String sha1 = DigestUtils.sha1Hex(input);
     input.close();
@@ -73,7 +72,7 @@ public class ResourceFileRevisionEntityTest extends AbstractDomainEntityTest {
         .hasFieldOrPropertyWithValue(ResourceFileRevisionMapping.Entity.RESOURCE_FILE, resourceFile.getId())
         .hasFieldOrPropertyWithValue(ResourceFileRevisionMapping.Entity.REVISION, 1);
     assertThat(rev.getOwner()).isEqualTo(this.operator);
-    assertThat(rev.getClientPlatform()).isEqualTo(resourceFile.getClientPlatform());
+    assertThat(rev.getAgentPlatform()).isEqualTo(resourceFile.getAgentPlatform());
     assertThat(rev.getResourceFile()).isEqualTo(resourceFile);
     assertThat(rev.getRevision()).isEqualTo(1);
     assertThat(rev.getName()).isEqualTo(resourceFile.getName());

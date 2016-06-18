@@ -15,65 +15,65 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.domain.entity.OperatorEntity;
-import kr.lul.urs.core.domain.mapping.ClientPlatformMapping;
-import kr.lul.urs.core.repository.ClientPlatformRepository;
+import kr.lul.urs.core.domain.mapping.AgentPlatformMapping;
+import kr.lul.urs.core.repository.AgentPlatformRepository;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 8.
  */
 @Service
-class ClientPlatformDaoImpl extends AbstractDao implements ClientPlatformDao {
+class AgentPlatformDaoImpl extends AbstractDao implements AgentPlatformDao {
   @Autowired
-  private ClientPlatformRepository clientPlatformRepository;
+  private AgentPlatformRepository agentPlatformRepository;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // <I>ClientPlatformDao
+  // <I>AgentPlatformDao
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public ClientPlatform insert(ClientPlatform clientPlatform) {
-    notNull(clientPlatform);
-    assignable(clientPlatform, ClientPlatformEntity.class);
+  public AgentPlatform insert(AgentPlatform platform) {
+    notNull(platform);
+    assignable(platform, AgentPlatformEntity.class);
 
     if (this.saveAndFlush) {
-      clientPlatform = this.clientPlatformRepository.saveAndFlush((ClientPlatformEntity) clientPlatform);
+      platform = this.agentPlatformRepository.saveAndFlush((AgentPlatformEntity) platform);
     } else {
-      clientPlatform = this.clientPlatformRepository.save((ClientPlatformEntity) clientPlatform);
+      platform = this.agentPlatformRepository.save((AgentPlatformEntity) platform);
     }
 
-    return clientPlatform;
+    return platform;
   }
 
   @Override
-  public ClientPlatform select(int id) {
+  public AgentPlatform select(int id) {
     if (0 >= id) {
       return null;
     }
-    return this.clientPlatformRepository.findOne(id);
+    return this.agentPlatformRepository.findOne(id);
   }
 
   @Override
-  public List<ClientPlatform> list() {
-    List<ClientPlatformEntity> list = this.clientPlatformRepository
-        .findAll(new Sort(Direction.ASC, ClientPlatformMapping.Entity.ID));
+  public List<AgentPlatform> list() {
+    List<AgentPlatformEntity> list = this.agentPlatformRepository
+        .findAll(new Sort(Direction.ASC, AgentPlatformMapping.Entity.ID));
     return new ArrayList<>(list);
   }
 
   /*
    * (non-Javadoc)
-   * @see kr.lul.urs.core.dao.ClientPlatformDao#list(kr.lul.urs.core.domain.Operator)
+   * @see kr.lul.urs.core.dao.AgentPlatformDao#list(kr.lul.urs.core.domain.Operator)
    * @since 2016. 6. 9.
    */
   @Override
-  public List<ClientPlatform> list(Operator owner) {
+  public List<AgentPlatform> list(Operator owner) {
     notNull(owner, "owner");
     assignable(owner, OperatorEntity.class, "owner");
 
-    List<ClientPlatformEntity> platforms = this.clientPlatformRepository
+    List<AgentPlatformEntity> platforms = this.agentPlatformRepository
         .findAllByOwnerOrderByIdAsc((OperatorEntity) owner);
 
     return Collections.unmodifiableList(platforms);

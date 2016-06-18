@@ -16,10 +16,10 @@ import kr.lul.urs.application.configuration.InjectionConstants.Properties;
  */
 class AbstractInternalService {
   @Value("${" + Properties.KEY_DAO_SAVE_AND_FLUSH + "}")
-  protected boolean                       saveAndFlush;
+  protected boolean                      saveAndFlush;
 
   @Autowired
-  protected OperatorInternalService       operatorInternalService;
+  protected OperatorInternalService      operatorInternalService;
   @Autowired
-  protected ClientPlatformInternalService clientPlatformInternalService;
+  protected AgentPlatformInternalService agentPlatformInternalService;
 }

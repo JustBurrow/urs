@@ -36,7 +36,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
 
   @Before
   public void setUp() throws Exception {
-    this.setClientPlatformAsRandom();
+    this.setAgentPlatformAsRandom();
 
     assertThat(this.resourceFileService).isNotNull();
   }
@@ -49,7 +49,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testCreateWithIllegalOwnership() throws Exception {
     // Given
-    CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.clientPlatform);
+    CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.platform);
     cmd.setOwner(1 + cmd.getOwner());
 
     // When & Then
@@ -59,7 +59,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.clientPlatform);
+    CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.platform);
 
     // When
     ResourceFileDto dto = this.resourceFileService.create(cmd).value();
@@ -69,7 +69,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
     assertThat(dto.getId()).isGreaterThan(0);
     assertThat(dto.getOwner()).isEqualTo(this.operator.getId())
         .isEqualTo(cmd.getOwner());
-    assertThat(dto.getClientPlatform()).isEqualTo(this.clientPlatform.getId());
+    assertThat(dto.getAgentPlatform()).isEqualTo(this.platform.getId());
     assertThat(dto.getName()).isEqualTo(cmd.getName());
     assertThat(dto.getCurrentRevision()).isEqualTo(0);
     this.assertTimestamp(dto);
@@ -88,7 +88,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testReadWithId() throws Exception {
     // Given
-    ResourceFileDto expected = ResourceFileApiUtils.create(this.clientPlatform, this.resourceFileService);
+    ResourceFileDto expected = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
     assertThat(expected).isNotNull();
 
     // When
@@ -101,7 +101,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testList() throws Exception {
     // Given
-    ResourceFileDto resourceFile = ResourceFileApiUtils.create(this.clientPlatform, this.resourceFileService);
+    ResourceFileDto resourceFile = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
 
     // When
     Return<List<ResourceFileDto>> rv = this.resourceFileService.list();
@@ -122,7 +122,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testUpdateWithIllegalOwnership() throws Exception {
     // Given
-    ResourceFileDto resourceFile = ResourceFileApiUtils.create(this.clientPlatform, this.resourceFileService);
+    ResourceFileDto resourceFile = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
     OperatorDto owner = OperatorApiUtils.create(this.operatorService);
     File file = getTestFile("testUpdate1");
 
@@ -141,7 +141,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testUpdate() throws Exception {
     // Given
-    final ResourceFileDto before = ResourceFileApiUtils.create(this.clientPlatform, this.resourceFileService);
+    final ResourceFileDto before = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
     File file = getTestFile("testUpdate1");
     FileInputStream input = new FileInputStream(file);
     final String sha1 = DigestUtils.sha1Hex(input);
@@ -162,7 +162,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
         .isNotSameAs(before);
     assertThat(after.getId()).isEqualTo(before.getId());
     assertThat(after.getOwner()).isEqualTo(before.getOwner());
-    assertThat(after.getClientPlatform()).isEqualTo(before.getClientPlatform());
+    assertThat(after.getAgentPlatform()).isEqualTo(before.getAgentPlatform());
     assertThat(after.getName()).isEqualTo(before.getName());
     assertThat(after.getCurrentRevision()).isGreaterThan(before.getCurrentRevision());
     assertThat(after.getCurrentSha1()).isEqualTo(sha1);

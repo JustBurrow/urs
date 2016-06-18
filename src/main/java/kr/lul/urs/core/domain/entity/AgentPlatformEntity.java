@@ -3,13 +3,13 @@
  */
 package kr.lul.urs.core.domain.entity;
 
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Entity.ENTITY;
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.CODE;
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.DESCRIPTION;
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.ID;
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.LABEL;
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.OWNER;
-import static kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.TABLE;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Entity.ENTITY;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.CODE;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.DESCRIPTION;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.ID;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.LABEL;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.OWNER;
+import static kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.TABLE;
 import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.gt;
 import static kr.lul.urs.util.Asserts.hasLength;
@@ -27,10 +27,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.FK;
-import kr.lul.urs.core.domain.mapping.ClientPlatformMapping.Table.INDEX;
+import kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.FK;
+import kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Table.INDEX;
 import kr.lul.urs.core.domain.mapping.OperatorMapping;
 import kr.lul.urs.spring.jpa.timestamp.AbstractUpdatable;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
@@ -42,8 +42,8 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 @Entity(name = ENTITY)
 @EntityListeners({ Timestamper.class })
 @Table(name = TABLE,
-    uniqueConstraints = { @UniqueConstraint(name = INDEX.UQ_CLIENT_PLATFORM_CODE, columnNames = { OWNER, CODE }) })
-public class ClientPlatformEntity extends AbstractUpdatable implements ClientPlatform {
+    uniqueConstraints = { @UniqueConstraint(name = INDEX.UQ_AGENT_PLATFORM_CODE, columnNames = { OWNER, CODE }) })
+public class AgentPlatformEntity extends AbstractUpdatable implements AgentPlatform {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = ID, nullable = false, insertable = false, updatable = false)
@@ -62,10 +62,10 @@ public class ClientPlatformEntity extends AbstractUpdatable implements ClientPla
   @Column(name = DESCRIPTION, nullable = false)
   private String         description;
 
-  public ClientPlatformEntity() {
+  public AgentPlatformEntity() {
   }
 
-  public ClientPlatformEntity(Operator owner, String code) {
+  public AgentPlatformEntity(Operator owner, String code) {
     assignable(owner, OperatorEntity.class);
     gt(owner.getId(), 0);
     hasLength(code);
@@ -74,18 +74,18 @@ public class ClientPlatformEntity extends AbstractUpdatable implements ClientPla
     this.code = code;
   }
 
-  public ClientPlatformEntity(Operator owner, String code, String label) {
+  public AgentPlatformEntity(Operator owner, String code, String label) {
     this(owner, code);
     this.setLabel(label);
   }
 
-  public ClientPlatformEntity(Operator owner, String code, String label, String description) {
+  public AgentPlatformEntity(Operator owner, String code, String label, String description) {
     this(owner, code, label);
     this.setDescription(description);
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // <I>ClientPlatform
+  // <I>AgentPlatform
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
   public int getId() {
@@ -139,8 +139,8 @@ public class ClientPlatformEntity extends AbstractUpdatable implements ClientPla
   public boolean equals(Object obj) {
     if (this == obj) {
       return true;
-    } else if (0 < this.id && null != obj && obj instanceof ClientPlatformEntity) {
-      return this.id == ((ClientPlatformEntity) obj).id;
+    } else if (0 < this.id && null != obj && obj instanceof AgentPlatformEntity) {
+      return this.id == ((AgentPlatformEntity) obj).id;
     } else {
       return false;
     }
@@ -148,7 +148,7 @@ public class ClientPlatformEntity extends AbstractUpdatable implements ClientPla
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder(ClientPlatformEntity.class.getSimpleName())
+    StringBuilder sb = new StringBuilder(AgentPlatformEntity.class.getSimpleName())
         .append("[id=").append(this.id)
         .append(", owner=").append(this.owner.toSimpleString())
         .append(", code=").append(this.code)

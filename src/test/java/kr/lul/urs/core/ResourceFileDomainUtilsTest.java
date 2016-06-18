@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
@@ -39,7 +39,7 @@ public class ResourceFileDomainUtilsTest extends AbstractDomainEntityTest {
 
   @Before
   public void setUp() throws Exception {
-    this.setClientPlatformAsRandom();
+    this.setAgentPlatformAsRandom();
   }
 
   @Test
@@ -60,12 +60,12 @@ public class ResourceFileDomainUtilsTest extends AbstractDomainEntityTest {
 
   @Test
   public void testCreateWithDoAndNull() throws Exception {
-    assertThatThrownBy(() -> create(this.clientPlatform, null)).isInstanceOf(AssertionException.class);
+    assertThatThrownBy(() -> create(this.platform, null)).isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testCreateWithNonEntityAndInternalService() throws Exception {
-    assertThatThrownBy(() -> create(new ClientPlatform() {
+    assertThatThrownBy(() -> create(new AgentPlatform() {
       @Override
       public Instant getUpdate() {
         return null;
@@ -114,12 +114,12 @@ public class ResourceFileDomainUtilsTest extends AbstractDomainEntityTest {
   @Test
   public void testCreateWithDoAndInternalService() throws Exception {
     // When
-    final ResourceFileEntity rf = create(this.clientPlatform, this.resourceFileInternalService);
+    final ResourceFileEntity rf = create(this.platform, this.resourceFileInternalService);
 
     // Then
     assertThat(rf).isNotNull();
     assertThat(rf.getOwner()).isEqualTo(this.operator);
-    assertThat(rf.getClientPlatform()).isEqualTo(this.clientPlatform);
+    assertThat(rf.getAgentPlatform()).isEqualTo(this.platform);
     assertThat(rf.getName()).isNotNull().matches("(/[a-z][a-zA-Z\\d]*)+");
     if (this.saveAndFlush) {
       assertThat(rf.getCreate()).isGreaterThanOrEqualTo(this.now);

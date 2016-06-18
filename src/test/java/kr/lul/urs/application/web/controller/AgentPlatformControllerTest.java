@@ -35,10 +35,10 @@ import kr.lul.urs.application.api.AgentPlatformApiConfiguration;
 import kr.lul.urs.application.api.AuthApiConfiguration;
 import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.application.web.view.AgentPlatformView;
-import kr.lul.urs.core.ClientPlatformApiUtils;
+import kr.lul.urs.core.AgentPlatformApiUtils;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.dto.ClientPlatformDto;
-import kr.lul.urs.core.service.ClientPlatformService;
+import kr.lul.urs.core.dto.AgentPlatformDto;
+import kr.lul.urs.core.service.AgentPlatformService;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -50,7 +50,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 public class AgentPlatformControllerTest extends AbstractMvcTest {
   @Autowired
-  private ClientPlatformService agentPlatformService;
+  private AgentPlatformService agentPlatformService;
 
   /**
    * @throws java.lang.Exception
@@ -90,7 +90,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
   public void testCreate() throws Exception {
     // Given
     this.setOperatorAsRandom();
-    CreateAgentPlatformReq req = ClientPlatformApiUtils.createReq();
+    CreateAgentPlatformReq req = AgentPlatformApiUtils.createReq();
 
     // When
     MockHttpServletResponse response = this.mock
@@ -115,8 +115,8 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
   public void testListAfterCreate() throws Exception {
     // Given
     this.setOperatorAsRandom();
-    List<ClientPlatformDto> platforms = IntStream.range(1, Randoms.in(3, 10)).mapToObj(i -> {
-      return ClientPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    List<AgentPlatformDto> platforms = IntStream.range(1, Randoms.in(3, 10)).mapToObj(i -> {
+      return AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
     }).collect(Collectors.toList());
 
     // When
@@ -129,14 +129,14 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
         .andExpect(status().isOk())
         .andExpect(view().name(AgentPlatformView.TPL_LIST))
         .andExpect(model().attribute("platforms", IsIterableContainingInOrder
-            .<ClientPlatformDto> contains(platforms.toArray(new ClientPlatformDto[platforms.size()]))));
+            .<AgentPlatformDto> contains(platforms.toArray(new AgentPlatformDto[platforms.size()]))));
   }
 
   @Test
   public void testUpdateForm() throws Exception {
     // Given
     this.setOperatorAsRandom();
-    final ClientPlatformDto platform = ClientPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    final AgentPlatformDto platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
 
     // When
     this.mock.perform(get(AgentPlatformApiConfiguration.PREFIX + "/" + platform.getId() + "/update")
@@ -153,7 +153,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
   public void testUpdate() throws Exception {
     // Given
     this.setOperatorAsRandom();
-    ClientPlatformDto platform = ClientPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    AgentPlatformDto platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
 
     String label;
     String description;

@@ -13,19 +13,19 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CreateResourceFileCmd extends OwnershipCmd {
-  private int    clientPlatform;
+  private int    platform;
   private String name;
 
   public CreateResourceFileCmd() {
   }
 
-  public CreateResourceFileCmd(int owner, int clientPlatform) {
+  public CreateResourceFileCmd(int owner, int platform) {
     super(owner);
-    this.clientPlatform = clientPlatform;
+    this.platform = platform;
   }
 
-  public CreateResourceFileCmd(int owner, int clientPlatform, String name) {
-    this(owner, clientPlatform);
+  public CreateResourceFileCmd(int owner, int platform, String name) {
+    this(owner, platform);
     this.name = name;
   }
 }

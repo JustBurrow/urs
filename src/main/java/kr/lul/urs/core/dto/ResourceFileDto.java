@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class ResourceFileDto extends OwnershipDto implements Updatable {
   private int     id;
-  private int     clientPlatform;
+  private int     agentPlatform;
   private int     resourceFile;
   private String  name;
   private int     currentRevision;

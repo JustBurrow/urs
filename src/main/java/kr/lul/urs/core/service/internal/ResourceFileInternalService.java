@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.ReadResourceFileCmd;
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.ResourceFile;
 
 /**
@@ -50,11 +50,11 @@ public interface ResourceFileInternalService {
   /**
    * 등록된 리소스 파일이 있는지 여부를 반환한다.
    *
-   * @param clientPlatform
+   * @param platform
    * @param name
    * @return 없으면 <code>null</code>.
    */
-  public boolean isExists(ClientPlatform clientPlatform, String name);
+  public boolean isExists(AgentPlatform platform, String name);
 
   /**
    * 등록된 리스스 파일을 ID 순서로 반환한다.

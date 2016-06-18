@@ -3,7 +3,7 @@
  */
 package kr.lul.urs.core.command;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,15 +15,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class UpdateAgentPlatformCmd extends OwnershipCmd {
   /**
-   * {@link ClientPlatform#getId()}
+   * {@link AgentPlatform#getId()}
    */
   private int    id;
   /**
-   * {@link ClientPlatform#getLabel()}
+   * {@link AgentPlatform#getLabel()}
    */
   private String label;
   /**
-   * {@link ClientPlatform#getDescription()}
+   * {@link AgentPlatform#getDescription()}
    */
   private String description;
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.domain.entity.OperatorEntity;
 
 /**
@@ -16,11 +16,11 @@ import kr.lul.urs.core.domain.entity.OperatorEntity;
  * @since 2016. 4. 5.
  */
 @Repository
-public interface ClientPlatformRepository extends JpaRepository<ClientPlatformEntity, Integer> {
+public interface AgentPlatformRepository extends JpaRepository<AgentPlatformEntity, Integer> {
   /**
    * @param owner
    * @return
    * @since 2016. 6. 9.
    */
-  public List<ClientPlatformEntity> findAllByOwnerOrderByIdAsc(OperatorEntity owner);
+  public List<AgentPlatformEntity> findAllByOwnerOrderByIdAsc(OperatorEntity owner);
 }

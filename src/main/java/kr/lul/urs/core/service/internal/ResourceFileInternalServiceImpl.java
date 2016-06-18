@@ -20,7 +20,7 @@ import kr.lul.urs.application.configuration.InjectionConstants.Properties;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.dao.ResourceFileDao;
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
@@ -55,16 +55,16 @@ class ResourceFileInternalServiceImpl extends AbstractInternalService implements
     if (null == owner) {
       throw new OwnershipException(format("owner[%d] does not exist.", cmd.getOwner()), cmd.getOwner(), 0);
     }
-    ClientPlatform clientPlatform = this.clientPlatformInternalService.read(cmd.getClientPlatform());
-    if (!owner.equals(clientPlatform.getOwner())) {
+    AgentPlatform platform = this.agentPlatformInternalService.read(cmd.getPlatform());
+    if (!owner.equals(platform.getOwner())) {
       throw new OwnershipException(
-          format("requested owner[%s] and client platform owner[%s] are not equal.", cmd.getOwner(),
-              clientPlatform.getOwner().toSimpleString()),
-          cmd.getOwner(), clientPlatform.getOwner().getId());
+          format("requested owner[%s] and agent platform owner[%s] are not equal.", cmd.getOwner(),
+              platform.getOwner().toSimpleString()),
+          cmd.getOwner(), platform.getOwner().getId());
     }
 
-    ResourceFileEntity rf = new ResourceFileEntity(clientPlatform, cmd.getName());
-    rf = (ResourceFileEntity) this.resourceFileDao.insert(rf);
+    ResourceFile rf = new ResourceFileEntity(platform, cmd.getName());
+    rf = this.resourceFileDao.insert(rf);
 
     return rf;
   }
@@ -89,8 +89,8 @@ class ResourceFileInternalServiceImpl extends AbstractInternalService implements
   }
 
   @Override
-  public boolean isExists(ClientPlatform clientPlatform, String name) {
-    return this.resourceFileDao.isExists(clientPlatform, name);
+  public boolean isExists(AgentPlatform platform, String name) {
+    return this.resourceFileDao.isExists(platform, name);
   }
 
   /*

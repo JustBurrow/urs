@@ -19,7 +19,7 @@ public abstract class ResourceFileMapping {
 
     public static final String ID               = "id";
     public static final String OWNER            = "owner";
-    public static final String CLIENT_PLATFORM  = "clientPlatform";
+    public static final String AGENT_PLATFORM   = "agentPlatform";
     public static final String NAME             = "name";
     public static final String CURRENT_REVISION = "currentRevision";
 
@@ -33,13 +33,13 @@ public abstract class ResourceFileMapping {
 
     public static final String ID               = Entity.ID;
     public static final String OWNER            = Entity.OWNER;
-    public static final String CLIENT_PLATFORM  = "client_platform";
+    public static final String AGENT_PLATFORM   = "agent_platform";
     public static final String NAME             = Entity.NAME;
     public static final String CURRENT_REVISION = "current_revision";
 
     public static abstract class FK {
-      public static final String PK_OPERATOR        = "FK_RESOURCE_FILE_PK_OPERATOR";
-      public static final String PK_CLIENT_PLATFORM = "FK_RESOURCE_FILE_PK_CLIENT_PLATFORM";
+      public static final String PK_OPERATOR       = "FK_RESOURCE_FILE_PK_OPERATOR";
+      public static final String PK_AGENT_PLATFORM = "FK_RESOURCE_FILE_PK_AGENT_PLATFORM";
 
       protected FK() {
         throw new UnsupportedOperationException();
@@ -51,7 +51,7 @@ public abstract class ResourceFileMapping {
       public static final String PK_OPERATOR_COLUMNS = OWNER + " ASC";
 
       /**
-       * @see Table#CLIENT_PLATFORM
+       * @see Table#AGENT_PLATFORM
        * @see Table#NAME
        */
       public static final String UQ_RESOURCE_FILE    = "UQ_RESOURCE_FILE";

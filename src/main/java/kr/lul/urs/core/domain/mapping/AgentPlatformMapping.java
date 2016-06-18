@@ -10,9 +10,9 @@ import kr.lul.urs.spring.jpa.timestamp.UpdatableMapping.UpdatableTable;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 5.
  */
-public abstract class ClientPlatformMapping {
+public abstract class AgentPlatformMapping {
   public static abstract class Entity extends UpdatableEntity {
-    public static final String ENTITY      = "ClientPlatform";
+    public static final String ENTITY      = "AgentPlatform";
 
     public static final String ID          = "id";
     public static final String OWNER       = "owner";
@@ -26,7 +26,7 @@ public abstract class ClientPlatformMapping {
   }
 
   public static abstract class Table extends UpdatableTable {
-    public static final String TABLE       = "op_client_platform";
+    public static final String TABLE       = "op_agent_platform";
 
     public static final String ID          = Entity.ID;
     public static final String OWNER       = Entity.OWNER;
@@ -35,7 +35,7 @@ public abstract class ClientPlatformMapping {
     public static final String DESCRIPTION = Entity.DESCRIPTION;
 
     public static abstract class INDEX {
-      public static final String UQ_CLIENT_PLATFORM_CODE = "UQ_CLIENT_PLATFORM_CODE";
+      public static final String UQ_AGENT_PLATFORM_CODE = "UQ_AGENT_PLATFORM_CODE";
 
       protected INDEX() {
         throw new UnsupportedOperationException();
@@ -43,7 +43,7 @@ public abstract class ClientPlatformMapping {
     }
 
     public static abstract class FK {
-      public static final String PK_OPERATOR = "FK_CLIENT_PLATFORM_PK_OPERATOR";
+      public static final String PK_OPERATOR = "FK_AGENT_PLATFORM_PK_OPERATOR";
 
       protected FK() {
         throw new UnsupportedOperationException();
@@ -55,7 +55,7 @@ public abstract class ClientPlatformMapping {
     }
   }
 
-  protected ClientPlatformMapping() {
+  protected AgentPlatformMapping() {
     throw new UnsupportedOperationException();
   }
 }

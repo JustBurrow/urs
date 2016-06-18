@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 
 /**
  * @since 2016. 5. 16.
@@ -24,7 +24,7 @@ import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformDomainUtilsTest extends AbstractDomainEntityTest {
+public class AgentPlatformDomainUtilsTest extends AbstractDomainEntityTest {
   @Before
   public void setUp() throws Exception {
     this.setOperatorAsRandom();
@@ -33,22 +33,22 @@ public class ClientPlatformDomainUtilsTest extends AbstractDomainEntityTest {
   @Test
   public void testCreateWithOwnerAndInternalService() throws Exception {
     // When
-    final ClientPlatformEntity clientPlatform = ClientPlatformDomainUtils.create(this.operator,
-        this.clientPlatformInternalService);
+    final AgentPlatformEntity platform = AgentPlatformDomainUtils.create(this.operator,
+        this.agentPlatformInternalService);
 
     // Then
-    assertThat(clientPlatform).isNotNull();
-    assertThat(clientPlatform.getId()).isGreaterThan(0);
-    assertThat(clientPlatform.getOwner()).isEqualTo(this.operator);
-    assertThat(clientPlatform.getCode()).isNotNull().isNotEmpty();
-    assertThat(clientPlatform.getLabel()).isNotNull().isNotEmpty();
-    assertThat(clientPlatform.getDescription()).isNotNull();
+    assertThat(platform).isNotNull();
+    assertThat(platform.getId()).isGreaterThan(0);
+    assertThat(platform.getOwner()).isEqualTo(this.operator);
+    assertThat(platform.getCode()).isNotNull().isNotEmpty();
+    assertThat(platform.getLabel()).isNotNull().isNotEmpty();
+    assertThat(platform.getDescription()).isNotNull();
     if (this.saveAndFlush) {
-      assertThat(clientPlatform.getCreate()).isNotNull().isGreaterThanOrEqualTo(this.now);
-      assertThat(clientPlatform.getUpdate()).isEqualTo(clientPlatform.getCreate());
+      assertThat(platform.getCreate()).isNotNull().isGreaterThanOrEqualTo(this.now);
+      assertThat(platform.getUpdate()).isEqualTo(platform.getCreate());
     } else {
-      assertThat(clientPlatform.getCreate()).isNull();
-      assertThat(clientPlatform.getUpdate()).isNull();
+      assertThat(platform.getCreate()).isNull();
+      assertThat(platform.getUpdate()).isNull();
     }
   }
 }

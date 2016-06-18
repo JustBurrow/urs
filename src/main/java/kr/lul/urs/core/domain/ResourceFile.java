@@ -9,7 +9,7 @@ import java.util.List;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
- * 클라이언트가 인식하는 리소스(업데이트용) 파일.
+ * 에이전트(클라이언트)가 인식하는 리소스(업데이트용) 파일.
  * 실재로 다운로드할 바이너리 정보는 버전 관리 단위인 {@link ResourceFileRevision}을 통해 관리한다.
  * <p>
  * Unity의 경우, 애셋 번들의 URL만 관리하며, 버전정보와 실재 다운로드해야 할 바이너리 정보는 {@link ResourceFileRevision}에서 관리한다.
@@ -32,11 +32,11 @@ public interface ResourceFile extends Updatable {
   public Operator getOwner();
 
   /**
-   * 리소스 파일을 사용하는 클라이언트의 플랫폼.
+   * 리소스 파일을 사용하는 에이전트의 플랫폼.
    *
-   * @return 대상 클라이언트 플랫폼.
+   * @return 대상 플랫폼.
    */
-  public ClientPlatform getClientPlatform();
+  public AgentPlatform getAgentPlatform();
 
   /**
    * @return 리소스 파일의 이름.

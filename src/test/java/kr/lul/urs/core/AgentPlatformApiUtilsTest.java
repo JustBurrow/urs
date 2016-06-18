@@ -3,7 +3,7 @@
  */
 package kr.lul.urs.core;
 
-import static kr.lul.urs.core.ClientPlatformApiUtils.readCmd;
+import static kr.lul.urs.core.AgentPlatformApiUtils.readCmd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -17,13 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.core.command.CreateClientPlatformCmd;
-import kr.lul.urs.core.command.ReadClientPlatformCmd;
-import kr.lul.urs.core.domain.ClientPlatform;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.command.CreateAgentPlatformCmd;
+import kr.lul.urs.core.command.ReadAgentPlatformCmd;
+import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.repository.ClientPlatformRepository;
-import kr.lul.urs.core.service.ClientPlatformService;
+import kr.lul.urs.core.repository.AgentPlatformRepository;
+import kr.lul.urs.core.service.AgentPlatformService;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -32,11 +32,11 @@ import kr.lul.urs.util.AssertionException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ClientPlatformApiUtilsTest extends AbstractApiTest {
+public class AgentPlatformApiUtilsTest extends AbstractApiTest {
   @Autowired
-  private ClientPlatformService    clientPlatformService;
+  private AgentPlatformService    agentPlatformService;
   @Autowired
-  private ClientPlatformRepository clientPlatformRepository;
+  private AgentPlatformRepository agentPlatformRepository;
 
   @Before
   public void setUp() throws Exception {
@@ -46,20 +46,20 @@ public class ClientPlatformApiUtilsTest extends AbstractApiTest {
 
   @Test
   public void testCostructor() {
-    assertThatThrownBy(() -> new ClientPlatformApiUtils() {
+    assertThatThrownBy(() -> new AgentPlatformApiUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
   public void testReadCmdWithNullService() throws Exception {
-    assertThatThrownBy(() -> ClientPlatformApiUtils.readCmd((ClientPlatformService) null))
+    assertThatThrownBy(() -> AgentPlatformApiUtils.readCmd((AgentPlatformService) null))
         .isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testReadCmdWithService() throws Exception {
     // When
-    ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(this.clientPlatformService);
+    ReadAgentPlatformCmd cmd = AgentPlatformApiUtils.readCmd(this.agentPlatformService);
 
     // Then
     assertThat(cmd).isNotNull();
@@ -69,14 +69,14 @@ public class ClientPlatformApiUtilsTest extends AbstractApiTest {
 
   @Test
   public void testReadCmdWithNullRepository() throws Exception {
-    assertThatThrownBy(() -> readCmd((ClientPlatformRepository) null))
+    assertThatThrownBy(() -> readCmd((AgentPlatformRepository) null))
         .isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testReadCmdWithRepository() throws Exception {
     // When
-    ReadClientPlatformCmd cmd = readCmd(this.clientPlatformRepository);
+    ReadAgentPlatformCmd cmd = readCmd(this.agentPlatformRepository);
 
     // Then
     assertThat(cmd).isNotNull();
@@ -90,7 +90,7 @@ public class ClientPlatformApiUtilsTest extends AbstractApiTest {
     final OperatorDto owner = OperatorApiUtils.create(this.operatorService);
 
     // When
-    final CreateClientPlatformCmd cmd = ClientPlatformApiUtils.createCmd(owner);
+    final CreateAgentPlatformCmd cmd = AgentPlatformApiUtils.createCmd(owner);
 
     // Then
     assertThat(cmd).isNotNull();
@@ -106,7 +106,7 @@ public class ClientPlatformApiUtilsTest extends AbstractApiTest {
     OperatorDto owner = OperatorApiUtils.create(this.operatorService);
 
     // When
-    CreateClientPlatformCmd cmd = ClientPlatformApiUtils.createCmd(owner);
+    CreateAgentPlatformCmd cmd = AgentPlatformApiUtils.createCmd(owner);
 
     // Then
     assertThat(cmd).isNotNull();
@@ -117,19 +117,19 @@ public class ClientPlatformApiUtilsTest extends AbstractApiTest {
   }
 
   @Test
-  public void testReadCmdWithOwnerIdAndClientPlatformId() throws Exception {
+  public void testReadCmdWithOwnerIdAndAgentPlatformId() throws Exception {
     // Given
-    List<ClientPlatformEntity> list = this.clientPlatformRepository.findAll();
+    List<AgentPlatformEntity> list = this.agentPlatformRepository.findAll();
     if (list.isEmpty()) {
-      ClientPlatformApiUtils.create(this.operator, this.clientPlatformService);
-      list = this.clientPlatformRepository.findAll();
+      AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
+      list = this.agentPlatformRepository.findAll();
     }
     assertThat(list).isNotEmpty();
     Collections.shuffle(list);
-    final ClientPlatform expected = list.get(0);
+    final AgentPlatform expected = list.get(0);
 
     // When
-    final ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(expected.getId(), expected.getOwner().getId());
+    final ReadAgentPlatformCmd cmd = AgentPlatformApiUtils.readCmd(expected.getId(), expected.getOwner().getId());
 
     // Then
     assertThat(cmd).isNotNull();

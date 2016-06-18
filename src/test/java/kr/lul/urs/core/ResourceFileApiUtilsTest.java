@@ -15,8 +15,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.lul.urs.core.command.CreateResourceFileCmd;
-import kr.lul.urs.core.dto.ClientPlatformDto;
-import kr.lul.urs.core.service.ClientPlatformService;
+import kr.lul.urs.core.dto.AgentPlatformDto;
+import kr.lul.urs.core.service.AgentPlatformService;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -26,16 +26,16 @@ import kr.lul.urs.core.service.ClientPlatformService;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 public class ResourceFileApiUtilsTest extends AbstractApiTest {
   @Autowired
-  private ClientPlatformService clientPlatformService;
+  private AgentPlatformService agentPlatformService;
 
-  private ClientPlatformDto     clientPlatform;
+  private AgentPlatformDto     agentPlatform;
 
   @Before
   public void setUp() throws Exception {
     this.setOperatorAsRandom();
 
-    this.clientPlatform = ClientPlatformApiUtils.create(this.operator.getId(), this.clientPlatformService);
-    this.assertTimestamp(this.clientPlatform);
+    this.agentPlatform = AgentPlatformApiUtils.create(this.operator.getId(), this.agentPlatformService);
+    this.assertTimestamp(this.agentPlatform);
   }
 
   @Test
@@ -47,12 +47,12 @@ public class ResourceFileApiUtilsTest extends AbstractApiTest {
   @Test
   public void testCreateCmd() throws Exception {
     // When
-    final CreateResourceFileCmd cmd = createCmd(this.clientPlatform);
+    final CreateResourceFileCmd cmd = createCmd(this.agentPlatform);
 
     // Then
     assertThat(cmd).isNotNull();
     assertThat(cmd.getOwner()).isEqualTo(this.operator.getId());
-    assertThat(cmd.getClientPlatform()).isEqualTo(this.clientPlatform.getId());
+    assertThat(cmd.getPlatform()).isEqualTo(this.agentPlatform.getId());
     assertThat(cmd.getName()).matches("(/[a-z][a-zA-Z\\d]*)+");
   }
 }

@@ -12,43 +12,43 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.reflect.TypeToken;
 
-import kr.lul.urs.core.domain.ClientPlatform;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
-import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
+import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.spring.tx.Return;
 
 @Service
-class ClientPlatformReturnFactoryImpl extends AbstractReturnFactory implements ClientPlatformReturnFactory {
+class AgentPlatformReturnFactoryImpl extends AbstractReturnFactory implements AgentPlatformReturnFactory {
   private Type listType;
 
   @PostConstruct
   private void postConstruct() throws Exception {
-    this.initializeMapper(new PropertyMap<ClientPlatformEntity, ClientPlatformDto>() {
+    this.initializeMapper(new PropertyMap<AgentPlatformEntity, AgentPlatformDto>() {
       @Override
       protected void configure() {
         this.map().setOwner(this.source.getOwner().getId());
-        if (!ClientPlatformReturnFactoryImpl.this.saveAndFlush) {
+        if (!AgentPlatformReturnFactoryImpl.this.saveAndFlush) {
           this.skip().setCreate(null);
           this.skip().setUpdate(null);
         }
       }
     });
-    this.listType = new TypeToken<List<ClientPlatformDto>>() {
+    this.listType = new TypeToken<List<AgentPlatformDto>>() {
       private static final long serialVersionUID = -1143891363443103897L;
     }.getType();
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // <I>ClientPlatformReturnFactory
+  // <I>AgentPlatformReturnFactory
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public Return<ClientPlatformDto> converter(final ClientPlatform clientPlatform) {
-    notNull(clientPlatform);
-    return () -> this.mapper.map(clientPlatform, ClientPlatformDto.class);
+  public Return<AgentPlatformDto> converter(final AgentPlatform agentPlatform) {
+    notNull(agentPlatform);
+    return () -> this.mapper.map(agentPlatform, AgentPlatformDto.class);
   }
 
   @Override
-  public Return<List<ClientPlatformDto>> converter(final List<ClientPlatform> list) {
+  public Return<List<AgentPlatformDto>> converter(final List<AgentPlatform> list) {
     notNull(list);
     return () -> this.mapper.map(list, this.listType);
   }

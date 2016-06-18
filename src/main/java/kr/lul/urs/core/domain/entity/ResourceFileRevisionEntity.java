@@ -28,7 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.ResourceFileRevision;
@@ -176,8 +176,8 @@ public class ResourceFileRevisionEntity extends AbstractCreatable implements Res
   }
 
   @Override
-  public ClientPlatform getClientPlatform() {
-    return this.resourceFile.getClientPlatform();
+  public AgentPlatform getAgentPlatform() {
+    return this.resourceFile.getAgentPlatform();
   }
 
   @Override

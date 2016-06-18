@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.AbstractDomainEntityTest;
-import kr.lul.urs.core.ClientPlatformDomainUtils;
+import kr.lul.urs.core.AgentPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.domain.ClientPlatform;
-import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
+import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.service.internal.AgentPlatformInternalService;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -33,11 +33,11 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformDaoTest extends AbstractDomainEntityTest {
+public class AgentPlatformDaoTest extends AbstractDomainEntityTest {
   @Autowired
-  private ClientPlatformInternalService clientPlatformInternalService;
+  private AgentPlatformInternalService agentPlatformInternalService;
   @Autowired
-  private ClientPlatformDao             clientPlatformDao;
+  private AgentPlatformDao             agentPlatformDao;
 
   @Before
   public void setUp() throws Exception {
@@ -46,22 +46,22 @@ public class ClientPlatformDaoTest extends AbstractDomainEntityTest {
 
   @Test
   public void testInsertWithNull() throws Exception {
-    assertThatThrownBy(() -> this.clientPlatformDao.insert(null)).isInstanceOf(AssertionException.class);
+    assertThatThrownBy(() -> this.agentPlatformDao.insert(null)).isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testList() throws Exception {
     // Given
-    final List<ClientPlatform> l1 = this.clientPlatformDao.list();
+    final List<AgentPlatform> l1 = this.agentPlatformDao.list();
     assertThat(l1).isNotNull().isNotEmpty();
-    final ClientPlatform clientPlatform = ClientPlatformDomainUtils.create(this.operator,
-        this.clientPlatformInternalService);
+    final AgentPlatform platform = AgentPlatformDomainUtils.create(this.operator,
+        this.agentPlatformInternalService);
 
     // When
-    final List<ClientPlatform> l2 = this.clientPlatformDao.list();
+    final List<AgentPlatform> l2 = this.agentPlatformDao.list();
 
     // Then
-    assertThat(l1).doesNotContain(clientPlatform);
-    assertThat(l2).contains(clientPlatform).hasSize(l1.size() + 1);
+    assertThat(l1).doesNotContain(platform);
+    assertThat(l2).contains(platform).hasSize(l1.size() + 1);
   }
 }

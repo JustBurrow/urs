@@ -8,9 +8,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.AbstractTest;
-import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.service.ClientPlatformService;
+import kr.lul.urs.core.service.AgentPlatformService;
 import kr.lul.urs.core.service.OperatorService;
 
 /**
@@ -26,12 +26,12 @@ import kr.lul.urs.core.service.OperatorService;
  */
 public abstract class AbstractApiTest extends AbstractTest {
   @Autowired
-  protected OperatorService       operatorService;
+  protected OperatorService      operatorService;
   @Autowired
-  protected ClientPlatformService clientPlatformService;
+  protected AgentPlatformService agentPlatformService;
 
-  protected OperatorDto           operator;
-  protected ClientPlatformDto     clientPlatform;
+  protected OperatorDto          operator;
+  protected AgentPlatformDto     platform;
 
   /**
    * @since 2016. 5. 16.
@@ -47,16 +47,16 @@ public abstract class AbstractApiTest extends AbstractTest {
   /**
    * @since 2016. 5. 16.
    */
-  protected void setClientPlatformAsRandom() {
+  protected void setAgentPlatformAsRandom() {
     if (null == this.operator) {
       this.setOperatorAsRandom();
     }
 
-    this.clientPlatform = ClientPlatformApiUtils.create(this.operator, this.clientPlatformService);
+    this.platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
 
-    assertThat(this.clientPlatform).isNotNull();
-    assertThat(this.clientPlatform.getId()).isGreaterThan(0);
-    assertThat(this.clientPlatform.getOwner()).isEqualTo(this.operator.getId());
-    this.assertTimestamp(this.clientPlatform);
+    assertThat(this.platform).isNotNull();
+    assertThat(this.platform.getId()).isGreaterThan(0);
+    assertThat(this.platform.getOwner()).isEqualTo(this.operator.getId());
+    this.assertTimestamp(this.platform);
   }
 }

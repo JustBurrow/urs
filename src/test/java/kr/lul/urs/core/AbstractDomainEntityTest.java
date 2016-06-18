@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import kr.lul.urs.AbstractTest;
 import kr.lul.urs.application.configuration.InjectionConstants.Properties;
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.core.service.internal.ClientPlatformInternalService;
+import kr.lul.urs.core.service.internal.AgentPlatformInternalService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
@@ -62,17 +62,17 @@ public abstract class AbstractDomainEntityTest extends AbstractTest {
   }
 
   @Value("${" + Properties.KEY_DAO_SAVE_AND_FLUSH + "}")
-  protected boolean                       saveAndFlush;
+  protected boolean                      saveAndFlush;
 
   @Autowired
-  protected TimeProvider                  timeProvider;
+  protected TimeProvider                 timeProvider;
   @Autowired
-  protected OperatorInternalService       operatorInternalService;
+  protected OperatorInternalService      operatorInternalService;
   @Autowired
-  protected ClientPlatformInternalService clientPlatformInternalService;
+  protected AgentPlatformInternalService agentPlatformInternalService;
 
-  protected Operator                      operator;
-  protected ClientPlatform                clientPlatform;
+  protected Operator                     operator;
+  protected AgentPlatform                platform;
 
   /**
    * 임의의 관리자를 만든다.
@@ -90,20 +90,20 @@ public abstract class AbstractDomainEntityTest extends AbstractTest {
   }
 
   /**
-   * 임의의 클라이언트 플랫폼을 만든다.
+   * 임의의 플랫폼을 만든다.
    *
    * @since 2016. 5. 16.
    */
-  protected void setClientPlatformAsRandom() {
+  protected void setAgentPlatformAsRandom() {
     if (null == this.operator) {
       this.setOperatorAsRandom();
     }
 
-    this.clientPlatform = ClientPlatformDomainUtils.create(this.operator, this.clientPlatformInternalService);
+    this.platform = AgentPlatformDomainUtils.create(this.operator, this.agentPlatformInternalService);
 
-    assertThat(this.clientPlatform).isNotNull();
-    assertThat(this.clientPlatform.getOwner()).isEqualTo(this.operator);
-    this.assertTimestamp(this.clientPlatform);
+    assertThat(this.platform).isNotNull();
+    assertThat(this.platform.getOwner()).isEqualTo(this.operator);
+    this.assertTimestamp(this.platform);
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

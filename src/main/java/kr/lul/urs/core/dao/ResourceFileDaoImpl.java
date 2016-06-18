@@ -11,9 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.ResourceFile;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.domain.mapping.ResourceFileMapping.Entity;
 import kr.lul.urs.core.repository.ResourceFileRepository;
@@ -45,12 +45,12 @@ class ResourceFileDaoImpl extends AbstractDao implements ResourceFileDao {
   }
 
   @Override
-  public boolean isExists(ClientPlatform clientPlatform, String name) {
-    notNull(clientPlatform);
-    assignable(clientPlatform, ClientPlatformEntity.class);
+  public boolean isExists(AgentPlatform platform, String name) {
+    notNull(platform);
+    assignable(platform, AgentPlatformEntity.class);
     notNull(name);
 
-    return this.resourceFileRepository.exists(clientPlatform, name);
+    return this.resourceFileRepository.exists(platform, name);
   }
 
   /*

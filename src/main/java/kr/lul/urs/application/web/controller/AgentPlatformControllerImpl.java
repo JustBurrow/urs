@@ -26,12 +26,12 @@ import kr.lul.urs.application.api.AgentPlatformApiConfiguration;
 import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.application.web.request.UpdatAgentPlatformReq;
 import kr.lul.urs.application.web.security.OperatorDetails;
-import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.OperatorCmd;
-import kr.lul.urs.core.command.ReadClientPlatformCmd;
+import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.command.UpdateAgentPlatformCmd;
-import kr.lul.urs.core.dto.ClientPlatformDto;
-import kr.lul.urs.core.service.ClientPlatformService;
+import kr.lul.urs.core.dto.AgentPlatformDto;
+import kr.lul.urs.core.service.AgentPlatformService;
 import kr.lul.urs.core.service.internal.OwnershipException;
 
 /**
@@ -41,7 +41,7 @@ import kr.lul.urs.core.service.internal.OwnershipException;
 @Controller
 class AgentPlatformControllerImpl extends AbstractController implements AgentPlatformController {
   @Autowired
-  private ClientPlatformService agentPlatformService;
+  private AgentPlatformService agentPlatformService;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // <I>AgentPlatformController
@@ -74,9 +74,9 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
 
     OperatorDetails operator = this.currentOperator();
 
-    CreateClientPlatformCmd cmd = new CreateClientPlatformCmd(operator.getId(), req.getCode(), req.getLabel(),
+    CreateAgentPlatformCmd cmd = new CreateAgentPlatformCmd(operator.getId(), req.getCode(), req.getLabel(),
         req.getDescription());
-    ClientPlatformDto platform = this.agentPlatformService.create(cmd).value();
+    AgentPlatformDto platform = this.agentPlatformService.create(cmd).value();
     return "redirect:" + fromPath(PREFIX + READ).buildAndExpand(platform.getId()).getPath();
   }
 
@@ -90,7 +90,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
     positive(id, "id");
     notNull(model, "model");
 
-    ClientPlatformDto platform = this.agentPlatformService.read(id).value();
+    AgentPlatformDto platform = this.agentPlatformService.read(id).value();
 
     model.addAttribute("platform", platform);
 
@@ -109,7 +109,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
     OperatorCmd cmd = new OperatorCmd();
     cmd.setOwner(this.currentOperator().getId());
 
-    List<ClientPlatformDto> platforms = this.agentPlatformService.list(cmd).value();
+    List<AgentPlatformDto> platforms = this.agentPlatformService.list(cmd).value();
     model.addAttribute("platforms", platforms);
 
     return TPL_LIST;
@@ -125,11 +125,11 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
     positive(id, "id");
     notNull(model, "model");
 
-    ReadClientPlatformCmd cmd = new ReadClientPlatformCmd();
+    ReadAgentPlatformCmd cmd = new ReadAgentPlatformCmd();
     cmd.setId(id);
     cmd.setOwner(this.currentOperator().getId());
 
-    ClientPlatformDto platform;
+    AgentPlatformDto platform;
     try {
       platform = this.agentPlatformService.read(cmd).value();
     } catch (OwnershipException e) {
@@ -168,7 +168,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
     cmd.setLabel(req.getLabel());
     cmd.setDescription(req.getDescription());
 
-    ClientPlatformDto platform;
+    AgentPlatformDto platform;
     try {
       platform = this.agentPlatformService.update(cmd).value();
     } catch (OwnershipException e) {

@@ -54,7 +54,7 @@ public class ResourceFileEntityTest extends AbstractDomainEntityTest {
 
   @Before
   public void setUp() throws Exception {
-    this.setClientPlatformAsRandom();
+    this.setAgentPlatformAsRandom();
   }
 
   @After
@@ -82,12 +82,12 @@ public class ResourceFileEntityTest extends AbstractDomainEntityTest {
     } while (0 >= Randoms.notNegative(10));
 
     // When
-    final ResourceFileEntity rf = new ResourceFileEntity(this.clientPlatform, name.toString());
+    final ResourceFileEntity rf = new ResourceFileEntity(this.platform, name.toString());
 
     // Then
     assertThat(rf).isNotNull();
     assertThat(rf.getOwner()).isEqualTo(this.operator);
-    assertThat(rf.getClientPlatform()).isEqualTo(this.clientPlatform);
+    assertThat(rf.getAgentPlatform()).isEqualTo(this.platform);
     assertThat(rf.getName()).isEqualTo(name.toString());
     assertThat(rf.getCurrentRevision()).isNull();
     assertThat(rf.getCurrentRevisionNumber()).isEqualTo(0);
@@ -99,7 +99,7 @@ public class ResourceFileEntityTest extends AbstractDomainEntityTest {
   @Test
   public void testUpdateForNewInstance() throws Exception {
     // Given
-    final ResourceFileEntity resourceFile = ResourceFileDomainUtils.create(this.clientPlatform,
+    final ResourceFileEntity resourceFile = ResourceFileDomainUtils.create(this.platform,
         this.resourceFileInternalService);
     final File file = FileUtils.getFile(TestConfig.TEST_RESOURCE_BASE_PATH, CLASS_NAME, "testUpdateForNewInstance");
     assertThat(file).exists();

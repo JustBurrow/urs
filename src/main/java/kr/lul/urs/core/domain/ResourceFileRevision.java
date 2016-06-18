@@ -10,7 +10,7 @@ import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.util.InputStreamSupplier;
 
 /**
- * 클라이언트가 다운로드할 파일의 바이너리 정보를 관리하는 단위.
+ * 에이전트(클라이언트)가 다운로드할 파일의 바이너리 정보를 관리하는 단위.
  * <p>
  * Unity의 경우, {@link ResourceFile}을 통해 애셋 번들의 URL을 획득하고, 리비전으로 바이너리를 다운로드할지 여부를 결정한다.
  * </p>
@@ -53,11 +53,11 @@ public interface ResourceFileRevision extends Creatable {
   public ResourceFile getResourceFile();
 
   /**
-   * 리소스 파일을 사용하는 클라이언트의 플랫폼.
+   * 리소스 파일을 사용하는 에이전트의 플랫폼.
    *
-   * @return 대상 클라이언트 플랫폼.
+   * @return 대상 에이전트 플랫폼.
    */
-  public ClientPlatform getClientPlatform();
+  public AgentPlatform getAgentPlatform();
 
   /**
    * @return 리소스 파일의 이름.

@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.ResourceFile;
 
 /**
@@ -34,11 +34,11 @@ public interface ResourceFileDao {
   /**
    * DB에 데이터가 있는지 여부를 확인한다.
    *
-   * @param clientPlatform
+   * @param platform
    * @param name
    * @return 데이터가 있으면 <code>true</code>.
    */
-  public boolean isExists(ClientPlatform clientPlatform, String name);
+  public boolean isExists(AgentPlatform platform, String name);
 
   /**
    * 오름차순으로 정렬한 전체 목록.

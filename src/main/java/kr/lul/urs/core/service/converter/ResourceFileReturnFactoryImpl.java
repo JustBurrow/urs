@@ -39,7 +39,7 @@ class ResourceFileReturnFactoryImpl extends AbstractReturnFactory implements Res
       protected void configure() {
         this.map().setId(this.source.getId());
         this.map().setOwner(this.source.getOwner().getId());
-        this.map().setClientPlatform(this.source.getClientPlatform().getId());
+        this.map().setAgentPlatform(this.source.getAgentPlatform().getId());
         this.map().setName(this.source.getName());
 
         this.skip().setCurrentRevision(0);

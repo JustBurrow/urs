@@ -6,13 +6,13 @@ package kr.lul.urs.core.domain;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
- * 프로덕트의 클라이언트가 지원하는 플랫폼 정보.
- * 클라이언트는 각 플랫폼마다 서로 다른 구현을 가지며, 그에 필요한 리소스 파일이 서로 다르다.
+ * 프로덕트의 에이전트(클라이언트)가 지원하는 플랫폼 정보.
+ * 에이전트는 각 플랫폼마다 서로 다른 구현을 가지며, 그에 필요한 리소스 파일이 서로 다르다.
  *
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 4.
  */
-public interface ClientPlatform extends Updatable {
+public interface AgentPlatform extends Updatable {
   /**
    * @return ID
    */
@@ -44,13 +44,13 @@ public interface ClientPlatform extends Updatable {
   public void setLabel(String label);
 
   /**
-   * @return 클라이언트 플랫폼 설명.
+   * @return 플랫폼 설명.
    */
   public String getDescription();
 
   /**
    * @param description
-   *          클라이언트 플랫폼 설명.
+   *          플랫폼 설명.
    */
   public void setDescription(String description);
 }

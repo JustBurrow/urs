@@ -6,7 +6,7 @@ package kr.lul.urs.core.domain.entity;
 import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.CascadeType.PERSIST;
 import static kr.lul.urs.core.domain.mapping.ResourceFileMapping.Entity.ENTITY;
-import static kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.CLIENT_PLATFORM;
+import static kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.AGENT_PLATFORM;
 import static kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.CURRENT_REVISION;
 import static kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.ID;
 import static kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.NAME;
@@ -44,12 +44,12 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.ResourceFileRevision;
 import kr.lul.urs.core.domain.ResourceFileUpdateException;
-import kr.lul.urs.core.domain.mapping.ClientPlatformMapping;
+import kr.lul.urs.core.domain.mapping.AgentPlatformMapping;
 import kr.lul.urs.core.domain.mapping.OperatorMapping;
 import kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.FK;
 import kr.lul.urs.core.domain.mapping.ResourceFileMapping.Table.INDEX;
@@ -66,7 +66,7 @@ import kr.lul.urs.util.OutputStreamFactory;
 @EntityListeners({ Timestamper.class })
 @Table(name = TABLE,
     uniqueConstraints = {
-        @UniqueConstraint(name = INDEX.UQ_RESOURCE_FILE, columnNames = { CLIENT_PLATFORM, NAME }) })
+        @UniqueConstraint(name = INDEX.UQ_RESOURCE_FILE, columnNames = { AGENT_PLATFORM, NAME }) })
 public class ResourceFileEntity extends AbstractUpdatable implements ResourceFile {
   private static OutputStreamFactory<OutputStream, ResourceFileRevision> OUTPUT_STREAM_FACTORY;
 
@@ -93,13 +93,13 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
       nullable = false,
       updatable = false)
   private Operator                   owner;
-  @ManyToOne(targetEntity = ClientPlatformEntity.class, fetch = FetchType.EAGER)
-  @JoinColumn(name = CLIENT_PLATFORM,
-      foreignKey = @ForeignKey(name = FK.PK_CLIENT_PLATFORM),
-      referencedColumnName = ClientPlatformMapping.Table.ID,
+  @ManyToOne(targetEntity = AgentPlatformEntity.class, fetch = FetchType.EAGER)
+  @JoinColumn(name = AGENT_PLATFORM,
+      foreignKey = @ForeignKey(name = FK.PK_AGENT_PLATFORM),
+      referencedColumnName = AgentPlatformMapping.Table.ID,
       nullable = false,
       updatable = false)
-  private ClientPlatform             clientPlatform;
+  private AgentPlatform             agentPlatform;
   @Column(name = NAME, nullable = false, updatable = false)
   private String                     name;
   @Column(name = CURRENT_REVISION, nullable = false)
@@ -117,14 +117,14 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
     this.history = new ArrayList<>();
   }
 
-  public ResourceFileEntity(ClientPlatform clientPlatform, String name) {
+  public ResourceFileEntity(AgentPlatform platform, String name) {
     this();
-    notNull(clientPlatform);
-    assignable(clientPlatform, ClientPlatformEntity.class);
+    notNull(platform);
+    assignable(platform, AgentPlatformEntity.class);
     hasLength(name);
 
-    this.owner = clientPlatform.getOwner();
-    this.clientPlatform = clientPlatform;
+    this.owner = platform.getOwner();
+    this.agentPlatform = platform;
     this.name = name;
   }
 
@@ -149,8 +149,8 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
   }
 
   @Override
-  public ClientPlatform getClientPlatform() {
-    return this.clientPlatform;
+  public AgentPlatform getAgentPlatform() {
+    return this.agentPlatform;
   }
 
   @Override
@@ -223,7 +223,7 @@ public class ResourceFileEntity extends AbstractUpdatable implements ResourceFil
       return true;
     } else if (0 < this.id && null != obj && obj instanceof ResourceFileEntity) {
       ResourceFileEntity that = (ResourceFileEntity) obj;
-      return this.id == that.id && this.clientPlatform.equals(that.clientPlatform) && this.name.equals(that.name);
+      return this.id == that.id && this.agentPlatform.equals(that.agentPlatform) && this.name.equals(that.name);
     } else {
       return false;
     }

@@ -10,11 +10,11 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.command.CreateClientPlatformCmd;
+import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.OperatorCmd;
-import kr.lul.urs.core.command.ReadClientPlatformCmd;
+import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.command.UpdateAgentPlatformCmd;
-import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.spring.tx.Return;
 
@@ -25,13 +25,13 @@ import kr.lul.urs.spring.tx.Return;
  * @since 2016. 4. 28.
  */
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER, propagation = REQUIRES_NEW)
-public interface ClientPlatformService {
+public interface AgentPlatformService {
   /**
    * @param cmd
    * @return
    * @since 2016. 4. 28.
    */
-  public Return<ClientPlatformDto> create(CreateClientPlatformCmd cmd);
+  public Return<AgentPlatformDto> create(CreateAgentPlatformCmd cmd);
 
   /**
    * @param id
@@ -39,7 +39,7 @@ public interface ClientPlatformService {
    * @return 없으면 <code>null</code>.
    * @since 2016. 5. 3.
    */
-  public Return<ClientPlatformDto> read(int id);
+  public Return<AgentPlatformDto> read(int id);
 
   /**
    * @param cmd
@@ -49,13 +49,13 @@ public interface ClientPlatformService {
    *           커맨드 오브젝트의 소유자가 권한이 없을 때.
    * @since 2016. 4. 28.
    */
-  public Return<ClientPlatformDto> read(ReadClientPlatformCmd cmd) throws OwnershipException;
+  public Return<AgentPlatformDto> read(ReadAgentPlatformCmd cmd) throws OwnershipException;
 
   /**
    * @return 없으면 빈 리스트.
    * @since 2016. 4. 28.
    */
-  public Return<List<ClientPlatformDto>> list();
+  public Return<List<AgentPlatformDto>> list();
 
   /**
    * 관리자의 플랫폼 목록.
@@ -64,7 +64,7 @@ public interface ClientPlatformService {
    * @return
    * @since 2016. 6. 8.
    */
-  public Return<List<ClientPlatformDto>> list(OperatorCmd cmd);
+  public Return<List<AgentPlatformDto>> list(OperatorCmd cmd);
 
   /**
    * 에이전트 플랫폼의 정보를 수정한다.
@@ -74,5 +74,5 @@ public interface ClientPlatformService {
    * @throws OwnershipException
    * @since 2016. 6. 13.
    */
-  public Return<ClientPlatformDto> update(UpdateAgentPlatformCmd cmd) throws OwnershipException;
+  public Return<AgentPlatformDto> update(UpdateAgentPlatformCmd cmd) throws OwnershipException;
 }

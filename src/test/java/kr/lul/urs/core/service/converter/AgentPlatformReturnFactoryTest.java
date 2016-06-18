@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.AbstractDomainEntityTest;
-import kr.lul.urs.core.ClientPlatformDomainUtils;
+import kr.lul.urs.core.AgentPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.domain.ClientPlatform;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
-import kr.lul.urs.core.dto.ClientPlatformDto;
+import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
+import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
@@ -37,9 +37,9 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformReturnFactoryTest extends AbstractDomainEntityTest {
+public class AgentPlatformReturnFactoryTest extends AbstractDomainEntityTest {
   @Autowired
-  private ClientPlatformReturnFactory clientPlatformReturnFactory;
+  private AgentPlatformReturnFactory agentPlatformReturnFactory;
 
   @Before
   public void setUp() {
@@ -47,64 +47,64 @@ public class ClientPlatformReturnFactoryTest extends AbstractDomainEntityTest {
   }
 
   @Test
-  public void testConverterClientPlatformWithNull() throws Exception {
-    assertThatThrownBy(() -> this.clientPlatformReturnFactory.converter((ClientPlatform) null))
+  public void testConverterAgentPlatformWithNull() throws Exception {
+    assertThatThrownBy(() -> this.agentPlatformReturnFactory.converter((AgentPlatform) null))
         .isInstanceOf(AssertionException.class);
   }
 
   @Test
-  public void testConverterClientPlatform() throws Exception {
+  public void testConverterAgentPlatform() throws Exception {
     // Given
-    final ClientPlatformEntity clientPlatform = ClientPlatformDomainUtils.create(this.operator,
-        this.clientPlatformInternalService);
+    final AgentPlatformEntity platform = AgentPlatformDomainUtils.create(this.operator,
+        this.agentPlatformInternalService);
 
     // When
-    final Return<ClientPlatformDto> rv = this.clientPlatformReturnFactory.converter(clientPlatform);
+    final Return<AgentPlatformDto> rv = this.agentPlatformReturnFactory.converter(platform);
 
     // Then
     assertThat(rv).isNotNull();
 
-    final ClientPlatformDto dto = rv.value();
+    final AgentPlatformDto dto = rv.value();
     assertThat(dto).isNotNull();
-    assertThat(dto.getId()).isEqualTo(clientPlatform.getId());
+    assertThat(dto.getId()).isEqualTo(platform.getId());
     assertThat(dto.getOwner()).isEqualTo(this.operator.getId());
-    assertThat(dto.getCode()).isEqualTo(clientPlatform.getCode());
-    assertThat(dto.getLabel()).isEqualTo(clientPlatform.getLabel());
-    assertThat(dto.getDescription()).isEqualTo(clientPlatform.getDescription());
+    assertThat(dto.getCode()).isEqualTo(platform.getCode());
+    assertThat(dto.getLabel()).isEqualTo(platform.getLabel());
+    assertThat(dto.getDescription()).isEqualTo(platform.getDescription());
     if (this.saveAndFlush) {
-      this.assertTimestamp(clientPlatform);
+      this.assertTimestamp(platform);
       this.assertTimestamp(dto);
-      assertThat(dto.getCreate()).isEqualTo(clientPlatform.getCreate());
-      assertThat(dto.getUpdate()).isEqualTo(clientPlatform.getUpdate());
+      assertThat(dto.getCreate()).isEqualTo(platform.getCreate());
+      assertThat(dto.getUpdate()).isEqualTo(platform.getUpdate());
     }
   }
 
   @Test
   public void testConverterListWithNull() throws Exception {
-    assertThatThrownBy(() -> this.clientPlatformReturnFactory.converter((List<ClientPlatform>) null))
+    assertThatThrownBy(() -> this.agentPlatformReturnFactory.converter((List<AgentPlatform>) null))
         .isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testConverterList() throws Exception {
     // Given
-    final List<ClientPlatform> l1 = new ArrayList<>();
+    final List<AgentPlatform> l1 = new ArrayList<>();
     for (int i = Randoms.in(10, 50); i > 0; i--) {
-      l1.add(ClientPlatformDomainUtils.create(this.operator, this.clientPlatformInternalService));
+      l1.add(AgentPlatformDomainUtils.create(this.operator, this.agentPlatformInternalService));
     }
     assertThat(l1).isNotEmpty();
 
     // When
-    final Return<List<ClientPlatformDto>> rv = this.clientPlatformReturnFactory.converter(l1);
+    final Return<List<AgentPlatformDto>> rv = this.agentPlatformReturnFactory.converter(l1);
 
     // Then
     assertThat(rv).isNotNull();
 
-    List<ClientPlatformDto> l2 = rv.value();
+    List<AgentPlatformDto> l2 = rv.value();
     assertThat(l2).isNotNull().hasSize(l1.size());
     for (int i = 0; i < l2.size(); i++) {
-      ClientPlatform expected = l1.get(i);
-      ClientPlatformDto actual = l2.get(i);
+      AgentPlatform expected = l1.get(i);
+      AgentPlatformDto actual = l2.get(i);
 
       assertThat(actual).isNotNull();
       assertThat(actual.getId()).isEqualTo(expected.getId());

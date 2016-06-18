@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ClientPlatformDto extends OwnershipDto implements Updatable {
+public class AgentPlatformDto extends OwnershipDto implements Updatable {
   private int     id;
   private String  code;
   private String  label;

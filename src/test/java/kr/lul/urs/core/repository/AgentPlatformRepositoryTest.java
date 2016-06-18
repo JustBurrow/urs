@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.domain.entity.ClientPlatformEntity;
+import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -29,9 +29,9 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformRepositoryTest extends AbstractDomainEntityTest {
+public class AgentPlatformRepositoryTest extends AbstractDomainEntityTest {
   @Autowired
-  private ClientPlatformRepository clientPlatformRepository;
+  private AgentPlatformRepository agentPlatformRepository;
 
   @Before
   public void setUp() throws Exception {
@@ -45,20 +45,20 @@ public class ClientPlatformRepositoryTest extends AbstractDomainEntityTest {
     final String code = RandomStringUtils.randomAlphabetic(Randoms.in(3, 10));
     final String label = RandomStringUtils.randomAlphanumeric(Randoms.in(1, 10));
     final String description = RandomStringUtils.randomAlphanumeric(Randoms.in(0, 1000));
-    final ClientPlatformEntity cp1 = new ClientPlatformEntity(this.operator, code, label);
-    cp1.setDescription(description);
+    final AgentPlatformEntity p1 = new AgentPlatformEntity(this.operator, code, label);
+    p1.setDescription(description);
 
     // When
-    final ClientPlatformEntity cp2 = this.clientPlatformRepository.saveAndFlush(cp1);
+    final AgentPlatformEntity p2 = this.agentPlatformRepository.saveAndFlush(p1);
 
     // Then
-    assertThat(cp2).isNotNull().isEqualTo(cp1);
-    assertThat(cp2.getId()).isGreaterThan(0);
-    assertThat(cp2.getOwner()).isEqualTo(this.operator);
-    assertThat(cp2.getCode()).isEqualTo(code);
-    assertThat(cp2.getLabel()).isEqualTo(label);
-    assertThat(cp2.getDescription()).isEqualTo(description);
-    assertThat(cp2.getCreate()).isGreaterThanOrEqualTo(this.now);
-    assertThat(cp2.getUpdate()).isEqualTo(cp2.getCreate());
+    assertThat(p2).isNotNull().isEqualTo(p1);
+    assertThat(p2.getId()).isGreaterThan(0);
+    assertThat(p2.getOwner()).isEqualTo(this.operator);
+    assertThat(p2.getCode()).isEqualTo(code);
+    assertThat(p2.getLabel()).isEqualTo(label);
+    assertThat(p2.getDescription()).isEqualTo(description);
+    assertThat(p2.getCreate()).isGreaterThanOrEqualTo(this.now);
+    assertThat(p2.getUpdate()).isEqualTo(p2.getCreate());
   }
 }

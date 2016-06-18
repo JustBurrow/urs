@@ -19,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.application.configuration.InjectionConstants.Beans;
 import kr.lul.urs.core.AbstractDomainEntityTest;
-import kr.lul.urs.core.ClientPlatformDomainUtils;
-import kr.lul.urs.core.ClientPlatformApiUtils;
+import kr.lul.urs.core.AgentPlatformApiUtils;
+import kr.lul.urs.core.AgentPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.command.CreateClientPlatformCmd;
-import kr.lul.urs.core.command.ReadClientPlatformCmd;
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.command.CreateAgentPlatformCmd;
+import kr.lul.urs.core.command.ReadAgentPlatformCmd;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 
@@ -36,91 +36,85 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = Beans.NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ClientPlatformInternalServiceTest extends AbstractDomainEntityTest {
+public class AgentPlatformInternalServiceTest extends AbstractDomainEntityTest {
   @Autowired
-  private ClientPlatformInternalService clientPlatformInternalService;
+  private AgentPlatformInternalService agentPlatformInternalService;
 
   @Before
   public void setUp() throws Exception {
-    this.setClientPlatformAsRandom();
+    this.setAgentPlatformAsRandom();
   }
 
   @Test
   public void testCreateWithNull() throws Exception {
-    assertThatThrownBy(() -> this.clientPlatformInternalService.create(null)).isInstanceOf(AssertionException.class);
+    assertThatThrownBy(() -> this.agentPlatformInternalService.create(null)).isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateClientPlatformCmd cmd = ClientPlatformDomainUtils.createCmd(this.operator);
+    final CreateAgentPlatformCmd cmd = AgentPlatformDomainUtils.createCmd(this.operator);
 
     // When
-    ClientPlatform cp = this.clientPlatformInternalService.create(cmd);
+    AgentPlatform cp = this.agentPlatformInternalService.create(cmd);
 
     // Then
     assertThat(cp).isNotNull();
     assertThat(cp.getId()).isGreaterThan(0);
     assertThat(cp.getOwner().getId()).isEqualTo(cmd.getOwner());
-    if (this.saveAndFlush) {
-      assertThat(cp.getCreate()).isGreaterThan(this.now);
-      assertThat(cp.getUpdate()).isEqualTo(cp.getCreate());
-    } else {
-      assertThat(cp.getCreate()).isNull();
-      assertThat(cp.getUpdate()).isNull();
-    }
+    this.assertTimestamp(cp);
   }
 
   @Test
   public void testReadWithId() throws Exception {
     // When
-    ClientPlatform actual = this.clientPlatformInternalService.read(this.clientPlatform.getId());
+    AgentPlatform actual = this.agentPlatformInternalService.read(this.platform.getId());
 
     // Then
-    assertThat(actual).isNotNull().isEqualTo(this.clientPlatform);
+    assertThat(actual).isNotNull().isEqualTo(this.platform);
   }
 
   @Test
   public void testReadWithNullCmd() throws Exception {
-    assertThatThrownBy(() -> this.clientPlatformInternalService.read(null)).as("command object is null.")
+    assertThatThrownBy(() -> this.agentPlatformInternalService.read(null)).as("command object is null.")
         .isInstanceOf(AssertionException.class);
   }
 
   @Test
   public void testReadWithIllegalOwnerCmd() throws Exception {
     // Given
-    ReadClientPlatformCmd cmd = ClientPlatformApiUtils.readCmd(this.clientPlatform.getId(), this.operator.getId());
+    ReadAgentPlatformCmd cmd = AgentPlatformApiUtils.readCmd(this.platform.getId(), this.operator.getId());
     do {
       cmd.setOwner(Randoms.positive());
     } while (this.operator.getId() == cmd.getOwner());
 
     // When & Then
-    assertThatThrownBy(() -> this.clientPlatformInternalService.read(cmd)).as("illegal owner command object.")
+    assertThatThrownBy(() -> this.agentPlatformInternalService.read(cmd)).as("illegal owner command object.")
         .isInstanceOf(OwnershipException.class);
   }
 
   @Test
   public void testReadWithCmd() throws Exception {
     // When
-    ClientPlatform actual = this.clientPlatformInternalService
-        .read(ClientPlatformApiUtils.readCmd(this.clientPlatform.getId(), this.operator.getId()));
+    AgentPlatform actual = this.agentPlatformInternalService
+        .read(AgentPlatformApiUtils.readCmd(this.platform.getId(), this.operator.getId()));
 
     // Then
-    assertThat(actual).isNotNull().isEqualTo(this.clientPlatform);
+    assertThat(actual).isNotNull().isEqualTo(this.platform);
   }
 
   @Test
   public void testList() throws Exception {
     // Given
-    final List<ClientPlatform> l1 = this.clientPlatformInternalService.list();
-    ClientPlatform clientPlatform = ClientPlatformDomainUtils.create(this.operator,
-        this.clientPlatformInternalService);
+    final List<AgentPlatform> l1 = this.agentPlatformInternalService.list();
+    AgentPlatform platform = AgentPlatformDomainUtils.create(this.operator,
+        this.agentPlatformInternalService);
 
     // When
-    final List<ClientPlatform> l2 = this.clientPlatformInternalService.list();
+    final List<AgentPlatform> l2 = this.agentPlatformInternalService.list();
 
     // Then
-    assertThat(l1).doesNotContain(clientPlatform);
-    assertThat(l2).contains(clientPlatform).hasSize(l1.size() + 1);
+    assertThat(l1).doesNotContain(platform);
+    assertThat(l2).contains(platform).hasSize(l1.size() + 1);
   }
 }

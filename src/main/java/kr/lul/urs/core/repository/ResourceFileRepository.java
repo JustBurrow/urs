@@ -6,7 +6,7 @@ package kr.lul.urs.core.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import kr.lul.urs.core.domain.ClientPlatform;
+import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 
 /**
@@ -16,18 +16,18 @@ import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 @Repository
 public interface ResourceFileRepository extends JpaRepository<ResourceFileEntity, Integer> {
   /**
-   * @param clientPlatform
+   * @param agentPlatform
    * @param name
    * @return
    */
-  public long countByClientPlatformAndName(ClientPlatform clientPlatform, String name);
+  public long countByAgentPlatformAndName(AgentPlatform agentPlatform, String name);
 
   /**
-   * @param clientPlatform
+   * @param agentPlatform
    * @param name
    * @return
    */
-  public default boolean exists(ClientPlatform clientPlatform, String name) {
-    return 0L < countByClientPlatformAndName(clientPlatform, name);
+  public default boolean exists(AgentPlatform agentPlatform, String name) {
+    return 0L < countByAgentPlatformAndName(agentPlatform, name);
   }
 }
