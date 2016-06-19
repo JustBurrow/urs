@@ -47,6 +47,8 @@ Temporary Items
 **/target
 .project
 .classpath
+.factorypath
+.springBeans
 
 # Project #############################################################################################################
 temp

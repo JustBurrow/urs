@@ -4,7 +4,7 @@
   <groupId>kr.lul.urs</groupId>
   <artifactId>urs</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Unreliable Resource-manage System</name>
   <url>https://github.com/JustBurrow/urs</url>
   <issueManagement>
@@ -19,6 +19,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
+  <modules>
+    <module>urs-util</module>
+    <module>urs-spring</module>
+    <module>urs-core</module>
+    <module>urs-application-web</module>
+    <module>urs-core-test</module>
+  </modules>
   <build>
     <plugins>
       <plugin>
@@ -29,17 +36,6 @@
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
@@ -95,6 +91,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <!-- 
   <dependencies>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -169,4 +166,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+   -->
 </project>
