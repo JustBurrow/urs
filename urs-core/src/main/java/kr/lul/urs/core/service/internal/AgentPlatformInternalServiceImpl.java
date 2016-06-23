@@ -12,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import kr.lul.urs.core.command.CreateAgentPlatformCmd;
-import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.dao.AgentPlatformDao;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.repository.AgentPlatformRepository;
+import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
 import kr.lul.urs.core.service.context.UpdateAgentPlatformCtx;
 
 /**
@@ -30,8 +29,6 @@ class AgentPlatformInternalServiceImpl implements AgentPlatformInternalService {
   @Value("${" + KEY_DAO_SAVE_AND_FLUSH + "}")
   private boolean                 saveAndFlush;
 
-  @Autowired
-  private OperatorInternalService operatorInternalService;
   @Autowired
   private AgentPlatformDao        agentPlatformDao;
   @Autowired
@@ -49,11 +46,11 @@ class AgentPlatformInternalServiceImpl implements AgentPlatformInternalService {
   // <I>AgentPlatformInternalService
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public AgentPlatform create(CreateAgentPlatformCmd cmd) {
-    notNull(cmd);
+  public AgentPlatform create(CreateAgentPlatformCtx ctx) {
+    notNull(ctx, "context");
 
-    AgentPlatform platform = new AgentPlatformEntity(this.operatorInternalService.read(cmd.getOwner()),
-        cmd.getCode(), cmd.getLabel(), cmd.getDescription());
+    AgentPlatform platform = new AgentPlatformEntity(ctx.getOwner(), ctx.getCode(), ctx.getLabel(),
+        ctx.getDescription());
     platform = this.agentPlatformDao.insert(platform);
 
     return platform;
@@ -66,20 +63,6 @@ class AgentPlatformInternalServiceImpl implements AgentPlatformInternalService {
     }
     AgentPlatform platform = this.agentPlatformDao.select(id);
     return platform;
-  }
-
-  @Override
-  public AgentPlatform read(ReadAgentPlatformCmd cmd) throws OwnershipException {
-    notNull(cmd);
-
-    AgentPlatform platform = this.agentPlatformDao.select(cmd.getId());
-    if (null == platform) {
-      return null;
-    } else if (cmd.getOwner() != platform.getOwner().getId()) {
-      throw new OwnershipException("no ownership.", cmd.getOwner(), platform.getOwner().getId());
-    } else {
-      return platform;
-    }
   }
 
   @Override

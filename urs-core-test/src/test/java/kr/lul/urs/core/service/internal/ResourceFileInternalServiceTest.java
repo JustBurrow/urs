@@ -1,6 +1,5 @@
 package kr.lul.urs.core.service.internal;
 
-import static java.lang.String.format;
 import static kr.lul.urs.core.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,15 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.OperatorDomainUtils;
-import kr.lul.urs.core.ResourceFileApiUtils;
 import kr.lul.urs.core.ResourceFileDomainUtils;
-import kr.lul.urs.core.command.CreateResourceFileCmd;
-import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
+import kr.lul.urs.core.service.context.CreateResourceFileCtx;
 import kr.lul.urs.util.AssertionException;
-import kr.lul.urs.util.Randoms;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
@@ -49,23 +45,21 @@ public class ResourceFileInternalServiceTest extends AbstractDomainEntityTest {
   @Test
   public void testCreateWithIllegalOwner() throws Exception {
     // Given
-    final CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.operator.getId(), this.platform.getId());
+    final CreateResourceFileCtx ctx = ResourceFileDomainUtils.createCtx(this.platform,
+        this.resourceFileInternalService);
     Operator operator;
     do {
       operator = OperatorDomainUtils.create(this.operatorInternalService);
-    } while (null != operator && cmd.getOwner() == operator.getId());
-    cmd.setOwner(null == operator ? Randoms.positive() : operator.getId());
+    } while (null != operator && ctx.getOwner().equals(operator));
+    ctx.setOwner(operator);
 
     // When
     OwnershipException e = (OwnershipException) Assertions
-        .catchThrowable(() -> this.resourceFileInternalService.create(cmd));
+        .catchThrowable(() -> this.resourceFileInternalService.create(ctx));
 
     // Then
-    assertThat(e)
-        .isInstanceOf(OwnershipException.class)
-        .hasMessageContaining("not equal")
-        .hasMessageContaining("[" + cmd.getOwner() + "]")
-        .hasMessageMatching(format(".+\\[\\(%d, [^@]+@.+\\)\\].+", this.operator.getId()));
+    assertThat(e).isInstanceOf(OwnershipException.class)
+        .hasMessageContaining("no permission");
     assertThat(e.getExpected()).isEqualTo(operator.getId());
     assertThat(e.getActual()).isEqualTo(this.platform.getOwner().getId());
   }
@@ -73,16 +67,17 @@ public class ResourceFileInternalServiceTest extends AbstractDomainEntityTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.operator.getId(), this.platform.getId());
+    final CreateResourceFileCtx ctx = ResourceFileDomainUtils.createCtx(this.platform,
+        this.resourceFileInternalService);
 
     // When
-    final ResourceFile resourceFile = this.resourceFileInternalService.create(cmd);
+    final ResourceFile resourceFile = this.resourceFileInternalService.create(ctx);
 
     // Then
     assertThat(resourceFile).isNotNull();
     assertThat(resourceFile.getOwner()).isEqualTo(this.operator);
     assertThat(resourceFile.getAgentPlatform()).isEqualTo(this.platform);
-    assertThat(resourceFile.getName()).isEqualTo(cmd.getName());
+    assertThat(resourceFile.getName()).isEqualTo(ctx.getName());
     assertThat(resourceFile.getHistory()).isEmpty();
     assertThat(resourceFile.getCurrentRevisionNumber()).isEqualTo(0);
     assertThat(resourceFile.getCurrentRevision()).isNull();
@@ -107,39 +102,6 @@ public class ResourceFileInternalServiceTest extends AbstractDomainEntityTest {
 
     // When
     final ResourceFile rf2 = this.resourceFileInternalService.read(rf1.getId());
-
-    // Then
-    assertThat(rf2).isEqualTo(rf1);
-  }
-
-  @Test
-  public void testReadWithNullCmd() throws Exception {
-    assertThatThrownBy(() -> this.resourceFileInternalService.read(null)).isInstanceOf(AssertionException.class);
-  }
-
-  @Test
-  public void testReadWithReadResourceFileCmdThatIllegalOwner() throws Exception {
-    // Given
-    final ResourceFileEntity rf1 = ResourceFileDomainUtils.create(this.platform,
-        this.resourceFileInternalService);
-    int illegalOwner;
-    do {
-      illegalOwner = OperatorDomainUtils.create(this.operatorInternalService).getId();
-    } while (rf1.getOwner().getId() == illegalOwner);
-    ReadResourceFileCmd cmd = new ReadResourceFileCmd(illegalOwner, rf1.getId());
-
-    // When & Then
-    assertThatThrownBy(() -> this.resourceFileInternalService.read(cmd)).isInstanceOf(OwnershipException.class);
-  }
-
-  @Test
-  public void testReadWithReadResourceFileCmd() throws Exception {
-    // Given
-    final ResourceFileEntity rf1 = ResourceFileDomainUtils.create(this.platform, this.resourceFileInternalService);
-    ReadResourceFileCmd cmd = new ReadResourceFileCmd(this.operator.getId(), rf1.getId());
-
-    // When
-    final ResourceFile rf2 = this.resourceFileInternalService.read(cmd);
 
     // Then
     assertThat(rf2).isEqualTo(rf1);

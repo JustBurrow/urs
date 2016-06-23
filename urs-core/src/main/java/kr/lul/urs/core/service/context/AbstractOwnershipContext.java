@@ -3,6 +3,8 @@
  */
 package kr.lul.urs.core.service.context;
 
+import static kr.lul.urs.util.Asserts.notNull;
+
 import kr.lul.urs.core.domain.Operator;
 import lombok.Data;
 
@@ -15,4 +17,15 @@ import lombok.Data;
 @Data
 public abstract class AbstractOwnershipContext {
   private Operator owner;
+
+  protected AbstractOwnershipContext() {
+  }
+
+  /**
+   * @param owner
+   */
+  protected AbstractOwnershipContext(Operator owner) {
+    notNull(owner, "owner");
+    this.owner = owner;
+  }
 }

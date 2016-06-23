@@ -10,10 +10,9 @@ import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.command.CreateAgentPlatformCmd;
-import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
+import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
 import kr.lul.urs.core.service.context.UpdateAgentPlatformCtx;
 
 /**
@@ -27,24 +26,16 @@ public interface AgentPlatformInternalService {
   /**
    * 새로운 {@link AgentPlatform}을 만든다.
    *
-   * @param cmd
+   * @param ctx
    * @return
    */
-  public AgentPlatform create(CreateAgentPlatformCmd cmd);
+  public AgentPlatform create(CreateAgentPlatformCtx ctx);
 
   /**
    * @param id
    * @return
    */
   public AgentPlatform read(int id);
-
-  /**
-   * @param cmd
-   * @return
-   * @throws OwnershipException
-   * @since 2016. 5. 5.
-   */
-  public AgentPlatform read(ReadAgentPlatformCmd cmd) throws OwnershipException;
 
   /**
    * @return ID로 오름차순 정렬.

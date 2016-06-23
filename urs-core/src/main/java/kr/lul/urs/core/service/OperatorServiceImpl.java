@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import kr.lul.urs.core.command.CreateOperatorCmd;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.OperatorDto;
+import kr.lul.urs.core.service.context.CreateOperatorCtx;
 import kr.lul.urs.core.service.converter.OperatorReturnFactory;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 import kr.lul.urs.spring.tx.Return;
@@ -33,7 +34,8 @@ class OperatorServiceImpl implements OperatorService {
   public Return<OperatorDto> create(final CreateOperatorCmd cmd) {
     notNull(cmd);
 
-    Operator operator = this.operatorInternalService.create(cmd);
+    CreateOperatorCtx ctx = new CreateOperatorCtx(cmd.getEmail(), cmd.getPassword());
+    Operator operator = this.operatorInternalService.create(ctx);
 
     return this.operatorReturnFactory.converter(operator);
   }

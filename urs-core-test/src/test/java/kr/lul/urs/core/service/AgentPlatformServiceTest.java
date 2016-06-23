@@ -6,8 +6,6 @@ package kr.lul.urs.core.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,21 +105,5 @@ public class AgentPlatformServiceTest extends AbstractApiTest {
 
     // When & Then
     assertThatThrownBy(() -> this.agentPlatformService.read(cmd)).isInstanceOf(OwnershipException.class);
-  }
-
-  @Test
-  public void testList() throws Exception {
-    // Given
-    final List<AgentPlatformDto> l1 = this.agentPlatformService.list().value();
-    AgentPlatformDto platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
-    assertThat(l1).isNotNull()
-        .doesNotContain(platform);
-
-    // When
-    List<AgentPlatformDto> l2 = this.agentPlatformService.list().value();
-
-    // Then
-    assertThat(l2).contains(platform)
-        .hasSize(l1.size() + 1);
   }
 }

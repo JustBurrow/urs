@@ -16,6 +16,7 @@ import kr.lul.urs.core.command.UpdateAgentPlatformCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.AgentPlatformDto;
+import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
 import kr.lul.urs.core.service.context.UpdateAgentPlatformCtx;
 import kr.lul.urs.core.service.converter.AgentPlatformReturnFactory;
 import kr.lul.urs.core.service.internal.AgentPlatformInternalService;
@@ -41,7 +42,9 @@ class AgentPlatformServiceImpl extends AbstractService implements AgentPlatformS
   public Return<AgentPlatformDto> create(CreateAgentPlatformCmd cmd) {
     notNull(cmd);
 
-    AgentPlatform platform = this.agentPlatformInternalService.create(cmd);
+    CreateAgentPlatformCtx ctx = new CreateAgentPlatformCtx(this.getOperator(cmd), cmd.getCode(), cmd.getLabel(),
+        cmd.getDescription());
+    AgentPlatform platform = this.agentPlatformInternalService.create(ctx);
 
     return this.agentPlatformReturnFactory.converter(platform);
   }
@@ -49,8 +52,20 @@ class AgentPlatformServiceImpl extends AbstractService implements AgentPlatformS
   @Override
   public Return<AgentPlatformDto> read(ReadAgentPlatformCmd cmd) throws OwnershipException {
     notNull(cmd);
-    AgentPlatform agentPlatform = this.agentPlatformInternalService.read(cmd);
-    return this.agentPlatformReturnFactory.converter(agentPlatform);
+
+    Operator owner = this.getOperator(cmd);
+    if (null == owner) {
+      throw new OwnershipException("owner operator does not exist.");
+    }
+
+    AgentPlatform platform = this.agentPlatformInternalService.read(cmd.getId());
+    if (null == platform) {
+      // TODO exception
+    } else if (!platform.getOwner().equals(owner)) {
+      throw new OwnershipException("no permission.", cmd.getOwner(), platform.getOwner().getId());
+    }
+
+    return this.agentPlatformReturnFactory.converter(platform);
   }
 
   @Override
@@ -62,13 +77,6 @@ class AgentPlatformServiceImpl extends AbstractService implements AgentPlatformS
     } else {
       return this.agentPlatformReturnFactory.converter(agentPlatform);
     }
-  }
-
-  @Override
-  public Return<List<AgentPlatformDto>> list() {
-    List<AgentPlatform> list = this.agentPlatformInternalService.list();
-
-    return this.agentPlatformReturnFactory.converter(list);
   }
 
   /*

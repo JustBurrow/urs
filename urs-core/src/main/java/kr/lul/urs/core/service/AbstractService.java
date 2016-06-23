@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.core.command.OwnershipCmd;
 import kr.lul.urs.core.domain.Operator;
+import kr.lul.urs.core.service.internal.AgentPlatformInternalService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
 
 /**
@@ -19,9 +20,11 @@ import kr.lul.urs.core.service.internal.OperatorInternalService;
  */
 abstract class AbstractService {
   @Autowired
-  protected OperatorInternalService operatorInternalService;
+  protected OperatorInternalService      operatorInternalService;
+  @Autowired
+  protected AgentPlatformInternalService agentPlatformInternalService;
 
-  protected ModelMapper             mapper;
+  protected ModelMapper                  mapper;
 
   /**
    * 컨텍스트 매퍼를 초기화한다.

@@ -3,7 +3,7 @@
  */
 package kr.lul.urs.core;
 
-import static kr.lul.urs.core.OperatorApiUtils.command;
+import static kr.lul.urs.core.OperatorApiUtils.createContext;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import kr.lul.urs.core.domain.Operator;
@@ -22,7 +22,7 @@ public abstract class OperatorDomainUtils {
    */
   public static Operator create(OperatorInternalService operatorInternalService) {
     notNull(operatorInternalService);
-    return operatorInternalService.create(command());
+    return operatorInternalService.create(createContext());
   }
 
   protected OperatorDomainUtils() {

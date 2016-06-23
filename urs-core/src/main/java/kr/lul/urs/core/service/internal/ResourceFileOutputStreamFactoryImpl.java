@@ -29,10 +29,10 @@ class ResourceFileOutputStreamFactoryImpl implements ResourceFileOutputStreamFac
   // <I>ResourceFileRevisionFileStorageOutputStreamFactory
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public FileOutputStream getOutputStream(ResourceFileRevision id) throws IOException {
-    notNull(id);
+  public FileOutputStream getOutputStream(ResourceFileRevision key) throws IOException {
+    notNull(key, "key");
 
-    File file = FileUtils.getFile(this.resourceFileStorageDir, id.getName(), Integer.toString(id.getRevision()));
+    File file = FileUtils.getFile(this.resourceFileStorageDir, key.getName(), Integer.toString(key.getRevision()));
     FileOutputStream outputStream = FileUtils.openOutputStream(file);
 
     return outputStream;

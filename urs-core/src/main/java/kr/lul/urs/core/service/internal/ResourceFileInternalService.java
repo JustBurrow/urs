@@ -10,10 +10,9 @@ import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.command.CreateResourceFileCmd;
-import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.ResourceFile;
+import kr.lul.urs.core.service.context.CreateResourceFileCtx;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -24,12 +23,12 @@ public interface ResourceFileInternalService {
   /**
    * 새로운 리소스 파일을 만든다.
    *
-   * @param cmd
+   * @param ctx
    * @return
    * @throws OwnershipException
    *           관리자 정보가 잘못된 경우.
    */
-  public ResourceFile create(CreateResourceFileCmd cmd) throws OwnershipException;
+  public ResourceFile create(CreateResourceFileCtx ctx) throws OwnershipException;
 
   /**
    * 리소스 파일을 가져온다.
@@ -39,14 +38,6 @@ public interface ResourceFileInternalService {
    * @return 리소스 파일 혹은 <code>null</code>.
    */
   public ResourceFile read(int id);
-
-  /**
-   * @param cmd
-   * @return
-   * @throws OwnershipException
-   *           관리자 정보가 잘못된 경우.
-   */
-  public ResourceFile read(ReadResourceFileCmd cmd) throws OwnershipException;
 
   /**
    * 등록된 리소스 파일이 있는지 여부를 반환한다.

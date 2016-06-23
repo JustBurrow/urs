@@ -16,10 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.command.CreateOperatorCmd;
+import kr.lul.urs.core.OperatorApiUtils;
 import kr.lul.urs.core.domain.Operator;
-import kr.lul.urs.util.EMails;
-import kr.lul.urs.util.Strings;
+import kr.lul.urs.core.service.context.CreateOperatorCtx;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -38,24 +37,17 @@ public class OperatorInternalServiceTest extends AbstractDomainEntityTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    final String email = EMails.random();
-    final String password = Strings.random(40, 60);
-    final CreateOperatorCmd cmd = new CreateOperatorCmd(email, password);
+    final CreateOperatorCtx ctx = OperatorApiUtils.createContext();
+    final String email = ctx.getEmail();
+    final String password = ctx.getPassword();
 
     // When
-    final Operator operator = this.operatorInternalService.create(cmd);
+    final Operator operator = this.operatorInternalService.create(ctx);
 
     // Then
     assertThat(operator).isNotNull();
     assertThat(operator.getEmail()).isEqualTo(email);
     assertThat(operator.getPassword()).isNotEqualTo(password);
-
-    if (this.saveAndFlush) {
-      assertThat(operator.getCreate()).isGreaterThanOrEqualTo(this.now);
-      assertThat(operator.getUpdate()).isEqualTo(operator.getCreate());
-    } else {
-      assertThat(operator.getCreate()).isNull();
-      assertThat(operator.getUpdate()).isNull();
-    }
+    this.assertTimestamp(operator);
   }
 }

@@ -3,7 +3,6 @@
  */
 package kr.lul.urs.core.service.internal;
 
-import static java.lang.String.format;
 import static kr.lul.urs.core.configuration.InjectionConstants.Properties.KEY_RESOUCE_FILE_STORAGE_DIR;
 import static kr.lul.urs.util.Asserts.isTrue;
 import static kr.lul.urs.util.Asserts.notNull;
@@ -17,13 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import kr.lul.urs.core.command.CreateResourceFileCmd;
-import kr.lul.urs.core.command.ReadResourceFileCmd;
 import kr.lul.urs.core.dao.ResourceFileDao;
 import kr.lul.urs.core.domain.AgentPlatform;
-import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
+import kr.lul.urs.core.repository.ResourceFileRepository;
+import kr.lul.urs.core.service.context.CreateResourceFileCtx;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -32,10 +30,12 @@ import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 @Service
 class ResourceFileInternalServiceImpl extends AbstractInternalService implements ResourceFileInternalService {
   @Value("${" + KEY_RESOUCE_FILE_STORAGE_DIR + "}")
-  private File            storage;
+  private File                   storage;
 
   @Autowired
-  private ResourceFileDao resourceFileDao;
+  private ResourceFileDao        resourceFileDao;
+  @Autowired
+  private ResourceFileRepository resourceFileRepository;
 
   @PostConstruct
   private void postConstruct() {
@@ -48,23 +48,22 @@ class ResourceFileInternalServiceImpl extends AbstractInternalService implements
   // <I>ResourceFileInternalService
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
-  public ResourceFile create(CreateResourceFileCmd cmd) throws OwnershipException {
-    notNull(cmd);
+  public ResourceFile create(CreateResourceFileCtx ctx) throws OwnershipException {
+    notNull(ctx, "ctx");
 
-    Operator owner = this.operatorInternalService.read(cmd.getOwner());
-    if (null == owner) {
-      throw new OwnershipException(format("owner[%d] does not exist.", cmd.getOwner()), cmd.getOwner(), 0);
-    }
-    AgentPlatform platform = this.agentPlatformInternalService.read(cmd.getPlatform());
-    if (!owner.equals(platform.getOwner())) {
-      throw new OwnershipException(
-          format("requested owner[%s] and agent platform owner[%s] are not equal.", cmd.getOwner(),
-              platform.getOwner().toSimpleString()),
-          cmd.getOwner(), platform.getOwner().getId());
+    if (null == ctx.getOwner()) {
+      throw new OwnershipException("no owner.");
+    } else if (!ctx.getOwner().equals(ctx.getPlatform().getOwner())) {
+      throw new OwnershipException("owner has no permission of platform", ctx.getOwner().getId(),
+          ctx.getPlatform().getOwner().getId());
     }
 
-    ResourceFile rf = new ResourceFileEntity(platform, cmd.getName());
-    rf = this.resourceFileDao.insert(rf);
+    ResourceFileEntity rf = new ResourceFileEntity(ctx.getPlatform(), ctx.getName());
+    if (this.saveAndFlush) {
+      rf = this.resourceFileRepository.saveAndFlush(rf);
+    } else {
+      rf = this.resourceFileRepository.save(rf);
+    }
 
     return rf;
   }
@@ -72,20 +71,6 @@ class ResourceFileInternalServiceImpl extends AbstractInternalService implements
   @Override
   public ResourceFile read(int id) {
     return this.resourceFileDao.select(id);
-  }
-
-  @Override
-  public ResourceFile read(ReadResourceFileCmd cmd) throws OwnershipException {
-    notNull(cmd);
-
-    ResourceFile resourceFile = this.resourceFileDao.select(cmd.getId());
-    if (null == resourceFile) {
-      return null;
-    } else if (cmd.getOwner() == resourceFile.getOwner().getId()) {
-      return resourceFile;
-    } else {
-      throw new OwnershipException("owner does not match.", cmd.getOwner(), resourceFile.getOwner().getId());
-    }
   }
 
   @Override

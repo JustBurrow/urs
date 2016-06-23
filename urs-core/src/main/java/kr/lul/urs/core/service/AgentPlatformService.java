@@ -42,6 +42,8 @@ public interface AgentPlatformService {
   public Return<AgentPlatformDto> read(int id);
 
   /**
+   * 특정 관리자의 요청으로 플랫폼 정보를 읽는다. 만약, 요청한 관리자가 해당 플랫폼의 소유자가 아닐 경우, 에러가 발생한다.
+   *
    * @param cmd
    *          ID와 요청자 정보.
    * @return 없으면 <code>null</code>.
@@ -50,12 +52,6 @@ public interface AgentPlatformService {
    * @since 2016. 4. 28.
    */
   public Return<AgentPlatformDto> read(ReadAgentPlatformCmd cmd) throws OwnershipException;
-
-  /**
-   * @return 없으면 빈 리스트.
-   * @since 2016. 4. 28.
-   */
-  public Return<List<AgentPlatformDto>> list();
 
   /**
    * 관리자의 플랫폼 목록.

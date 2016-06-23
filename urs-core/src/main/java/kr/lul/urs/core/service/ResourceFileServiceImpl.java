@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.UpdateResourceFileCmd;
+import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.ResourceFileUpdateException;
 import kr.lul.urs.core.dto.ResourceFileDto;
+import kr.lul.urs.core.service.context.CreateResourceFileCtx;
 import kr.lul.urs.core.service.converter.ResourceFileReturnFactory;
 import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
@@ -25,7 +28,7 @@ import kr.lul.urs.spring.tx.Return;
  * @author Just Burrow just.burrow@lul.kr
  */
 @Service
-class ResourceFileServiceImpl implements ResourceFileService {
+class ResourceFileServiceImpl extends AbstractService implements ResourceFileService {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
   @Autowired
@@ -43,7 +46,21 @@ class ResourceFileServiceImpl implements ResourceFileService {
   public Return<ResourceFileDto> create(CreateResourceFileCmd cmd) throws OwnershipException {
     notNull(cmd);
 
-    ResourceFile resourceFile = this.resourceFileInternalService.create(cmd);
+    Operator owner = this.getOperator(cmd);
+    if (null == owner) {
+      throw new OwnershipException("owner does not exist.", cmd.getOwner(), null);
+    }
+
+    AgentPlatform platform = this.agentPlatformInternalService.read(cmd.getPlatform());
+    if (null == platform) {
+      throw new RuntimeException("agent platform does not exist.");
+    } else if (!owner.equals(platform.getOwner())) {
+      throw null == platform.getOwner()
+          ? new OwnershipException("operator has no permission.", owner.getId(), null)
+          : new OwnershipException("operator has no permission.", owner.getId(), platform.getOwner().getId());
+    }
+    CreateResourceFileCtx ctx = new CreateResourceFileCtx(owner, platform, cmd.getName());
+    ResourceFile resourceFile = this.resourceFileInternalService.create(ctx);
 
     return this.resourceFileReturnFactory.converter(resourceFile);
   }

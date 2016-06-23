@@ -51,23 +51,6 @@ public class AgentPlatformApiUtilsTest extends AbstractApiTest {
   }
 
   @Test
-  public void testReadCmdWithNullService() throws Exception {
-    assertThatThrownBy(() -> AgentPlatformApiUtils.readCmd((AgentPlatformService) null))
-        .isInstanceOf(AssertionException.class);
-  }
-
-  @Test
-  public void testReadCmdWithService() throws Exception {
-    // When
-    ReadAgentPlatformCmd cmd = AgentPlatformApiUtils.readCmd(this.agentPlatformService);
-
-    // Then
-    assertThat(cmd).isNotNull();
-    assertThat(cmd.getId()).isGreaterThan(0);
-    assertThat(cmd.getOwner()).isGreaterThan(0);
-  }
-
-  @Test
   public void testReadCmdWithNullRepository() throws Exception {
     assertThatThrownBy(() -> readCmd((AgentPlatformRepository) null))
         .isInstanceOf(AssertionException.class);

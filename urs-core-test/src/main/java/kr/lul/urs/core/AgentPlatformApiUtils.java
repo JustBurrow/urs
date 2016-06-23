@@ -15,11 +15,13 @@ import java.util.List;
 import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.repository.AgentPlatformRepository;
 import kr.lul.urs.core.service.AgentPlatformService;
+import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -54,6 +56,20 @@ public abstract class AgentPlatformApiUtils {
   }
 
   /**
+   * @param owner
+   * @return
+   * @since 2016. 6. 20.
+   */
+  public static CreateAgentPlatformCtx createContext(Operator owner) {
+    notNull(owner, "owner");
+
+    String code = randomAlphabetic(in(1, 3)).toLowerCase() + randomAlphanumeric(in(0, 10));
+    String label = "Test%" + randomAlphanumeric(in(1, 10));
+    String description = "Random Agent Platform for test.";
+    return new CreateAgentPlatformCtx(owner, code, label, description);
+  }
+
+  /**
    * @param id
    * @param owner
    * @return
@@ -83,24 +99,6 @@ public abstract class AgentPlatformApiUtils {
     ReadAgentPlatformCmd cmd = new ReadAgentPlatformCmd();
     cmd.setId(platform.getId());
     cmd.setOwner(platform.getOwner().getId());
-    return cmd;
-  }
-
-  /**
-   * @param service
-   * @return
-   * @since 2016. 5. 5.
-   */
-  public static ReadAgentPlatformCmd readCmd(AgentPlatformService service) {
-    notNull(service);
-
-    List<AgentPlatformDto> list = service.list().value();
-    Collections.shuffle(list);
-    AgentPlatformDto platform = list.get(0);
-
-    ReadAgentPlatformCmd cmd = new ReadAgentPlatformCmd();
-    cmd.setId(platform.getId());
-    cmd.setOwner(platform.getOwner());
     return cmd;
   }
 
