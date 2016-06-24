@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,7 +17,6 @@ import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
-import kr.lul.urs.core.repository.AgentPlatformRepository;
 import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.core.test.AbstractDtoTest;
 import kr.lul.urs.core.test.AgentPlatformDtoUtils;
@@ -33,9 +31,6 @@ import kr.lul.urs.util.Randoms;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 public class AgentPlatformServiceTest extends AbstractDtoTest {
-  @Autowired
-  private AgentPlatformRepository agentPlatformRepository;
-
   /**
    * @throws java.lang.Exception
    */

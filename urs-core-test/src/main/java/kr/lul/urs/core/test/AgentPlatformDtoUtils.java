@@ -15,13 +15,11 @@ import java.util.List;
 import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
-import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.repository.AgentPlatformRepository;
 import kr.lul.urs.core.service.AgentPlatformService;
-import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
 
 /**
  * @author Just Burrow just.burrow@lul.kr

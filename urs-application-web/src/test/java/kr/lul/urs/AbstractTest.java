@@ -31,9 +31,6 @@ import kr.lul.urs.util.Asserts;
 public abstract class AbstractTest {
   private final static EmailValidator    EMAIL_VALIDATOR = new EmailValidator();
 
-  public static final Condition<Boolean> IS_TRUE         = new Condition<>((b) -> true == b, "boolean is not true.");
-  public static final Condition<Boolean> IS_FALSE        = new Condition<>((b) -> false == b, "boolean is not false.");
-
   /**
    * @see Assertions
    */
