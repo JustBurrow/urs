@@ -19,12 +19,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.ResourceFileDomainUtils;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.mapping.ResourceFileRevisionMapping;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.ResourceFileDomainUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -34,7 +34,7 @@ import kr.lul.urs.core.service.internal.ResourceFileInternalService;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileRevisionEntityTest extends AbstractDomainEntityTest {
+public class ResourceFileRevisionEntityTest extends AbstractDomainTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 

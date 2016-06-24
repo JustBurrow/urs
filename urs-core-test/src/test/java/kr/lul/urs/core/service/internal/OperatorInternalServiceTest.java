@@ -14,11 +14,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.OperatorApiUtils;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.service.context.CreateOperatorCtx;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.OperatorDtoUti;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -28,7 +28,7 @@ import kr.lul.urs.core.service.context.CreateOperatorCtx;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class OperatorInternalServiceTest extends AbstractDomainEntityTest {
+public class OperatorInternalServiceTest extends AbstractDomainTest {
   @Before
   public void setUp() throws Exception {
     this.setNow();
@@ -37,7 +37,7 @@ public class OperatorInternalServiceTest extends AbstractDomainEntityTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateOperatorCtx ctx = OperatorApiUtils.createContext();
+    final CreateOperatorCtx ctx = OperatorDtoUti.createContext();
     final String email = ctx.getEmail();
     final String password = ctx.getPassword();
 

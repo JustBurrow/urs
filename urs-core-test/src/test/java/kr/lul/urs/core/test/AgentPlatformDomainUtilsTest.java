@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.core.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,7 +14,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
+import kr.lul.urs.core.test.AgentPlatformDomainUtils;
 
 /**
  * @since 2016. 5. 16.
@@ -24,7 +26,7 @@ import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class AgentPlatformDomainUtilsTest extends AbstractDomainEntityTest {
+public class AgentPlatformDomainUtilsTest extends AbstractDomainTest {
   @Before
   public void setUp() throws Exception {
     this.setOperatorAsRandom();

@@ -1,16 +1,19 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import kr.lul.urs.core.AbstractCoreTest;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.AgentPlatformService;
 import kr.lul.urs.core.service.OperatorService;
+import kr.lul.urs.core.test.AgentPlatformDtoUtils;
+import kr.lul.urs.core.test.OperatorDtoUti;
 
 /**
  * 도메인 엔티티에 직접 접근하지 않고, DTO 혹은 ID를 기준으로 로직을 실행해 내부적으로만 도메인 엔티티에 접근하는 테스트용.
@@ -23,7 +26,7 @@ import kr.lul.urs.core.service.OperatorService;
  * @since 2016. 5. 16.
  * @author Just Burrow just.burrow@lul.kr
  */
-public abstract class AbstractApiTest extends AbstractCoreTest {
+public abstract class AbstractDtoTest extends AbstractCoreTest {
   @Autowired
   protected OperatorService      operatorService;
   @Autowired
@@ -40,7 +43,7 @@ public abstract class AbstractApiTest extends AbstractCoreTest {
       this.setNow();
     }
 
-    this.operator = OperatorApiUtils.create(this.operatorService);
+    this.operator = OperatorDtoUti.create(this.operatorService);
   }
 
   /**
@@ -51,7 +54,7 @@ public abstract class AbstractApiTest extends AbstractCoreTest {
       this.setOperatorAsRandom();
     }
 
-    this.platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    this.platform = AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
 
     assertThat(this.platform).isNotNull();
     assertThat(this.platform.getId()).isGreaterThan(0);

@@ -15,9 +15,9 @@ import org.assertj.core.api.Condition;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import kr.lul.urs.core.OperatorApiUtils;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
+import kr.lul.urs.core.test.OperatorDtoUti;
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 import kr.lul.urs.util.Asserts;
@@ -100,7 +100,7 @@ public abstract class AbstractTest {
    */
   protected void setOperatorAsRandom() {
     assertThat(this.operatorService).isNotNull();
-    this.operator = OperatorApiUtils.create(this.operatorService);
+    this.operator = OperatorDtoUti.create(this.operatorService);
   }
 
   /**

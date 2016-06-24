@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.notNull;

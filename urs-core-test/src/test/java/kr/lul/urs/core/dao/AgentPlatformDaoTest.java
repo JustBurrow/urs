@@ -18,11 +18,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
-import kr.lul.urs.core.AgentPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.service.internal.AgentPlatformInternalService;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.AgentPlatformDomainUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -33,7 +33,7 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class AgentPlatformDaoTest extends AbstractDomainEntityTest {
+public class AgentPlatformDaoTest extends AbstractDomainTest {
   @Autowired
   private AgentPlatformInternalService agentPlatformInternalService;
   @Autowired

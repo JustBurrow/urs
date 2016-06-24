@@ -1,10 +1,10 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
-import static kr.lul.urs.core.ResourceFileDomainUtils.create;
 import static kr.lul.urs.core.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
+import static kr.lul.urs.core.test.ResourceFileDomainUtils.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,10 +19,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
+import kr.lul.urs.core.test.ResourceFileDomainUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -33,7 +35,7 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileDomainUtilsTest extends AbstractDomainEntityTest {
+public class ResourceFileDomainUtilsTest extends AbstractDomainTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 

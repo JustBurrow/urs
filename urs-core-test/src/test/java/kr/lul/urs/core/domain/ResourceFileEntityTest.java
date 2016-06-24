@@ -25,11 +25,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.ResourceFileDomainUtils;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.internal.ResourceFileInternalService;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.ResourceFileDomainUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 import kr.lul.urs.util.Strings;
@@ -42,7 +42,7 @@ import kr.lul.urs.util.Strings;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileEntityTest extends AbstractDomainEntityTest {
+public class ResourceFileEntityTest extends AbstractDomainTest {
   public static final String          CLASS_NAME = ResourceFileEntityTest.class.getSimpleName();
 
   @Value("${" + KEY_RESOUCE_FILE_STORAGE_DIR + "}")

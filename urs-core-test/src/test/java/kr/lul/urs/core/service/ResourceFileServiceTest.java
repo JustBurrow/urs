@@ -15,22 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.core.AbstractApiTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.OperatorApiUtils;
-import kr.lul.urs.core.ResourceFileApiUtils;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.UpdateResourceFileCmd;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.dto.ResourceFileDto;
 import kr.lul.urs.core.service.internal.OwnershipException;
+import kr.lul.urs.core.test.AbstractDtoTest;
+import kr.lul.urs.core.test.OperatorDtoUti;
+import kr.lul.urs.core.test.ResourceFileDtoUtils;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ResourceFileServiceTest extends AbstractApiTest {
+public class ResourceFileServiceTest extends AbstractDtoTest {
   @Autowired
   private ResourceFileService resourceFileService;
 
@@ -49,7 +49,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testCreateWithIllegalOwnership() throws Exception {
     // Given
-    CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.platform);
+    CreateResourceFileCmd cmd = ResourceFileDtoUtils.createCmd(this.platform);
     cmd.setOwner(1 + cmd.getOwner());
 
     // When & Then
@@ -59,7 +59,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    CreateResourceFileCmd cmd = ResourceFileApiUtils.createCmd(this.platform);
+    CreateResourceFileCmd cmd = ResourceFileDtoUtils.createCmd(this.platform);
 
     // When
     ResourceFileDto dto = this.resourceFileService.create(cmd).value();
@@ -88,7 +88,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testReadWithId() throws Exception {
     // Given
-    ResourceFileDto expected = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
+    ResourceFileDto expected = ResourceFileDtoUtils.create(this.platform, this.resourceFileService);
     assertThat(expected).isNotNull();
 
     // When
@@ -101,7 +101,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testList() throws Exception {
     // Given
-    ResourceFileDto resourceFile = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
+    ResourceFileDto resourceFile = ResourceFileDtoUtils.create(this.platform, this.resourceFileService);
 
     // When
     Return<List<ResourceFileDto>> rv = this.resourceFileService.list();
@@ -122,8 +122,8 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testUpdateWithIllegalOwnership() throws Exception {
     // Given
-    ResourceFileDto resourceFile = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
-    OperatorDto owner = OperatorApiUtils.create(this.operatorService);
+    ResourceFileDto resourceFile = ResourceFileDtoUtils.create(this.platform, this.resourceFileService);
+    OperatorDto owner = OperatorDtoUti.create(this.operatorService);
     File file = getTestFile("testUpdate1");
 
     UpdateResourceFileCmd cmd = new UpdateResourceFileCmd();
@@ -141,7 +141,7 @@ public class ResourceFileServiceTest extends AbstractApiTest {
   @Test
   public void testUpdate() throws Exception {
     // Given
-    final ResourceFileDto before = ResourceFileApiUtils.create(this.platform, this.resourceFileService);
+    final ResourceFileDto before = ResourceFileDtoUtils.create(this.platform, this.resourceFileService);
     File file = getTestFile("testUpdate1");
     FileInputStream input = new FileInputStream(file);
     final String sha1 = DigestUtils.sha1Hex(input);

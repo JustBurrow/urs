@@ -16,9 +16,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
+import kr.lul.urs.core.test.AbstractDomainTest;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -29,7 +29,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class AgentPlatformRepositoryTest extends AbstractDomainEntityTest {
+public class AgentPlatformRepositoryTest extends AbstractDomainTest {
   @Autowired
   private AgentPlatformRepository agentPlatformRepository;
 

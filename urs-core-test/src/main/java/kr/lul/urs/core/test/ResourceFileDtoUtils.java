@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Asserts.positive;
@@ -19,7 +19,7 @@ import kr.lul.urs.util.Strings;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 5. 3.
  */
-public abstract class ResourceFileApiUtils {
+public abstract class ResourceFileDtoUtils {
   public static CreateResourceFileCmd createCmd(AgentPlatformDto platform) {
     return createCmd(platform.getOwner(), platform.getId());
   }
@@ -60,7 +60,7 @@ public abstract class ResourceFileApiUtils {
     return resourceFileService.create(createCmd(platform)).value();
   }
 
-  protected ResourceFileApiUtils() {
+  protected ResourceFileDtoUtils() {
     throw new UnsupportedOperationException();
   }
 }

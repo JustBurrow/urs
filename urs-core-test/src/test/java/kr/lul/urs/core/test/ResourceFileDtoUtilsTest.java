@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
-import static kr.lul.urs.core.ResourceFileApiUtils.createCmd;
+import static kr.lul.urs.core.test.ResourceFileDtoUtils.createCmd;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -14,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.service.AgentPlatformService;
+import kr.lul.urs.core.test.AgentPlatformDtoUtils;
+import kr.lul.urs.core.test.ResourceFileDtoUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -24,7 +27,7 @@ import kr.lul.urs.core.service.AgentPlatformService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class ResourceFileApiUtilsTest extends AbstractApiTest {
+public class ResourceFileDtoUtilsTest extends AbstractDtoTest {
   @Autowired
   private AgentPlatformService agentPlatformService;
 
@@ -34,13 +37,13 @@ public class ResourceFileApiUtilsTest extends AbstractApiTest {
   public void setUp() throws Exception {
     this.setOperatorAsRandom();
 
-    this.agentPlatform = AgentPlatformApiUtils.create(this.operator.getId(), this.agentPlatformService);
+    this.agentPlatform = AgentPlatformDtoUtils.create(this.operator.getId(), this.agentPlatformService);
     this.assertTimestamp(this.agentPlatform);
   }
 
   @Test
   public void testConstructor() {
-    assertThatThrownBy(() -> new ResourceFileApiUtils() {
+    assertThatThrownBy(() -> new ResourceFileDtoUtils() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 

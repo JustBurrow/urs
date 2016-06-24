@@ -1,9 +1,9 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
-import static kr.lul.urs.core.OperatorApiUtils.createContext;
+import static kr.lul.urs.core.test.OperatorDtoUti.createContext;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import kr.lul.urs.core.domain.Operator;

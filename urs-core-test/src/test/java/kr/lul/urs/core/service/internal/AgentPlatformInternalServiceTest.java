@@ -18,12 +18,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
-import kr.lul.urs.core.AgentPlatformApiUtils;
-import kr.lul.urs.core.AgentPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.AgentPlatformDomainUtils;
 import kr.lul.urs.util.AssertionException;
 
 /**
@@ -34,7 +33,7 @@ import kr.lul.urs.util.AssertionException;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class AgentPlatformInternalServiceTest extends AbstractDomainEntityTest {
+public class AgentPlatformInternalServiceTest extends AbstractDomainTest {
   @Autowired
   private AgentPlatformInternalService agentPlatformInternalService;
 
@@ -51,7 +50,7 @@ public class AgentPlatformInternalServiceTest extends AbstractDomainEntityTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateAgentPlatformCtx ctx = AgentPlatformApiUtils.createContext(this.operator);
+    final CreateAgentPlatformCtx ctx = AgentPlatformDomainUtils.createContext(this.operator);
 
     // When
     AgentPlatform platform = this.agentPlatformInternalService.create(ctx);

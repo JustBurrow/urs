@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Strings.DIGITS;
@@ -22,7 +22,7 @@ import kr.lul.urs.util.Randoms;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 5. 3.
  */
-public abstract class OperatorApiUtils {
+public abstract class OperatorDtoUti {
   /**
    * 임의의 관리자 데이터 생성 커맨드.
    *
@@ -77,7 +77,7 @@ public abstract class OperatorApiUtils {
     return operator;
   }
 
-  protected OperatorApiUtils() {
+  protected OperatorDtoUti() {
     throw new UnsupportedOperationException();
   }
 }

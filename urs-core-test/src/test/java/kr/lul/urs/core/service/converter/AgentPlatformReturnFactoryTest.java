@@ -19,12 +19,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
-import kr.lul.urs.core.AgentPlatformDomainUtils;
 import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.dto.AgentPlatformDto;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.AgentPlatformDomainUtils;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
@@ -37,7 +37,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class AgentPlatformReturnFactoryTest extends AbstractDomainEntityTest {
+public class AgentPlatformReturnFactoryTest extends AbstractDomainTest {
   @Autowired
   private AgentPlatformReturnFactory agentPlatformReturnFactory;
 

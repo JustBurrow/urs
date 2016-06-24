@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.core.configuration.InjectionConstants.Beans.NAME_TRANSACTION_MANAGER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,8 +16,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
+import kr.lul.urs.core.test.OperatorDomainUtils;
 import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 
 /**
@@ -28,7 +30,7 @@ import kr.lul.urs.spring.jpa.timestamp.Timestamper;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class OperatorDomainUtilsTest extends AbstractDomainEntityTest {
+public class OperatorDomainUtilsTest extends AbstractDomainTest {
   @Autowired
   private OperatorInternalService operatorInternalService;
 

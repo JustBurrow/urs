@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.util.Asserts.notNull;
 import static kr.lul.urs.util.Asserts.positive;
@@ -27,7 +27,7 @@ import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 5. 3.
  */
-public abstract class AgentPlatformApiUtils {
+public abstract class AgentPlatformDtoUtils {
 
   /**
    * 임의의 플랫폼을 만들 수 있는 커맨드를 만든다.
@@ -53,20 +53,6 @@ public abstract class AgentPlatformApiUtils {
     notNull(owner);
 
     return createCmd(owner.getId());
-  }
-
-  /**
-   * @param owner
-   * @return
-   * @since 2016. 6. 20.
-   */
-  public static CreateAgentPlatformCtx createContext(Operator owner) {
-    notNull(owner, "owner");
-
-    String code = randomAlphabetic(in(1, 3)).toLowerCase() + randomAlphanumeric(in(0, 10));
-    String label = "Test%" + randomAlphanumeric(in(1, 10));
-    String description = "Random Agent Platform for test.";
-    return new CreateAgentPlatformCtx(owner, code, label, description);
   }
 
   /**
@@ -129,7 +115,7 @@ public abstract class AgentPlatformApiUtils {
     return service.create(createCmd(owner)).value();
   }
 
-  protected AgentPlatformApiUtils() {
+  protected AgentPlatformDtoUtils() {
     throw new UnsupportedOperationException();
   }
 }

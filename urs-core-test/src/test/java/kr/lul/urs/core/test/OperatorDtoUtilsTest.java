@@ -1,6 +1,6 @@
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
-import static kr.lul.urs.core.OperatorApiUtils.command;
+import static kr.lul.urs.core.test.OperatorDtoUti.command;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -10,11 +10,14 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.lul.urs.core.AbstractCoreTest;
+import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.command.CreateOperatorCmd;
+import kr.lul.urs.core.test.OperatorDtoUti;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class OperatorApiUtilsTest extends AbstractApiTest {
+public class OperatorDtoUtilsTest extends AbstractDtoTest {
   @Before
   public void setUp() throws Exception {
     this.setNow();
@@ -22,7 +25,7 @@ public class OperatorApiUtilsTest extends AbstractApiTest {
 
   @Test
   public void testConstruct() {
-    assertThatThrownBy(() -> new OperatorApiUtils() {
+    assertThatThrownBy(() -> new OperatorDtoUti() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 

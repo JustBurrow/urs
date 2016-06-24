@@ -12,8 +12,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
+import kr.lul.urs.core.test.AbstractDomainTest;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -23,7 +23,7 @@ import kr.lul.urs.core.CoreTestConfig;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileRepositoryTest extends AbstractDomainEntityTest {
+public class ResourceFileRepositoryTest extends AbstractDomainTest {
   @Test
   public void testSaveAndFlush() throws Exception {
   }

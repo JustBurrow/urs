@@ -1,7 +1,7 @@
 /**
  *
  */
-package kr.lul.urs.core;
+package kr.lul.urs.core.test;
 
 import static kr.lul.urs.core.configuration.InjectionConstants.Properties.KEY_DAO_SAVE_AND_FLUSH;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,10 +11,13 @@ import java.time.Instant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import kr.lul.urs.core.AbstractCoreTest;
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.service.internal.AgentPlatformInternalService;
 import kr.lul.urs.core.service.internal.OperatorInternalService;
+import kr.lul.urs.core.test.AgentPlatformDomainUtils;
+import kr.lul.urs.core.test.OperatorDomainUtils;
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 import kr.lul.urs.util.TimeProvider;
@@ -30,34 +33,34 @@ import kr.lul.urs.util.TimeProvider;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 5. 16.
  */
-public abstract class AbstractDomainEntityTest extends AbstractCoreTest {
-  public static void assertTimestamp(Creatable creatable, Instant instant) {
+public abstract class AbstractDomainTest extends AbstractCoreTest {
+  public static void assertTimestamp(Creatable creatable, Instant createInstant) {
     assertThat(creatable).isNotNull();
-    assertThat(instant).isNotNull();
-    assertThat(creatable.getCreate()).isGreaterThanOrEqualTo(instant);
+    assertThat(createInstant).isNotNull();
+    assertThat(creatable.getCreate()).isGreaterThanOrEqualTo(createInstant);
   }
 
-  public static void assertTimestamp(Updatable updatable, Instant create) {
+  public static void assertTimestamp(Updatable updatable, Instant createInstant) {
     assertThat(updatable).isNotNull();
-    assertThat(create).isNotNull();
+    assertThat(createInstant).isNotNull();
 
-    assertThat(updatable.getCreate()).isGreaterThanOrEqualTo(create);
-    assertThat(updatable.getUpdate()).isGreaterThanOrEqualTo(create);
+    assertThat(updatable.getCreate()).isGreaterThanOrEqualTo(createInstant);
+    assertThat(updatable.getUpdate()).isGreaterThanOrEqualTo(createInstant);
   }
 
   /**
    * @param updatable
-   * @param create
-   * @param updata
+   * @param createInstant
+   * @param updateInstant
    * @since 2016. 5. 16.
    */
-  public static void assertTimestamp(Updatable updatable, Instant create, Instant updata) {
+  public static void assertTimestamp(Updatable updatable, Instant createInstant, Instant updateInstant) {
     assertThat(updatable).isNotNull();
-    assertThat(create).isNotNull();
-    assertThat(updata).isNotNull().isGreaterThanOrEqualTo(create);
+    assertThat(createInstant).isNotNull();
+    assertThat(updateInstant).isNotNull().isGreaterThanOrEqualTo(createInstant);
 
-    assertThat(updatable.getCreate()).isGreaterThanOrEqualTo(create);
-    assertThat(updatable.getUpdate()).isGreaterThanOrEqualTo(updata);
+    assertThat(updatable.getCreate()).isGreaterThanOrEqualTo(createInstant);
+    assertThat(updatable.getUpdate()).isGreaterThanOrEqualTo(updateInstant);
   }
 
   @Value("${" + KEY_DAO_SAVE_AND_FLUSH + "}")

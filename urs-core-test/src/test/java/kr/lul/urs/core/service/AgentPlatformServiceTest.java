@@ -13,16 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.lul.urs.core.AbstractApiTest;
-import kr.lul.urs.core.AgentPlatformApiUtils;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.OperatorApiUtils;
 import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.repository.AgentPlatformRepository;
 import kr.lul.urs.core.service.internal.OwnershipException;
+import kr.lul.urs.core.test.AbstractDtoTest;
+import kr.lul.urs.core.test.AgentPlatformDtoUtils;
+import kr.lul.urs.core.test.OperatorDtoUti;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 
@@ -32,7 +32,7 @@ import kr.lul.urs.util.Randoms;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
-public class AgentPlatformServiceTest extends AbstractApiTest {
+public class AgentPlatformServiceTest extends AbstractDtoTest {
   @Autowired
   private AgentPlatformRepository agentPlatformRepository;
 
@@ -52,7 +52,7 @@ public class AgentPlatformServiceTest extends AbstractApiTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    CreateAgentPlatformCmd cmd = AgentPlatformApiUtils.createCmd(this.operator);
+    CreateAgentPlatformCmd cmd = AgentPlatformDtoUtils.createCmd(this.operator);
 
     // When
     AgentPlatformDto dto = this.agentPlatformService.create(cmd).value();
@@ -80,7 +80,7 @@ public class AgentPlatformServiceTest extends AbstractApiTest {
   @Test
   public void testReadWithId() throws Exception {
     // Given
-    final AgentPlatformDto expected = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    final AgentPlatformDto expected = AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
 
     // When
     AgentPlatformDto actual = this.agentPlatformService.read(expected.getId()).value();
@@ -98,10 +98,9 @@ public class AgentPlatformServiceTest extends AbstractApiTest {
   @Test
   public void testReadWithIllegalOwnership() throws Exception {
     // Given
-    OperatorDto op2 = OperatorApiUtils.create(this.operatorService);
-    ReadAgentPlatformCmd cmd = AgentPlatformApiUtils.readCmd(this.agentPlatformRepository);
-    assertThat(cmd.getOwner()).isNotEqualTo(op2.getId());
-    cmd.setOwner(op2.getId());
+    this.setAgentPlatformAsRandom();
+    OperatorDto op2 = OperatorDtoUti.create(this.operatorService);
+    ReadAgentPlatformCmd cmd = AgentPlatformDtoUtils.readCmd(this.platform.getId(), op2.getId());
 
     // When & Then
     assertThatThrownBy(() -> this.agentPlatformService.read(cmd)).isInstanceOf(OwnershipException.class);

@@ -16,11 +16,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.OperatorDomainUtils;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.OperatorDto;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.OperatorDomainUtils;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
@@ -29,7 +29,7 @@ import kr.lul.urs.util.Randoms;
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class OperatorReturnFactoryTest extends AbstractDomainEntityTest {
+public class OperatorReturnFactoryTest extends AbstractDomainTest {
   @Autowired
   private OperatorReturnFactory operatorReturnFactory;
 

@@ -14,21 +14,21 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.lul.urs.core.AbstractDomainEntityTest;
 import kr.lul.urs.core.CoreTestConfig;
-import kr.lul.urs.core.OperatorDomainUtils;
-import kr.lul.urs.core.ResourceFileDomainUtils;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
 import kr.lul.urs.core.service.context.CreateResourceFileCtx;
+import kr.lul.urs.core.test.AbstractDomainTest;
+import kr.lul.urs.core.test.OperatorDomainUtils;
+import kr.lul.urs.core.test.ResourceFileDomainUtils;
 import kr.lul.urs.util.AssertionException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreTestConfig.class })
 @Transactional(transactionManager = NAME_TRANSACTION_MANAGER)
 @Rollback(CoreTestConfig.ROLLBACK)
-public class ResourceFileInternalServiceTest extends AbstractDomainEntityTest {
+public class ResourceFileInternalServiceTest extends AbstractDomainTest {
   @Autowired
   private ResourceFileInternalService resourceFileInternalService;
 

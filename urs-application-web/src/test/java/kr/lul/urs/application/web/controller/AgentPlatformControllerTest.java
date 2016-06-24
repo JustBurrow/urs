@@ -36,9 +36,9 @@ import kr.lul.urs.application.api.AgentPlatformApiConfiguration;
 import kr.lul.urs.application.api.AuthApiConfiguration;
 import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.application.web.view.AgentPlatformView;
-import kr.lul.urs.core.AgentPlatformApiUtils;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.service.AgentPlatformService;
+import kr.lul.urs.core.test.AgentPlatformDtoUtils;
 import kr.lul.urs.util.Randoms;
 
 /**
@@ -116,7 +116,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     // Given
     this.setOperatorAsRandom();
     List<AgentPlatformDto> platforms = IntStream.range(1, Randoms.in(3, 10)).mapToObj(i -> {
-      return AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
+      return AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
     }).collect(Collectors.toList());
 
     // When
@@ -136,7 +136,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
   public void testUpdateForm() throws Exception {
     // Given
     this.setOperatorAsRandom();
-    final AgentPlatformDto platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    final AgentPlatformDto platform = AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
 
     // When
     this.mock.perform(get(AgentPlatformApiConfiguration.PREFIX + "/" + platform.getId() + "/update")
@@ -153,7 +153,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
   public void testUpdate() throws Exception {
     // Given
     this.setOperatorAsRandom();
-    AgentPlatformDto platform = AgentPlatformApiUtils.create(this.operator, this.agentPlatformService);
+    AgentPlatformDto platform = AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
 
     String label;
     String description;
