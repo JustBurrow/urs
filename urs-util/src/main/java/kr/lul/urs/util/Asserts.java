@@ -2226,6 +2226,29 @@ public abstract class Asserts {
   }
 
   /**
+   * 인스턴스가 다른 인스턴스와 같은지 단정한다.
+   *
+   * @param instance
+   *          단정할 인스턴스.
+   * @param that
+   *          비교할 인스턴스.
+   * @param message
+   *          단정 실패시의 예외 메시지.
+   * @throws AssertionException
+   *           단정 실패.
+   */
+  public static void equal(Object instance, Object that, String message) throws AssertionException {
+    try {
+      if (Conditions.equal(instance, that)) {
+        return;
+      }
+      throw new AssertionException(message);
+    } catch (Exception e) {
+      throw new AssertionException(message, e);
+    }
+  }
+
+  /**
    * 문자열의 길이가 1 이상임을 단정한다.
    *
    * @param string
@@ -2416,6 +2439,27 @@ public abstract class Asserts {
       return;
     }
     throw new AssertionException(message);
+  }
+
+  /**
+   * 문자열이 어떤 문자열로 시작하는지 여부를 단정한다.
+   *
+   * @param text
+   *          단정할 문자열.
+   * @param that
+   *          비교할 문자열.
+   * @throws AssertionException
+   *           단정 실패.
+   * @since 2016. 6. 25.
+   */
+  public static void starts(CharSequence text, CharSequence that) throws AssertionException {
+    notNull(that, "text");
+    notNull(that, "that");
+
+    if (text.subSequence(0, that.length()).equals(that)) {
+      return;
+    }
+    throw new AssertionException(format("text[%s] does not start with that[%s].", text, that));
   }
 
   /**

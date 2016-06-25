@@ -49,7 +49,7 @@ import kr.lul.urs.util.InputStreamSupplier;
 public class ResourceFileRevisionEntity extends AbstractCreatable implements ResourceFileRevision {
   @Embeddable
   public static class ResourceFileRevisionId implements ResourceFileRevision.Identifier {
-    private static final long serialVersionUID = EntityAnchor.SERIAL_VERSION_UID;
+    private static final long serialVersionUID = EntityConstants.SERIAL_VERSION_UID;
 
     @Column(name = RESOURCE_FILE, nullable = false, updatable = false)
     private int               resourceFile;
