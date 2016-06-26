@@ -3,18 +3,19 @@
  */
 package kr.lul.urs.core.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.ResourceFileEntity;
+import kr.lul.urs.spring.jpa.ownership.OwnableReposigory;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 5.
  */
 @Repository
-public interface ResourceFileRepository extends JpaRepository<ResourceFileEntity, Integer> {
+public interface ResourceFileRepository extends OwnableReposigory<ResourceFileEntity, Integer, Operator> {
   /**
    * @param agentPlatform
    * @param name

@@ -85,39 +85,77 @@ public class AgentPlatformEntity extends AbstractUpdatable implements AgentPlatf
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // <I>AgentPlatform
+  // <I>Ownable<Operator>
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  @Override
-  public int getId() {
-    return this.id;
-  }
-
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.Ownable#getOwner()
+   * @since 2016. 6. 26.
+   */
   @Override
   public Operator getOwner() {
     return this.owner;
   }
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // <I>AgentPlatform
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.AgentPlatform#getId()
+   * @since 2016. 6. 26.
+   */
+  @Override
+  public int getId() {
+    return this.id;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.AgentPlatform#getCode()
+   * @since 2016. 6. 26.
+   */
   @Override
   public String getCode() {
     return this.code;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.AgentPlatform#getLabel()
+   * @since 2016. 6. 26.
+   */
   @Override
   public String getLabel() {
     return this.label;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.AgentPlatform#setLabel(java.lang.String)
+   * @since 2016. 6. 26.
+   */
   @Override
   public void setLabel(String label) {
     hasLength(label);
     this.label = label;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.AgentPlatform#getDescription()
+   * @since 2016. 6. 26.
+   */
   @Override
   public String getDescription() {
     return this.description;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see kr.lul.urs.core.domain.AgentPlatform#setDescription(java.lang.String)
+   * @since 2016. 6. 26.
+   */
   @Override
   public void setDescription(String description) {
     if (null == description) {

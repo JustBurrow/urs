@@ -1,5 +1,6 @@
 package kr.lul.urs.core.service;
 
+import static java.lang.String.format;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import kr.lul.urs.core.command.OperatorCmd;
 import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.command.UpdateAgentPlatformCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
+import kr.lul.urs.core.domain.NotExistsException;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.dto.AgentPlatformDto;
 import kr.lul.urs.core.service.context.CreateAgentPlatformCtx;
@@ -53,16 +55,9 @@ class AgentPlatformServiceImpl extends AbstractService implements AgentPlatformS
   public Return<AgentPlatformDto> read(ReadAgentPlatformCmd cmd) throws OwnershipException {
     notNull(cmd);
 
-    Operator owner = this.getOperator(cmd);
-    if (null == owner) {
-      throw new OwnershipException("owner operator does not exist.");
-    }
-
-    AgentPlatform platform = this.agentPlatformInternalService.read(cmd.getId());
+    AgentPlatform platform = this.checkOwnership(cmd, this.agentPlatformInternalService.read(cmd.getId()));
     if (null == platform) {
-      // TODO exception
-    } else if (!platform.getOwner().equals(owner)) {
-      throw new OwnershipException("no permission.", cmd.getOwner(), platform.getOwner().getId());
+      throw new NotExistsException(format("agent platform not exists.", cmd.getId()), AgentPlatform.class, cmd.getId());
     }
 
     return this.agentPlatformReturnFactory.converter(platform);

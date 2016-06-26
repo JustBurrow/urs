@@ -3,6 +3,7 @@
  */
 package kr.lul.urs.core.dao;
 
+import static kr.lul.urs.spring.jpa.util.SortUtils.asc;
 import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.notNull;
 
@@ -11,15 +12,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
 import kr.lul.urs.core.domain.entity.OperatorEntity;
-import kr.lul.urs.core.domain.mapping.AgentPlatformMapping;
+import kr.lul.urs.core.domain.mapping.AgentPlatformMapping.Entity;
 import kr.lul.urs.core.repository.AgentPlatformRepository;
 
 /**
@@ -58,8 +57,7 @@ class AgentPlatformDaoImpl extends AbstractDao implements AgentPlatformDao {
 
   @Override
   public List<AgentPlatform> list() {
-    List<AgentPlatformEntity> list = this.agentPlatformRepository
-        .findAll(new Sort(Direction.ASC, AgentPlatformMapping.Entity.ID));
+    List<AgentPlatformEntity> list = this.agentPlatformRepository.findAll(asc(Entity.ID));
     return new ArrayList<>(list);
   }
 
@@ -73,8 +71,7 @@ class AgentPlatformDaoImpl extends AbstractDao implements AgentPlatformDao {
     notNull(owner, "owner");
     assignable(owner, OperatorEntity.class, "owner");
 
-    List<AgentPlatformEntity> platforms = this.agentPlatformRepository
-        .findAllByOwnerOrderByIdAsc((OperatorEntity) owner);
+    List<AgentPlatformEntity> platforms = this.agentPlatformRepository.findAllByOwner(owner, asc(Entity.ID));
 
     return Collections.unmodifiableList(platforms);
   }

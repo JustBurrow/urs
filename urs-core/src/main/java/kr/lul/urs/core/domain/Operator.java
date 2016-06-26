@@ -5,6 +5,7 @@ package kr.lul.urs.core.domain;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import kr.lul.urs.spring.jpa.ownership.Owner;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 import kr.lul.urs.util.ToSimpleString;
 
@@ -13,14 +14,7 @@ import kr.lul.urs.util.ToSimpleString;
  *
  * @author Just Burrow just.burrow@lul.kr
  */
-public interface Operator extends Updatable, ToSimpleString {
-  /**
-   * 관리자 계정 ID.
-   *
-   * @return ID.
-   */
-  public int getId();
-
+public interface Operator extends Owner, Updatable, ToSimpleString {
   /**
    * 관리자 인증용 Email.
    *

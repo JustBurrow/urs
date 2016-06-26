@@ -6,6 +6,7 @@ package kr.lul.urs.core.domain;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import kr.lul.urs.spring.jpa.ownership.Ownable;
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.util.InputStreamSupplier;
 
@@ -18,7 +19,7 @@ import kr.lul.urs.util.InputStreamSupplier;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 4.
  */
-public interface ResourceFileRevision extends Creatable {
+public interface ResourceFileRevision extends Ownable<Operator>, Creatable {
   public static interface Identifier extends Serializable {
     /**
      * 1 이상.
@@ -39,13 +40,6 @@ public interface ResourceFileRevision extends Creatable {
    * @return ID.
    */
   public Identifier getId();
-
-  /**
-   * 리소스 파일을 소유한 프로덕트 관리자.
-   *
-   * @return 소유자.
-   */
-  public Operator getOwner();
 
   /**
    * @return TODO

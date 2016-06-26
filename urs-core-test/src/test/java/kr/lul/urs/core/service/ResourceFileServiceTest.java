@@ -126,16 +126,12 @@ public class ResourceFileServiceTest extends AbstractDtoTest {
     OperatorDto owner = OperatorDtoUti.create(this.operatorService);
     File file = getTestFile("testUpdate1");
 
-    UpdateResourceFileCmd cmd = new UpdateResourceFileCmd();
-    cmd.setId(resourceFile.getId());
-    cmd.setOwner(owner.getId());
-    cmd.setInput(file);
+    UpdateResourceFileCmd cmd = new UpdateResourceFileCmd(owner.getId(), resourceFile.getId(), file);
 
     // When
-    assertThatThrownBy(() -> this.resourceFileService.update(cmd)).isInstanceOf(OwnershipException.class)
-        .hasMessageContaining("no permission")
-        .hasMessageContaining("not exist");
-
+    assertThatThrownBy(() -> this.resourceFileService.update(cmd))
+        .isInstanceOf(OwnershipException.class)
+        .hasMessageContaining("no permission");
   }
 
   @Test

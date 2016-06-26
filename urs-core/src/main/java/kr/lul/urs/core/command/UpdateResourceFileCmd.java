@@ -17,4 +17,13 @@ import lombok.EqualsAndHashCode;
 public class UpdateResourceFileCmd extends OwnershipCmd {
   private int  id;
   private File input;
+
+  public UpdateResourceFileCmd() {
+  }
+
+  public UpdateResourceFileCmd(int owner, int id, File input) {
+    super(owner);
+    this.id = id;
+    this.input = input;
+  }
 }

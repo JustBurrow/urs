@@ -3,6 +3,7 @@
  */
 package kr.lul.urs.core.domain;
 
+import kr.lul.urs.spring.jpa.ownership.Ownable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
@@ -12,16 +13,11 @@ import kr.lul.urs.spring.jpa.timestamp.Updatable;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 4.
  */
-public interface AgentPlatform extends Updatable {
+public interface AgentPlatform extends Ownable<Operator>, Updatable {
   /**
    * @return ID
    */
   public int getId();
-
-  /**
-   * @return 소유자.
-   */
-  public Operator getOwner();
 
   /**
    * URI 등에서 플랫폼 정보를 표시할 때 사용하는 코드.

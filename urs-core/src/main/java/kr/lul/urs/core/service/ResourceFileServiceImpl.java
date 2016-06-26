@@ -3,6 +3,7 @@
  */
 package kr.lul.urs.core.service;
 
+import static java.lang.String.format;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import kr.lul.urs.core.command.CreateResourceFileCmd;
 import kr.lul.urs.core.command.UpdateResourceFileCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
-import kr.lul.urs.core.domain.Operator;
+import kr.lul.urs.core.domain.NotExistsException;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.ResourceFileUpdateException;
 import kr.lul.urs.core.dto.ResourceFileDto;
@@ -46,20 +47,13 @@ class ResourceFileServiceImpl extends AbstractService implements ResourceFileSer
   public Return<ResourceFileDto> create(CreateResourceFileCmd cmd) throws OwnershipException {
     notNull(cmd);
 
-    Operator owner = this.getOperator(cmd);
-    if (null == owner) {
-      throw new OwnershipException("owner does not exist.", cmd.getOwner(), null);
+    AgentPlatform platform = this.checkOwnership(cmd, this.agentPlatformInternalService.read(cmd.getPlatform()));
+    if (null == platform) {
+      throw new NotExistsException(format("agent platform not exist : %d", cmd.getPlatform()), AgentPlatform.class,
+          cmd.getPlatform());
     }
 
-    AgentPlatform platform = this.agentPlatformInternalService.read(cmd.getPlatform());
-    if (null == platform) {
-      throw new RuntimeException("agent platform does not exist.");
-    } else if (!owner.equals(platform.getOwner())) {
-      throw null == platform.getOwner()
-          ? new OwnershipException("operator has no permission.", owner.getId(), null)
-          : new OwnershipException("operator has no permission.", owner.getId(), platform.getOwner().getId());
-    }
-    CreateResourceFileCtx ctx = new CreateResourceFileCtx(owner, platform, cmd.getName());
+    CreateResourceFileCtx ctx = new CreateResourceFileCtx(platform.getOwner(), platform, cmd.getName());
     ResourceFile resourceFile = this.resourceFileInternalService.create(ctx);
 
     return this.resourceFileReturnFactory.converter(resourceFile);
@@ -103,12 +97,10 @@ class ResourceFileServiceImpl extends AbstractService implements ResourceFileSer
       throws OwnershipException, ResourceFileUpdateException {
     notNull(cmd, "cmd is null.");
 
-    ResourceFile resourceFile = this.resourceFileInternalService.read(cmd.getId());
+    ResourceFile resourceFile = this.checkOwnership(cmd, this.resourceFileInternalService.read(cmd.getId()));
     if (null == resourceFile) {
-      // TODO throw
-    } else if (cmd.getOwner() != resourceFile.getOwner().getId()) {
-      throw new OwnershipException("no permission or resource file does not exist.", cmd.getOwner(),
-          resourceFile.getOwner().getId());
+      throw new NotExistsException(format("resource file not exists : %d", cmd.getId()), ResourceFile.class,
+          cmd.getId());
     }
 
     resourceFile.update(cmd.getInput());

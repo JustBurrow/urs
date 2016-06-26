@@ -6,6 +6,7 @@ package kr.lul.urs.core.domain;
 import java.io.File;
 import java.util.List;
 
+import kr.lul.urs.spring.jpa.ownership.Ownable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
@@ -18,18 +19,11 @@ import kr.lul.urs.spring.jpa.timestamp.Updatable;
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 4.
  */
-public interface ResourceFile extends Updatable {
+public interface ResourceFile extends Ownable<Operator>, Updatable {
   /**
    * @return ID.
    */
   public int getId();
-
-  /**
-   * 리소스 파일을 소유한 프로덕트 관리자.
-   *
-   * @return 소유자.
-   */
-  public Operator getOwner();
 
   /**
    * 리소스 파일을 사용하는 에이전트의 플랫폼.
