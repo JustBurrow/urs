@@ -14,7 +14,7 @@ import org.junit.Test;
 public class AgentPlatformApiConfigurationTest {
   @Test
   public void testConstructor() throws Exception {
-    assertThatThrownBy(() -> new AgentPlatformApiConfiguration() {
+    assertThatThrownBy(() -> new AgentPlatformApiConstants() {
     }).isInstanceOf(UnsupportedOperationException.class);
   }
 }

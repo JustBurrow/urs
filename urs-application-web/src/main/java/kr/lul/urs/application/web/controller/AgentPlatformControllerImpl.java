@@ -3,8 +3,8 @@
  */
 package kr.lul.urs.application.web.controller;
 
-import static kr.lul.urs.application.api.AgentPlatformApiConfiguration.PREFIX;
-import static kr.lul.urs.application.api.AgentPlatformApiConfiguration.READ;
+import static kr.lul.urs.application.api.AgentPlatformApiConstants.C.PREFIX;
+import static kr.lul.urs.application.api.AgentPlatformApiConstants.C.READ;
 import static kr.lul.urs.application.web.view.AgentPlatformView.TPL_CREATE;
 import static kr.lul.urs.application.web.view.AgentPlatformView.TPL_DETAIL;
 import static kr.lul.urs.application.web.view.AgentPlatformView.TPL_LIST;
@@ -22,7 +22,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import kr.lul.urs.application.api.AgentPlatformApiConfiguration;
+import kr.lul.urs.application.api.AgentPlatformApiConstants.C;
+import kr.lul.urs.application.api.AgentPlatformApiConstants.M;
 import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.application.web.request.UpdatAgentPlatformReq;
 import kr.lul.urs.application.web.security.OperatorDetails;
@@ -68,7 +69,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
    * @since 2016. 6. 2.
    */
   @Override
-  public String create(@ModelAttribute final CreateAgentPlatformReq req, final BindingResult binding) {
+  public String create(@ModelAttribute(M.CREATE_REQ) final CreateAgentPlatformReq req, final BindingResult binding) {
     notNull(req, "req");
     notNull(binding, "binding");
 
@@ -86,7 +87,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
    * @since 2016. 6. 2.
    */
   @Override
-  public String detail(@PathVariable("id") final int id, final Model model) {
+  public String detail(@PathVariable(M.ID) final int id, final Model model) {
     positive(id, "id");
     notNull(model, "model");
 
@@ -121,7 +122,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
    * @since 2016. 6. 2.
    */
   @Override
-  public String updateForm(@PathVariable("id") final int id, final Model model) {
+  public String updateForm(@PathVariable(M.ID) final int id, final Model model) {
     positive(id, "id");
     notNull(model, "model");
 
@@ -155,7 +156,7 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
    * @since 2016. 6. 10.
    */
   @Override
-  public String update(@PathVariable("id") final int id, @ModelAttribute final UpdatAgentPlatformReq req,
+  public String update(@PathVariable(M.ID) final int id, @ModelAttribute(M.UPDATE_REQ) final UpdatAgentPlatformReq req,
       final BindingResult binding, final Model model) {
     positive(id, "id");
     notNull(req, "req");
@@ -174,6 +175,6 @@ class AgentPlatformControllerImpl extends AbstractController implements AgentPla
     } catch (OwnershipException e) {
       throw new RuntimeException(e);
     }
-    return "redirect:" + AgentPlatformApiConfiguration.PREFIX + "/" + platform.getId();
+    return "redirect:" + C.PREFIX + "/" + platform.getId();
   }
 }

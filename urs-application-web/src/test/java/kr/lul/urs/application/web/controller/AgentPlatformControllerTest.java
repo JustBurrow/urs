@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import kr.lul.urs.application.Runner;
-import kr.lul.urs.application.api.AgentPlatformApiConfiguration;
+import kr.lul.urs.application.api.AgentPlatformApiConstants.C;
 import kr.lul.urs.application.api.AuthApiConfiguration;
 import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.application.web.view.AgentPlatformView;
@@ -65,7 +65,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
   public void testReadCreateFormBeforeLogin() throws Exception {
     String urlPattern = fromUriString("**/" + AuthApiConfiguration.PREFIX + AuthApiConfiguration.LOGIN_SPEC).build()
         .toUriString();
-    this.mock.perform(get(AgentPlatformApiConfiguration.PREFIX + AgentPlatformApiConfiguration.CREATE_FORM))
+    this.mock.perform(get(C.PREFIX + C.CREATE_FORM))
         // .andDo(print())
         .andExpect(status().is3xxRedirection())
         .andExpect(redirectedUrlPattern(urlPattern));
@@ -77,7 +77,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     this.setOperatorAsRandom();
 
     // When
-    this.mock.perform(get(AgentPlatformApiConfiguration.PREFIX + AgentPlatformApiConfiguration.CREATE_FORM)
+    this.mock.perform(get(C.PREFIX + C.CREATE_FORM)
         .with(user(this.getDetails(this.operator))))
         // .andDo(print())
         // Then
@@ -94,7 +94,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
 
     // When
     MockHttpServletResponse response = this.mock
-        .perform(post(AgentPlatformApiConfiguration.PREFIX + AgentPlatformApiConfiguration.CREATE)
+        .perform(post(C.PREFIX + C.CREATE)
             .with(user(this.getDetails(this.operator)))
             .with(csrf())
             .param("code", req.getCode())
@@ -120,7 +120,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     }).collect(Collectors.toList());
 
     // When
-    this.mock.perform(get(AgentPlatformApiConfiguration.PREFIX + AgentPlatformApiConfiguration.LIST)
+    this.mock.perform(get(C.PREFIX + C.LIST)
         .with(user(this.getDetails(this.operator)))
         .with(csrf()))
         // .andDo(print())
@@ -139,7 +139,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     final AgentPlatformDto platform = AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
 
     // When
-    this.mock.perform(get(AgentPlatformApiConfiguration.PREFIX + "/" + platform.getId() + "/update")
+    this.mock.perform(get(C.PREFIX + "/" + platform.getId() + "/update")
         .with(user(this.getDetails(this.operator)))
         .with(csrf()))
         // Then
@@ -163,7 +163,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     } while (platform.getLabel().equals(label) && platform.getDescription().equals(description));
 
     // When
-    this.mock.perform(patch(AgentPlatformApiConfiguration.PREFIX + "/" + platform.getId())
+    this.mock.perform(patch(C.PREFIX + "/" + platform.getId())
         .with(user(this.getDetails(this.operator)))
         .with(csrf())
         .param("label", label)
