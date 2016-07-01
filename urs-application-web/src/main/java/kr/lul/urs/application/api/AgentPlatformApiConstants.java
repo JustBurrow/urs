@@ -12,15 +12,23 @@ package kr.lul.urs.application.api;
 public abstract class AgentPlatformApiConstants {
   /**
    * Model
-   * 
+   *
    * @since 2016. 6. 26.
    * @author Just Burrow just.burrow@lul.kr
    */
   public abstract static class M {
-    public static final String ID         = "id";
-    public static final String CREATE_REQ = "req";
-    public static final String UPDATE_REQ = "req";
+    public static final String ID          = "id";
+    public static final String CREATE_REQ  = "req";
+    public static final String UPDATE_REQ  = "req";
+    public static final String LABEL       = "label";
+    public static final String DESCRIPTION = "description";
+    public static final String PLATFORM    = "platform";
+    public static final String CODE        = "code";
+    public static final String PLATFORMS   = "platforms";
 
+    protected M() {
+      throw new UnsupportedOperationException();
+    }
   }
 
   /**

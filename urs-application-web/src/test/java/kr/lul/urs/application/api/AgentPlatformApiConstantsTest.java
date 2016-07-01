@@ -11,7 +11,7 @@ import org.junit.Test;
  * @since 2016. 6. 2.
  * @author Just Burrow just.burrow@lul.kr
  */
-public class AgentPlatformApiConfigurationTest {
+public class AgentPlatformApiConstantsTest {
   @Test
   public void testConstructor() throws Exception {
     assertThatThrownBy(() -> new AgentPlatformApiConstants() {

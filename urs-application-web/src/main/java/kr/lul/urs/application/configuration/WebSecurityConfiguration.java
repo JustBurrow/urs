@@ -3,8 +3,10 @@
  */
 package kr.lul.urs.application.configuration;
 
-import static kr.lul.urs.application.api.AuthApiConfiguration.LOGIN_SPEC;
-import static kr.lul.urs.application.api.AuthApiConfiguration.PREFIX;
+import static kr.lul.urs.application.api.AuthApis.LOGIN_FORM;
+import static kr.lul.urs.application.api.DashboardApis.SUMMARY;
+import static kr.lul.urs.application.api.IndexApis.INDEX;
+import static kr.lul.urs.application.api.OperatorApis.SIGN_UP_FORM;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import kr.lul.urs.application.api.DashboardApiConfiguration;
-import kr.lul.urs.application.api.OperatorApiConfiguration;
+import kr.lul.urs.application.api.AuthApiConstants.C;
+import kr.lul.urs.application.api.AuthApiConstants.M;
 import kr.lul.urs.application.web.security.OperatorDetailsService;
 
 /**
@@ -39,18 +41,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf();
     http.formLogin()
-        .loginPage(PREFIX + LOGIN_SPEC)
-        .defaultSuccessUrl(DashboardApiConfiguration.PREFIX + DashboardApiConfiguration.SUMMARY)
-        .usernameParameter("email")
-        .passwordParameter("password");
+        .loginPage(C.PREFIX + C.LOGIN_FORM)
+        .defaultSuccessUrl(SUMMARY.getUriTemplate())
+        .usernameParameter(M.EMAIL)
+        .passwordParameter(M.PASSWORD);
     http.logout()
         .logoutUrl("/auth/logout")
-        .logoutSuccessUrl("/");
+        .logoutSuccessUrl(INDEX.getUriTemplate());
     http.authorizeRequests()
-        .antMatchers("/")
+        .antMatchers(INDEX.getUriTemplate())
         .permitAll();
     http.authorizeRequests()
-        .antMatchers(OperatorApiConfiguration.PREFIX + OperatorApiConfiguration.SIGN_UP_SPEC, PREFIX + LOGIN_SPEC)
+        .antMatchers(SIGN_UP_FORM.getUriTemplate(), LOGIN_FORM.getUriTemplate())
         .anonymous();
     http.authorizeRequests()
         .anyRequest()

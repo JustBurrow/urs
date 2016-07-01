@@ -3,6 +3,9 @@
  */
 package kr.lul.urs.application.web.controller;
 
+import static kr.lul.urs.application.api.AgentPlatformApis.CREATE;
+import static kr.lul.urs.application.api.AgentPlatformApis.CREATE_FORM;
+import static kr.lul.urs.application.api.AgentPlatformApis.LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -33,7 +36,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import kr.lul.urs.application.Runner;
 import kr.lul.urs.application.api.AgentPlatformApiConstants.C;
-import kr.lul.urs.application.api.AuthApiConfiguration;
+import kr.lul.urs.application.api.AgentPlatformApiConstants.M;
 import kr.lul.urs.application.web.request.CreateAgentPlatformReq;
 import kr.lul.urs.application.web.view.AgentPlatformView;
 import kr.lul.urs.core.dto.AgentPlatformDto;
@@ -63,9 +66,10 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
 
   @Test
   public void testReadCreateFormBeforeLogin() throws Exception {
-    String urlPattern = fromUriString("**/" + AuthApiConfiguration.PREFIX + AuthApiConfiguration.LOGIN_SPEC).build()
-        .toUriString();
-    this.mock.perform(get(C.PREFIX + C.CREATE_FORM))
+    String urlPattern = fromUriString("**/" + kr.lul.urs.application.api.AuthApiConstants.C.PREFIX
+        + kr.lul.urs.application.api.AuthApiConstants.C.LOGIN_FORM).build()
+            .toUriString();
+    this.mock.perform(get(CREATE_FORM.getUriTemplate()))
         // .andDo(print())
         .andExpect(status().is3xxRedirection())
         .andExpect(redirectedUrlPattern(urlPattern));
@@ -77,7 +81,7 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     this.setOperatorAsRandom();
 
     // When
-    this.mock.perform(get(C.PREFIX + C.CREATE_FORM)
+    this.mock.perform(get(CREATE_FORM.getUriTemplate())
         .with(user(this.getDetails(this.operator))))
         // .andDo(print())
         // Then
@@ -94,12 +98,12 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
 
     // When
     MockHttpServletResponse response = this.mock
-        .perform(post(C.PREFIX + C.CREATE)
+        .perform(post(CREATE.getUriTemplate())
             .with(user(this.getDetails(this.operator)))
             .with(csrf())
-            .param("code", req.getCode())
-            .param("label", req.getLabel())
-            .param("description", req.getDescription()))
+            .param(M.CODE, req.getCode())
+            .param(M.LABEL, req.getLabel())
+            .param(M.DESCRIPTION, req.getDescription()))
         // .andDo(print())
 
         // Then
@@ -120,15 +124,15 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     }).collect(Collectors.toList());
 
     // When
-    this.mock.perform(get(C.PREFIX + C.LIST)
+    this.mock.perform(get(LIST.getUriTemplate())
         .with(user(this.getDetails(this.operator)))
         .with(csrf()))
-        // .andDo(print())
+        .andDo(print())
 
         // Then
         .andExpect(status().isOk())
         .andExpect(view().name(AgentPlatformView.TPL_LIST))
-        .andExpect(model().attribute("platforms", IsIterableContainingInOrder
+        .andExpect(model().attribute(M.PLATFORMS, IsIterableContainingInOrder
             .<AgentPlatformDto> contains(platforms.toArray(new AgentPlatformDto[platforms.size()]))));
   }
 
@@ -139,13 +143,13 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     final AgentPlatformDto platform = AgentPlatformDtoUtils.create(this.operator, this.agentPlatformService);
 
     // When
-    this.mock.perform(get(C.PREFIX + "/" + platform.getId() + "/update")
+    this.mock.perform(get(C.PREFIX + "/" + platform.getId() + "/update") // TODO uri builder
         .with(user(this.getDetails(this.operator)))
         .with(csrf()))
         // Then
         .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(model().attribute("platform", platform))
+        .andExpect(model().attribute(M.PLATFORM, platform))
         .andExpect(view().name(AgentPlatformView.TPL_UPDATE));
   }
 
@@ -163,11 +167,11 @@ public class AgentPlatformControllerTest extends AbstractMvcTest {
     } while (platform.getLabel().equals(label) && platform.getDescription().equals(description));
 
     // When
-    this.mock.perform(patch(C.PREFIX + "/" + platform.getId())
+    this.mock.perform(patch(C.PREFIX + "/" + platform.getId())// TODO uri builder
         .with(user(this.getDetails(this.operator)))
         .with(csrf())
-        .param("label", label)
-        .param("description", description))
+        .param(M.LABEL, label)
+        .param(M.DESCRIPTION, description))
         // Then
         .andDo(print())
         .andExpect(status().is3xxRedirection());

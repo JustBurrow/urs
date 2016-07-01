@@ -3,7 +3,6 @@
  */
 package kr.lul.urs.spring.mvc;
 
-import static kr.lul.urs.util.Asserts.hasLength;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import java.util.Arrays;
@@ -28,7 +27,7 @@ public class BasicWebApi implements WebApi {
    */
   public BasicWebApi(RequestMethod method, String uriTemplate, ApiParam<?>... params) {
     notNull(method, "method");
-    hasLength(uriTemplate, "uriTemplate");
+    notNull(uriTemplate, "uriTemplate");
 
     this.method = method;
     this.uriTemplate = uriTemplate;

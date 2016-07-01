@@ -3,18 +3,16 @@
  */
 package kr.lul.urs.application.web.controller;
 
-import static kr.lul.urs.application.api.IndexApiConfiguration.DOMAIN;
-import static kr.lul.urs.application.api.IndexApiConfiguration.INDEX;
-import static kr.lul.urs.application.api.IndexApiConfiguration.PREFIX;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import kr.lul.urs.application.api.IndexApiConstants.C;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 3. 21.
  */
-@RequestMapping(PREFIX)
+@RequestMapping(C.PREFIX)
 public interface IndexController {
   /**
    * 랜딩 페이지.
@@ -23,6 +21,6 @@ public interface IndexController {
    *          모델.
    * @return 뷰 템플릿 이름.
    */
-  @RequestMapping({ DOMAIN, INDEX })
+  @RequestMapping({ C.ROOT, C.INDEX })
   public String index(Model model);
 }
