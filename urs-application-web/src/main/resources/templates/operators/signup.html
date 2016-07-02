@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1 th:text="#{operators.signup.h1}">계정 정보</h1>
-  <form action="/sessions/new" method="post" th:action="@{/operators}" th:object="${req}">
+  <form action="../auth/login.html" method="post" th:action="@{/operators}" th:object="${req}">
     <div>
       <label for="email" th:text="#{operators.signup.form.label.email}">메일주소</label>
       <input type="email" th:field="*{email}" />

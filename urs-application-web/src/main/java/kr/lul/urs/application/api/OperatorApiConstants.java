@@ -29,7 +29,7 @@ public abstract class OperatorApiConstants {
      *
      * @see #PREFIX
      */
-    public static final String SIGN_UP_SPEC = "/signup";
+    public static final String SIGN_UP_FORM = "/signup";
     /**
      * 계정 등록요청을 처리하는 API.
      *

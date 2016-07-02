@@ -43,7 +43,7 @@ public class GlobalHandlerInterceptor extends HandlerInterceptorAdapter {
     notNull(handler, "handler");
 
     if (log.isDebugEnabled()) {
-      log.debug(String.format("request:%s response:%s handler:%s mav:%s", request, response, handler, mav));
+      // log.debug(String.format("request:%s response:%s handler:%s mav:%s", request, response, handler, mav));
     }
 
     OperatorDetails operator = getCurrentUserDetails(OperatorDetails.class);

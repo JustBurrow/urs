@@ -3,6 +3,7 @@
  */
 package kr.lul.urs.application.web.controller;
 
+import static kr.lul.urs.application.api.AuthApis.LOGIN_FORM;
 import static kr.lul.urs.util.Asserts.notNull;
 
 import javax.validation.Valid;
@@ -61,6 +62,6 @@ class OperatorControllerImpl implements OperatorController {
     if (log.isDebugEnabled()) {
       log.debug(operator.value().toString());
     }
-    return "redirect:/auth/login";
+    return "redirect:" + LOGIN_FORM.getUriTemplate();
   }
 }

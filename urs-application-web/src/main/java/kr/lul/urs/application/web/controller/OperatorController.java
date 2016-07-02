@@ -26,7 +26,7 @@ public interface OperatorController {
    * @param model
    * @return
    */
-  @RequestMapping(C.SIGN_UP_SPEC)
+  @RequestMapping(C.SIGN_UP_FORM)
   public String signupForm(Model model);
 
   /**

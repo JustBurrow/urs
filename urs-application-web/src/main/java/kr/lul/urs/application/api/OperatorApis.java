@@ -24,7 +24,7 @@ import kr.lul.urs.spring.mvc.WebApi;
  * @author Just Burrow just.burrow@lul.kr
  */
 public enum OperatorApis implements WebApi {
-  SIGN_UP_FORM(new BasicWebApi(GET, C.PREFIX, C.SIGN_UP_SPEC)),
+  SIGN_UP_FORM(new BasicWebApi(GET, C.PREFIX, C.SIGN_UP_FORM)),
   SIGN_UP(new BasicWebApi(POST, C.PREFIX, C.SIGN_UP,
       new BasicApiParam<>(Location.BODY, false, M.EMAIL, String.class),
       new BasicApiParam<>(Location.BODY, false, M.PASSWORD, String.class)));
