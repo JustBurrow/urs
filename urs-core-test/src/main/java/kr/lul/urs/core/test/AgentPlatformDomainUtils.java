@@ -5,6 +5,10 @@ package kr.lul.urs.core.test;
 
 import static kr.lul.urs.util.Asserts.notNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
+
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
@@ -20,6 +24,8 @@ import kr.lul.urs.util.Strings;
  * @author Just Burrow just.burrow@lul.kr
  */
 public abstract class AgentPlatformDomainUtils {
+  private static final Logger log = LoggerFactory.getLogger(AgentPlatformDomainUtils.class);
+
   /**
    * @param owner
    * @return
@@ -42,12 +48,24 @@ public abstract class AgentPlatformDomainUtils {
    * @param agentPlatformInternalService
    * @return
    */
-  public static AgentPlatformEntity create(Operator owner,
-      AgentPlatformInternalService agentPlatformInternalService) {
+  public static AgentPlatformEntity create(Operator owner, AgentPlatformInternalService agentPlatformInternalService) {
     notNull(owner);
     notNull(agentPlatformInternalService);
-    // TODO UQ 중복 처리.
-    return (AgentPlatformEntity) agentPlatformInternalService.create(createContext(owner));
+
+    AgentPlatformEntity platform = null;
+    do {
+      CreateAgentPlatformCtx ctx = createContext(owner);
+      try {
+        platform = (AgentPlatformEntity) agentPlatformInternalService.create(ctx);
+      } catch (DuplicateKeyException e) {
+        platform = null;
+        if (log.isDebugEnabled()) {
+          log.debug(null == ctx ? "null" : ctx.toString(), e);
+        }
+      }
+    } while (null == platform);
+
+    return platform;
   }
 
   protected AgentPlatformDomainUtils() {

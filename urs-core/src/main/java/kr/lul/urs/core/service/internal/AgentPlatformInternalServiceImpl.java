@@ -34,7 +34,7 @@ class AgentPlatformInternalServiceImpl implements AgentPlatformInternalService {
   @Autowired
   private AgentPlatformRepository agentPlatformRepository;
 
-  private AgentPlatform save(AgentPlatformEntity platform) {
+  private AgentPlatformEntity save(AgentPlatformEntity platform) {
     if (this.saveAndFlush) {
       return this.agentPlatformRepository.saveAndFlush(platform);
     } else {
@@ -49,9 +49,9 @@ class AgentPlatformInternalServiceImpl implements AgentPlatformInternalService {
   public AgentPlatform create(CreateAgentPlatformCtx ctx) {
     notNull(ctx, "context");
 
-    AgentPlatform platform = new AgentPlatformEntity(ctx.getOwner(), ctx.getCode(), ctx.getLabel(),
+    AgentPlatformEntity platform = new AgentPlatformEntity(ctx.getOwner(), ctx.getCode(), ctx.getLabel(),
         ctx.getDescription());
-    platform = this.agentPlatformDao.insert(platform);
+    platform = this.save(platform);
 
     return platform;
   }

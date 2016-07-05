@@ -6,6 +6,10 @@ package kr.lul.urs.core.test;
 import static kr.lul.urs.util.Asserts.assignable;
 import static kr.lul.urs.util.Asserts.notNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
+
 import kr.lul.urs.core.domain.AgentPlatform;
 import kr.lul.urs.core.domain.ResourceFile;
 import kr.lul.urs.core.domain.entity.AgentPlatformEntity;
@@ -21,6 +25,8 @@ import kr.lul.urs.util.Strings;
  * @since 2016. 4. 17.
  */
 public abstract class ResourceFileDomainUtils {
+  private static final Logger log = LoggerFactory.getLogger(ResourceFileDomainUtils.class);
+
   /**
    * @param platform
    * @param resourceFileInternalService
@@ -52,7 +58,20 @@ public abstract class ResourceFileDomainUtils {
     assignable(platform, AgentPlatformEntity.class);
     notNull(resourceFileInternalService);
 
-    return (ResourceFileEntity) resourceFileInternalService.create(createCtx(platform, resourceFileInternalService));
+    ResourceFileEntity file = null;
+    do {
+      CreateResourceFileCtx ctx = createCtx(platform, resourceFileInternalService);
+      try {
+        file = (ResourceFileEntity) resourceFileInternalService.create(ctx);
+      } catch (DuplicateKeyException e) {
+        file = null;
+        if (log.isDebugEnabled()) {
+          log.debug(ctx.toString(), e);
+        }
+      }
+    } while (null == file);
+
+    return file;
   }
 
   protected ResourceFileDomainUtils() {

@@ -20,7 +20,7 @@ import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.core.test.AbstractDtoTest;
 import kr.lul.urs.core.test.AgentPlatformDtoUtils;
-import kr.lul.urs.core.test.OperatorDtoUti;
+import kr.lul.urs.core.test.OperatorDtoUtils;
 import kr.lul.urs.util.AssertionException;
 import kr.lul.urs.util.Randoms;
 
@@ -94,7 +94,7 @@ public class AgentPlatformServiceTest extends AbstractDtoTest {
   public void testReadWithIllegalOwnership() throws Exception {
     // Given
     this.setAgentPlatformAsRandom();
-    OperatorDto op2 = OperatorDtoUti.create(this.operatorService);
+    OperatorDto op2 = OperatorDtoUtils.create(this.operatorService);
     ReadAgentPlatformCmd cmd = AgentPlatformDtoUtils.readCmd(this.platform.getId(), op2.getId());
 
     // When & Then

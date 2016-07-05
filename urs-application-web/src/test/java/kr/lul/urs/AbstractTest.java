@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.OperatorService;
-import kr.lul.urs.core.test.OperatorDtoUti;
+import kr.lul.urs.core.test.OperatorDtoUtils;
 import kr.lul.urs.spring.jpa.timestamp.Creatable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 import kr.lul.urs.util.Asserts;
@@ -97,7 +97,7 @@ public abstract class AbstractTest {
    */
   protected void setOperatorAsRandom() {
     assertThat(this.operatorService).isNotNull();
-    this.operator = OperatorDtoUti.create(this.operatorService);
+    this.operator = OperatorDtoUtils.create(this.operatorService);
   }
 
   /**

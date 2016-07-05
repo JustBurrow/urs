@@ -22,7 +22,7 @@ import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.dto.ResourceFileDto;
 import kr.lul.urs.core.service.internal.OwnershipException;
 import kr.lul.urs.core.test.AbstractDtoTest;
-import kr.lul.urs.core.test.OperatorDtoUti;
+import kr.lul.urs.core.test.OperatorDtoUtils;
 import kr.lul.urs.core.test.ResourceFileDtoUtils;
 import kr.lul.urs.spring.tx.Return;
 import kr.lul.urs.util.AssertionException;
@@ -123,7 +123,7 @@ public class ResourceFileServiceTest extends AbstractDtoTest {
   public void testUpdateWithIllegalOwnership() throws Exception {
     // Given
     ResourceFileDto resourceFile = ResourceFileDtoUtils.create(this.platform, this.resourceFileService);
-    OperatorDto owner = OperatorDtoUti.create(this.operatorService);
+    OperatorDto owner = OperatorDtoUtils.create(this.operatorService);
     File file = getTestFile("testUpdate1");
 
     UpdateResourceFileCmd cmd = new UpdateResourceFileCmd(owner.getId(), resourceFile.getId(), file);

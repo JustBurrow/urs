@@ -18,7 +18,7 @@ import kr.lul.urs.core.CoreTestConfig;
 import kr.lul.urs.core.domain.Operator;
 import kr.lul.urs.core.service.context.CreateOperatorCtx;
 import kr.lul.urs.core.test.AbstractDomainTest;
-import kr.lul.urs.core.test.OperatorDtoUti;
+import kr.lul.urs.core.test.OperatorDomainUtils;
 
 /**
  * @author Just Burrow just.burrow@lul.kr
@@ -37,7 +37,7 @@ public class OperatorInternalServiceTest extends AbstractDomainTest {
   @Test
   public void testCreate() throws Exception {
     // Given
-    final CreateOperatorCtx ctx = OperatorDtoUti.createContext();
+    final CreateOperatorCtx ctx = OperatorDomainUtils.createContext();
     final String email = ctx.getEmail();
     final String password = ctx.getPassword();
 

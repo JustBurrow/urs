@@ -12,6 +12,10 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
+
 import kr.lul.urs.core.command.CreateAgentPlatformCmd;
 import kr.lul.urs.core.command.ReadAgentPlatformCmd;
 import kr.lul.urs.core.domain.AgentPlatform;
@@ -26,6 +30,7 @@ import kr.lul.urs.core.service.AgentPlatformService;
  * @since 2016. 5. 3.
  */
 public abstract class AgentPlatformDtoUtils {
+  private static final Logger log = LoggerFactory.getLogger(AgentPlatformDtoUtils.class);
 
   /**
    * 임의의 플랫폼을 만들 수 있는 커맨드를 만든다.
@@ -93,11 +98,10 @@ public abstract class AgentPlatformDtoUtils {
    * @since 2016. 5. 16.
    */
   public static AgentPlatformDto create(OperatorDto owner, AgentPlatformService service) {
-    notNull(owner);
-    positive(owner.getId());
-    notNull(service);
+    notNull(owner, "owner");
+    notNull(service, "service");
 
-    return service.create(createCmd(owner)).value();
+    return create(owner.getId(), service);
   }
 
   /**
@@ -107,10 +111,22 @@ public abstract class AgentPlatformDtoUtils {
    * @since 2016. 5. 17.
    */
   public static AgentPlatformDto create(int owner, AgentPlatformService service) {
-    positive(owner);
-    notNull(service);
+    positive(owner, "owner");
+    notNull(service, "service");
 
-    return service.create(createCmd(owner)).value();
+    AgentPlatformDto platform = null;
+    do {
+      CreateAgentPlatformCmd cmd = createCmd(owner);
+      try {
+        platform = service.create(cmd).value();
+      } catch (DuplicateKeyException e) {
+        platform = null;
+        if (log.isDebugEnabled()) {
+          log.debug(null == cmd ? "null" : cmd.toString(), e);
+        }
+      }
+    } while (null == platform);
+    return platform;
   }
 
   protected AgentPlatformDtoUtils() {

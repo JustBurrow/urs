@@ -13,7 +13,7 @@ import kr.lul.urs.core.dto.OperatorDto;
 import kr.lul.urs.core.service.AgentPlatformService;
 import kr.lul.urs.core.service.OperatorService;
 import kr.lul.urs.core.test.AgentPlatformDtoUtils;
-import kr.lul.urs.core.test.OperatorDtoUti;
+import kr.lul.urs.core.test.OperatorDtoUtils;
 
 /**
  * 도메인 엔티티에 직접 접근하지 않고, DTO 혹은 ID를 기준으로 로직을 실행해 내부적으로만 도메인 엔티티에 접근하는 테스트용.
@@ -43,7 +43,7 @@ public abstract class AbstractDtoTest extends AbstractCoreTest {
       this.setNow();
     }
 
-    this.operator = OperatorDtoUti.create(this.operatorService);
+    this.operator = OperatorDtoUtils.create(this.operatorService);
   }
 
   /**
