@@ -7,9 +7,11 @@ import kr.lul.urs.spring.jpa.ownership.Ownable;
 import kr.lul.urs.spring.jpa.timestamp.Updatable;
 
 /**
- * 프로덕트의 에이전트(클라이언트)가 지원하는 플랫폼 정보.
- * 에이전트는 각 플랫폼마다 서로 다른 구현을 가지며, 그에 필요한 리소스 파일이 서로 다르다.
- *
+ * <ul>
+ * <li>프로덕트의 에이전트(클라이언트)가 지원하는 플랫폼 정보.</li>
+ * <li>에이전트는 각 플랫폼마다 서로 다른 구현을 가지며, 그에 필요한 리소스 파일이 서로 다르다.</li>
+ * </li>
+ * 
  * @author Just Burrow just.burrow@lul.kr
  * @since 2016. 4. 4.
  */
