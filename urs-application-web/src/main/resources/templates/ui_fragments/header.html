@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta th:remove="all" charset="UTF-8" />
+  <meta th:remove="all" name="author" content="justburrow" />
+  <meta th:remove="all" name="since" content="2016. 7. 11." />
+  <link th:remove="all" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script th:remove="all" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script th:remove="all" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <meta th:include="" th:remove="tag" />
+  <title>Page Header</title>
+</head>
+<body>
+  <h1>Page Header</h1>
+  
+  <h2>Anonymous(Guest) Header</h2>
+  <header class="navbar navbar-default" th:fragment="anonymousHeader">
+    anonymous
+  </header>
+  
+  <h2>User Header</h2>
+  <header class="navbar navbar-default navbar-static-top" th:fragment="userHeader">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="../dashboard/summary.html" class="navbar-brand"
+          th:href="@{/dashboard}" th:text="#{common.header.brand.label}">URS</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+              th:text="#{common.header.do.label}">기본 DO<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="../platform/list.html"
+                th:href="@{/platform}" th:text="#{common.header.do.platform.label}">Agent Platform</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="nav navbar-nav navbar-right" th:if="null != ${user}">
+          <span th:text="${user.username}">user email</span>
+        </div>
+      </div>
+    </div>
+  </header>
+</body>
+</html>

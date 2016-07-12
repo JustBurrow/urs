@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<title>Insert title here</title>
+  <meta th:remove="all" charset="UTF-8" />
+  <meta th:remove="all" name="author" content="justburrow" />
+  <meta th:remove="all" name="since" content="2016. 7. 9." />
+  <link th:remove="all" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script th:remove="all" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script th:remove="all" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <meta th:include="ui_fragments/head :: head" th:remove="tag" />
+  <title th:text="#{platform.update.title(${platform.code})}">platform update</title>
 </head>
 <body>
-  agent platform <span th:text="${platform.id}">id</span> update.
-  <form action="detail.html" method="post" th:action="@{/platform/__${platform.id}__}" th:method="patch"
-    th:object="${req}">
-    <div>
-      <label for="label">Label</label><input th:field="*{label}" />
+  <header th:replace="ui_fragments/header :: userHeader"></header>
+  <h1 th:text="#{platform.update.h1(${platform.code})}">platform update</h1>
+  <form action="detail.html" method="post" class="form" th:action="@{/platform/__${platform.id}__}" th:method="patch"
+      th:object="${req}">
+    <div class="form-group">
+      <label for="code">Code</label>
+      <input readonly="readonly" disabled="disabled" class="form-control" th:value="${platform.code}" />
     </div>
-    <div>
+    <div class="form-group">
+      <label for="label">Label</label>
+      <input class="form-control" required="required" placeholder="화면에 표시할 이름을 지정하세요."
+        th:placeholder="#{platform.update.form.label.placeholder}" th:field="*{label}" />
+    </div>
+    <div class="form-group">
       <label for="description">Description</label>
-      <textarea rows="5" cols="20" th:field="*{description}"></textarea>
+      <textarea rows="5" cols="20" class="form-control" th:field="*{description}"></textarea>
     </div>
-    <button>Submit</button>
+    <div class="form-group col-md-4">
+      <a href="detail.html" class="btn btn-default form-control" th:text="#{platform.update.form.list}">detail</a>
+    </div>
+    <div class="form-group col-md-4">
+      <button type="reset" class="btn btn-warning form-control" th:text="#{platform.update.form.reset}">reset</button>
+    </div>
+    <div class="form-group col-md-4">
+      <button class="btn btn-primary form-control" th:text="#{platform.update.form.submit}">Submit</button>
+    </div>
   </form>
+  <footer th:replace="ui_fragments/footer :: userFooter"></footer>
 </body>
 </html>

@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<title>Insert title here</title>
+  <meta th:remove="all" charset="UTF-8" />
+  <meta th:remove="all" name="author" content="justburrow" />
+  <meta th:remove="all" name="since" content="2016. 7. 9." />
+  <link th:remove="all" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script th:remove="all" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script th:remove="all" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <meta th:include="ui_fragments/head :: head" th:remove="tag" />
+  <title th:text="#{platform.list.title}">platform list</title>
 </head>
 <body>
-  agent platform list
-  <nav>
+  <header th:replace="ui_fragments/header :: userHeader"></header>
+  <div class="container">
+  </div>
+  <nav class="nav">
     <ul>
-      <li><a href="create.html" th:href="@{platform/create}">create</a></li>
+      <li><a href="create.html" class="btn btn-default" th:href="@{/platform/create}" th:text="#{platform.list.nav.create}">create</a></li>
     </ul>
   </nav>
+  <footer th:replace="ui_fragments/footer :: userFooter"></footer>
 </body>
 </html>

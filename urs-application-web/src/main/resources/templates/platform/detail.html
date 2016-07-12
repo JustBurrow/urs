@@ -1,25 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<title>Insert title here</title>
+  <meta th:remove="all" charset="UTF-8" />
+  <meta th:remove="all" name="author" content="justburrow" />
+  <meta th:remove="all" name="since" content="2016. 7. 9." />
+  <link th:remove="all" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script th:remove="all" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script th:remove="all" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <meta th:include="ui_fragments/head :: head" th:remove="tag" />
+  <title th:text="#{platform.detail.title}">platform detail</title>
 </head>
 <body>
-  agent platform detail
-  <span th:text="${platform.id}">id</span>.
-  <dl>
-    <dt>ID</dt>
-    <dd th:text="${platform.id}">id</dd>
-    <dt>Code</dt>
-    <dd th:text="${platform.code}">code</dd>
-    <dt>Label</dt>
-    <dd th:text="${platform.label}">label</dd>
-    <dt>Description</dt>
-    <dd th:text="${platform.description}">description</dd>
-    <dt th:if="null != ${platform.create}">Create</dt>
-    <dd th:if="null != ${platform.create}" th:text="${platform.create}">create timestamp</dd>
-    <dt th:if="null != ${platform.update}">Create</dt>
-    <dd th:if="null != ${platform.update}" th:text="${platform.update}">last update timestamp</dd>
-  </dl>
+  <header th:replace="ui_fragments/header :: userHeader"></header>
+  <div class="container">
+    agent platform detail
+    <dl class="dl-horizontal">
+      <dt>ID</dt>
+      <dd th:text="${platform.id}">id</dd>
+      <dt>Code</dt>
+      <dd th:text="${platform.code}">code</dd>
+      <dt>Label</dt>
+      <dd th:text="${platform.label}">label</dd>
+      <dt>Description</dt>
+      <dd th:text="${platform.description}">description</dd>
+      <dt th:if="null != ${platform.create}">Create</dt>
+      <dd th:if="null != ${platform.create}" th:text="${platform.create}">create timestamp</dd>
+      <dt th:if="null != ${platform.update}">Create</dt>
+      <dd th:if="null != ${platform.update}" th:text="${platform.update}">last update timestamp</dd>
+    </dl>
+  </div>
+  <a href="list.html" class="btn btn-default btn-lg" th:href="@{/platform}" th:text="#{platform.detal.link.list}">list</a>
+  <a href="update.html" class="btn btn-warning btn-lg" th:href="@{/platform/__${platform.id}__/update}" th:text="#{platform.detail.link.update}">update</a>
+  <footer th:replace="ui_fragments/footer :: userFooter"></footer>
 </body>
 </html>

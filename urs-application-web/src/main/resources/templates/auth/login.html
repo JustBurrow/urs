@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<title th:text="#{auth.login.title}">로그인 폼</title>
+  <meta th:remove="all" charset="UTF-8" />
+  <meta th:remove="all" name="author" content="justburrow" />
+  <meta th:remove="all" name="since" content="2016. 7. 9." />
+  <link th:remove="all" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script th:remove="all" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script th:remove="all" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <meta th:include="ui_fragments/head :: head" th:remove="tag" />
+  <title th:text="#{auth.login.title}">로그인 폼</title>
 </head>
 <body>
+  <header th:replace="ui_fragments/header :: anonymousHeader"></header>
   <h1 th:text="#{auth.login.h1}">로그인</h1>
-  <form action="#" method="post" th:action="@{/auth/login}" th:object="${req}">
-    <div>
-      <label for="email" th:text="#{auth.login.form.label.email}">E메일</label>
-      <input type="email" th:field="*{email}"/>
+  <form action="../dashboard/summary.html" method="post" th:action="@{/auth/login}" th:object="${req}">
+    <div class="form-group">
+      <label for="email" class="sr-only" th:text="#{auth.login.form.email.label}">E메일</label>
+      <input type="email" class="form-control"  placeholder="E-Mail address"
+        th:field="*{email}" th:placeholder="#{auth.login.form.email.placeholder}" />
     </div>
-    <div>
-      <label for="password" th:text="#{auth.login.form.label.password}">비밀번호</label>
-      <input type="password" th:field="*{password}"/>
+    <div class="from-group">
+      <label for="password" class="sr-only" th:text="#{auth.login.form.password.label}">비밀번호</label>
+      <input type="password"   class="form-control" placeholder="비밀번호를 입력하라."
+        th:field="*{password}" th:placeholder="#{auth.login.form.password.placeholder}" />
     </div>
-    <button th:text="#{auth.login.form.submit}">로그인</button>
+    <button class="btn btn-primary" th:text="#{auth.login.form.submit}">로그인</button>
   </form>
+  <footer th:replace="ui_fragments/footer :: anonymousFooter"></footer>
 </body>
 </html>
